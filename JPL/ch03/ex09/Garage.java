@@ -36,17 +36,17 @@ public class Garage implements Cloneable{
 	}
 	
 	public static void main(String[] args) throws Exception {
-		Garage garage1 = new Garage();
+		Garage garage = new Garage();
 		Vehicle car1 = new Vehicle(args[0]);
 		Vehicle car2 = new Vehicle(args[1]);
 		Vehicle car3 = new Vehicle(args[2]);
 		
-		garage1.add(car1);
-		garage1.add(car2);
-		garage1.add(car3);
+		garage.add(car1);
+		garage.add(car2);
+		garage.add(car3);
 		
-		Garage garage2 = garage1.clone();
-		Vehicle[] copyVehicles = garage2.getVehicles();
+		Garage copyGarage = garage.clone();
+		Vehicle[] copyVehicles = copyGarage.getVehicles();
 		
 		if (car1 !=  copyVehicles[0] && car1.getOwner().equals(copyVehicles[0].getOwner())) {
 			System.out.println("Copy successful!");
