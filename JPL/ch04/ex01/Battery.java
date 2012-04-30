@@ -1,6 +1,6 @@
 package ch04.ex01;
 
-public class Battery extends EnergySource{
+public class Battery implements EnergySource{
 	private int power;
 	
 	public Battery(int power) {
