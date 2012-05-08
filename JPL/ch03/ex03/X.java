@@ -1,4 +1,4 @@
-package ex03;
+package ch03.ex03;
 
 public class X {
 	protected int xMask = 0x00ff;
@@ -14,7 +14,8 @@ public class X {
 		System.out.printf("X2, xMask:%x, fullMask:%x%n", xMask, fullMask);
 	}
 	
-	public int mask(int orig) {
+	// オーバーライドできないように変更
+	public final int mask(int orig) {
 		return (orig & fullMask);
 	}
 }
