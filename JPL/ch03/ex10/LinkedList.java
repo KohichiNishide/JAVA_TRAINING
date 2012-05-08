@@ -1,4 +1,4 @@
-package ex10;
+package ch03.ex10;
 
 public class LinkedList implements Cloneable{
 	private Item head;

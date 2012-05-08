@@ -1,4 +1,4 @@
-package ex06;
+package ch03.ex06;
 
 public class Battery extends EnergySource{
 	private int power;

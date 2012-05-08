@@ -1,4 +1,4 @@
-package ex09;
+package ch03.ex09;
 
 import org.junit.Test;
 

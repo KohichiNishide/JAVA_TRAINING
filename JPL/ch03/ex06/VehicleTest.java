@@ -1,4 +1,4 @@
-package ex06;
+package ch03.ex06;
 import static org.junit.Assert.*;
 
 import java.io.BufferedOutputStream;

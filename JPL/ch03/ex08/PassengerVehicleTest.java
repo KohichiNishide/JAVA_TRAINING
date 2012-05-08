@@ -1,4 +1,4 @@
-package ex08;
+package ch03.ex08;
 
 import static org.junit.Assert.assertEquals;
 

@@ -1,4 +1,4 @@
-package ex05;
+package ch03.ex05;
 
 import org.junit.Test;
 

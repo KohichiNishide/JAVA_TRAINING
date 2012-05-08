@@ -1,4 +1,4 @@
-package ex12;
+package ch03.ex12;
 
 final class SortMetrics implements Cloneable{
 	public long proveCnt, //単純なデータの値調査

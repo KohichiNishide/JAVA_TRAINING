@@ -1,4 +1,4 @@
-package ex04;
+package ch03.ex04;
 
 import static org.junit.Assert.assertEquals;
 

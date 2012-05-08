@@ -1,4 +1,4 @@
-package ex04;
+package ch03.ex04;
 
 public class PassengerVehicle extends Vehicle{
 	private final int nSeats; //Ô‚ª‚Á‚Ä‚¢‚éÀÈ”

@@ -1,4 +1,4 @@
-package ex02;
+package ch03.ex02;
 
 public class X {
 	protected int xMask = 0x00ff;

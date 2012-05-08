@@ -1,4 +1,4 @@
-package ex07;
+package ch03.ex07;
 
 public class ColorAttr extends Attr{
 	private ScreenColor myColor; //•ÏŠ·‚³‚ê‚½F

@@ -1,4 +1,4 @@
-package ex11;
+package ch03.ex11;
 
 import org.junit.Test;
 

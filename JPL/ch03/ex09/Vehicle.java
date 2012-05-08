@@ -1,4 +1,4 @@
-package ex09;
+package ch03.ex09;
 
 public class Vehicle implements Cloneable {
 	private double currentSpeed;

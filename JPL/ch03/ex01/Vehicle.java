@@ -1,4 +1,4 @@
-package ex01;
+package ch03.ex01;
 
 public class Vehicle {
 	private double currentSpeed;

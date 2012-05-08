@@ -1,4 +1,4 @@
-package ex11;
+package ch03.ex11;
 
 public class SimpleSortDouble extends SortDouble{
 	protected void doSort() {

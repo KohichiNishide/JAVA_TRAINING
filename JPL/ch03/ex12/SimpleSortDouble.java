@@ -1,4 +1,4 @@
-package ex12;
+package ch03.ex12;
 
 public class SimpleSortDouble extends SortHarness{
 	protected void doSort() {
