@@ -6,25 +6,31 @@ import java.util.Calendar;
 
 public class DegitalClock extends Frame implements Runnable, ItemListener {
 	private static final long serialVersionUID = 1L;
-	static int h;           //時を入れる変数を宣言
-    static int m;           //分を入れる変数を宣言
-    static int s;           //秒を入れる変数を宣言
-    static int height = 200;
-    static int width = 400;
-    static String fontName = "Default";
-    static int fontStyle = Font.PLAIN;
-    static int fontSize = 70;
-    static Color color = Color.BLACK;
-    static Color backgroundColor = Color.WHITE;
-    Graphics buffer;        //オフスクリーンバッファのグラフィックコンテキスト
-    Image back = null;
+	private static int h;           //時を入れる変数を宣言
+	private static int m;           //分を入れる変数を宣言
+	private static int s;           //秒を入れる変数を宣言
+	private static int height = 200;
+	private static int width = 400;
     
-    Thread timerThread;
-    Menu menuFont, menuFontSize, menuCharColor, menuBackgroundColor, menuLanguage;
-    MenuItem menuFontPlain, menuFontBold, menuFontItalic;
-    MenuItem menuFontSizeLarge, menuFontSizeNormal, menuFontSizeSmall;
-    MenuItem menuCharRed, menuCharBlue, menuCharBlack;
-    MenuItem menuBackgroundRed, menuBackgroundBlue, menuBackgroundWhite;
+    private static final int LARGE_FONT_SIZE = 200;
+	private static final int NORMAL_FONT_SIZE = 80;	
+	private static final int SMALL_FONT_SIZE = 10;
+	private static final int BLANK_SPACE_SIZE = 50;
+	
+	private static String fontName = "Default";
+	private static int fontStyle = Font.PLAIN;
+	private static int fontSize = NORMAL_FONT_SIZE;
+	private static Color color = Color.BLACK;
+	private static Color backgroundColor = Color.WHITE;
+	private Graphics buffer;        //オフスクリーンバッファのグラフィックコンテキスト
+	private Image back = null;
+    
+	private Thread timerThread;
+	private Menu menuFont, menuFontSize, menuCharColor, menuBackgroundColor, menuLanguage;
+	private MenuItem menuFontPlain, menuFontBold, menuFontItalic; //メニューフォントアイテム
+	private MenuItem menuFontSizeLarge, menuFontSizeNormal, menuFontSizeSmall; //メニューフォントサイズアイテム
+	private MenuItem menuCharRed, menuCharBlue, menuCharBlack; //メニュー文字色アイテム
+	private MenuItem menuBackgroundRed, menuBackgroundBlue, menuBackgroundWhite; //メニュー背景色アイテム
     /*
      * コンストラクタ
      */
@@ -34,6 +40,7 @@ public class DegitalClock extends Frame implements Runnable, ItemListener {
     	
     	setTitle("Degital clock");
         setLayout(new FlowLayout());
+        setSize(width, height);
                
         //メニューバーの生成
         MenuBar menuBar = new MenuBar();
@@ -79,9 +86,9 @@ public class DegitalClock extends Frame implements Runnable, ItemListener {
         });
         
         //フォントサイズ
-        menuFontSizeLarge = new MenuItem("Large");
-        menuFontSizeNormal = new MenuItem("Normal");
-        menuFontSizeSmall = new MenuItem("Small");
+        menuFontSizeLarge = new MenuItem("大");
+        menuFontSizeNormal = new MenuItem("中");
+        menuFontSizeSmall = new MenuItem("小");
         menuFontSize.add(menuFontSizeLarge);
         menuFontSize.add(menuFontSizeNormal);
         menuFontSize.add(menuFontSizeSmall);
@@ -89,21 +96,21 @@ public class DegitalClock extends Frame implements Runnable, ItemListener {
         menuFontSize.addActionListener(new ActionListener() {
         	// フォント・オブジェクトの作成
             public void actionPerformed(ActionEvent e) {
-                if (e.getActionCommand().equals("Large")) {
-                	fontSize = 900;
-                } else if (e.getActionCommand().equals("Normal")) {
-                	fontSize = 70;
-                } else if (e.getActionCommand().equals("Small")) {
-                	fontSize = 10;
+                if (e.getActionCommand().equals("大")) {
+                	fontSize = LARGE_FONT_SIZE;
+                } else if (e.getActionCommand().equals("中")) {
+                	fontSize = NORMAL_FONT_SIZE;
+                } else if (e.getActionCommand().equals("小")) {
+                	fontSize = SMALL_FONT_SIZE;
                 }
                 repaint();
             }
         });
         
         //文字色
-        menuCharBlack = new MenuItem("Black");
-        menuCharRed = new MenuItem("Red");
-        menuCharBlue = new MenuItem("Blue");
+        menuCharBlack = new MenuItem("黒色");
+        menuCharRed = new MenuItem("赤色");
+        menuCharBlue = new MenuItem("青色");
         menuCharColor.add(menuCharBlack);
         menuCharColor.add(menuCharRed);
         menuCharColor.add(menuCharBlue);        
@@ -111,11 +118,11 @@ public class DegitalClock extends Frame implements Runnable, ItemListener {
         menuCharColor.addActionListener(new ActionListener() {
         	// フォント・オブジェクトの作成
             public void actionPerformed(ActionEvent e) {
-                if (e.getActionCommand().equals("Black")) {
+                if (e.getActionCommand().equals("黒色")) {
                 	color = Color.BLACK;
-                } else if (e.getActionCommand().equals("Blue")) {
+                } else if (e.getActionCommand().equals("青色")) {
                 	color = Color.BLUE;
-                } else if (e.getActionCommand().equals("Red")) {
+                } else if (e.getActionCommand().equals("赤色")) {
                 	color = Color.RED;
                 }
                 repaint();
@@ -123,9 +130,9 @@ public class DegitalClock extends Frame implements Runnable, ItemListener {
         });
         
         //背景色
-        menuBackgroundWhite = new MenuItem("White");
-        menuBackgroundRed = new MenuItem("Red");
-        menuBackgroundBlue = new MenuItem("Blue");
+        menuBackgroundWhite = new MenuItem("白色");
+        menuBackgroundRed = new MenuItem("赤色");
+        menuBackgroundBlue = new MenuItem("青色");
         menuBackgroundColor.add(menuBackgroundWhite);
         menuBackgroundColor.add(menuBackgroundRed);
         menuBackgroundColor.add(menuBackgroundBlue);        
@@ -133,11 +140,11 @@ public class DegitalClock extends Frame implements Runnable, ItemListener {
         menuBackgroundColor.addActionListener(new ActionListener() {
         	// フォント・オブジェクトの作成
             public void actionPerformed(ActionEvent e) {
-                if (e.getActionCommand().equals("White")) {
+                if (e.getActionCommand().equals("白色")) {
                 	backgroundColor = Color.WHITE;
-                } else if (e.getActionCommand().equals("Blue")) {
+                } else if (e.getActionCommand().equals("青色")) {
                 	backgroundColor = Color.BLUE;
-                } else if (e.getActionCommand().equals("Red")) {
+                } else if (e.getActionCommand().equals("赤色")) {
                 	backgroundColor = Color.RED;
                 }
                 repaint();
@@ -146,7 +153,7 @@ public class DegitalClock extends Frame implements Runnable, ItemListener {
 
         //メニューバーへの追加
         menuBar.add(menuProperty);
-
+        
         //メニューバーをフレームへ追加
         this.setMenuBar(menuBar);
     }
@@ -166,18 +173,29 @@ public class DegitalClock extends Frame implements Runnable, ItemListener {
 	}
 	
 	public void paint(Graphics g) {    
-		back = this.createImage(this.getWidth(),this.getHeight());  
+		back = this.createImage(width, height);  
 		buffer = back.getGraphics();
 		buffer.setFont(new Font(fontName, fontStyle, fontSize));
 		buffer.setColor(color);
 		setBackground(backgroundColor);
-	    FontMetrics fo = buffer.getFontMetrics();
-        int strWidth = fo.stringWidth(h+":"+m+":"+s);
-        buffer.drawString(h+":"+m+":"+s, width/2 - strWidth/2 , height/2);
+	    
+		drawTimeCenter();
+		setSize(width, height);
 		g.drawImage(back, 0, 0, this);      //バッファを画面に描画
 	}
 	
-	void pause(int time) {
+    private void drawTimeCenter() {
+    	FontMetrics fo = buffer.getFontMetrics();
+        int strWidth = fo.stringWidth(h+":"+m+":"+s);
+        int strHeight = fo.getAscent() + fo.getDescent();
+        
+        width = strWidth + BLANK_SPACE_SIZE;
+        height = strHeight + BLANK_SPACE_SIZE;
+        
+        buffer.drawString(h+":"+m+":"+s, (width - strWidth) / 2, (height - strHeight) / 2 + fo.getMaxAscent());
+    }
+
+	private void pause(int time) {
         try {
         	Thread.sleep(time);
         } catch (InterruptedException e) {}
@@ -197,7 +215,6 @@ public class DegitalClock extends Frame implements Runnable, ItemListener {
 	 */
 	public static void main(String args[]) {	
 		DegitalClock clock = new DegitalClock();
-	    clock.setSize(width, height);
 	    clock.setVisible(true);
 	    clock.setResizable(false);
 	    clock.addWindowListener(new windowListener());
