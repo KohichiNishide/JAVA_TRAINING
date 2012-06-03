@@ -90,7 +90,7 @@ public class Literal {
 		System.out.println(aDouble = (double)mMinLong);
 		System.out.println(aDouble = (double)mMaxFloat);
 		System.out.println(aDouble = (double)mMinFloat);
-		System.out.println(aDouble = (double)mMaxDouble); //NG Infinity
-		System.out.println(aDouble = (double)mMinDouble); //NG 0.0
+		System.out.println(aDouble = (double)mMaxDouble);
+		System.out.println(aDouble = (double)mMinDouble);
 	}
 }
