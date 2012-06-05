@@ -1,0 +1,1 @@
+AttrがAttributedのネスト型であるべき。理由はAttributedがAttrクラスを操作、メンバ変数などで使用しているため。
