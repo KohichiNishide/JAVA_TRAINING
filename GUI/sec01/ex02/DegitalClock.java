@@ -26,7 +26,7 @@ public class DegitalClock extends Frame implements Runnable, ItemListener {
 	private Image back = null;
     
 	private Thread timerThread;
-	private Menu menuFont, menuFontSize, menuCharColor, menuBackgroundColor, menuLanguage;
+	private Menu menuFont, menuFontSize, menuCharColor, menuBackgroundColor;
 	private MenuItem menuFontPlain, menuFontBold, menuFontItalic; //メニューフォントアイテム
 	private MenuItem menuFontSizeLarge, menuFontSizeNormal, menuFontSizeSmall; //メニューフォントサイズアイテム
 	private MenuItem menuCharRed, menuCharBlue, menuCharBlack; //メニュー文字色アイテム
@@ -53,15 +53,12 @@ public class DegitalClock extends Frame implements Runnable, ItemListener {
         menuFontSize = new Menu("フォントサイズ");
         menuCharColor = new Menu("文字色");
         menuBackgroundColor = new Menu("背景色");
-        menuLanguage = new Menu("言語");
         
         //メニューへの追加
         menuProperty.add(menuFont);
         menuProperty.add(menuFontSize);
         menuProperty.add(menuCharColor);
         menuProperty.add(menuBackgroundColor);
-        menuProperty.addSeparator(); //セパレーター
-        menuProperty.add(menuLanguage);
         
         //フォント
         menuFontPlain = new MenuItem("標準");
