@@ -5,7 +5,7 @@ public class LinkedList<E> {
 	
 	public void add(E val) {
 		/**
-		 * 指定のアイテムを最後尾に追加する
+		 * 指定の要素を最後尾に追加する
 		 */
 		Item<E> aItem = head;
 		Item<E> item = new Item<E>(val);
@@ -24,7 +24,7 @@ public class LinkedList<E> {
 	
 	public E getValue(int index) throws Exception {
 		/**
-		 * index番目のアイテムの要素を取得する
+		 * index番目の要素を取得する
 		 */
 		Item<E> aItem = head;
 		int i = 0;
