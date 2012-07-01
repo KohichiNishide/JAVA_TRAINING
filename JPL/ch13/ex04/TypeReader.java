@@ -8,7 +8,7 @@ public class TypeReader {
 		Class<?> clazz = null;
 		for (int i = 0; i < input.length; i++) {
 			String str = input[i][0];
-			clazz = Class.forName(str);
+			clazz = Class.forName(str); //型のチェック
 			if (str.equals("java.lang.Boolean")) {
 				list.add(Boolean.parseBoolean(input[i][1]));
 			} else if (str.equals("java.lang.Integer")) {
