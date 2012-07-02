@@ -11,12 +11,9 @@ public class DegitalClock extends Window implements Runnable, ItemListener, Mous
 	private static int s;           //秒を入れる変数を宣言
 	private static int height = 200;
 	private static int width = 400;
-	
-	private static Point startDrag, startPos;
     
-    private static final int LARGE_FONT_SIZE = 200;
-	private static final int NORMAL_FONT_SIZE = 80;	
-	private static final int SMALL_FONT_SIZE = 10;
+    
+	private static final int NORMAL_FONT_SIZE = 100;	
 	private static final int BLANK_SPACE_SIZE = 50;
 	
 	private static String fontName = "Default";
@@ -30,9 +27,6 @@ public class DegitalClock extends Window implements Runnable, ItemListener, Mous
 	private Thread timerThread;
 	private Menu menuFont, menuFontSize, menuCharColor, menuBackgroundColor;
 	private MenuItem menuFontPlain, menuFontBold, menuFontItalic; //メニューフォントアイテム
-	private MenuItem menuFontSizeLarge, menuFontSizeNormal, menuFontSizeSmall; //メニューフォントサイズアイテム
-	private MenuItem menuCharRed, menuCharBlue, menuCharBlack; //メニュー文字色アイテム
-	private MenuItem menuBackgroundRed, menuBackgroundBlue, menuBackgroundWhite; //メニュー背景色アイテム
 	
 	PopupMenu pop = new PopupMenu("Property"); //ポップアップメニュー
 	
@@ -44,15 +38,8 @@ public class DegitalClock extends Window implements Runnable, ItemListener, Mous
     	timerThread = new Thread(this);
     	timerThread.start();
     	
-    	//setTitle("Degital clock");
         setLayout(new FlowLayout());
-        setSize(width, height);
-               
-        //メニューバーの生成
-        MenuBar menuBar = new MenuBar();
-    	
-    	//メニューの生成
-        Menu menuProperty = new Menu("プロパティ");
+        setSize(width, height);             
         
         //メニュー項目の生成
         menuFont = new Menu("フォント");
@@ -66,7 +53,7 @@ public class DegitalClock extends Window implements Runnable, ItemListener, Mous
         pop.add(menuCharColor);
         pop.add(menuBackgroundColor);
         
-        //フォント
+        //スタイル
         menuFontPlain = new MenuItem("標準");
         menuFontBold = new MenuItem("太字");
         menuFontItalic = new MenuItem("斜体");
@@ -89,81 +76,119 @@ public class DegitalClock extends Window implements Runnable, ItemListener, Mous
         });
         
         //フォントサイズ
-        menuFontSizeLarge = new MenuItem("大");
-        menuFontSizeNormal = new MenuItem("中");
-        menuFontSizeSmall = new MenuItem("小");
-        menuFontSize.add(menuFontSizeLarge);
-        menuFontSize.add(menuFontSizeNormal);
-        menuFontSize.add(menuFontSizeSmall);
-        
+        int size = NORMAL_FONT_SIZE;
+        while(size < 500) {
+        	menuFontSize.add(new MenuItem(Integer.toString(size)));
+        	size += 20;
+        }       
         menuFontSize.addActionListener(new ActionListener() {
-        	// フォント・オブジェクトの作成
-            public void actionPerformed(ActionEvent e) {
-                if (e.getActionCommand().equals("大")) {
-                	fontSize = LARGE_FONT_SIZE;
-                } else if (e.getActionCommand().equals("中")) {
-                	fontSize = NORMAL_FONT_SIZE;
-                } else if (e.getActionCommand().equals("小")) {
-                	fontSize = SMALL_FONT_SIZE;
-                }
+        	// フォントサイズの設定
+        	public void actionPerformed(ActionEvent e) {
+                fontSize = Integer.valueOf(e.getActionCommand());
                 repaint();
             }
         });
         
         //文字色
-        menuCharBlack = new MenuItem("黒色");
-        menuCharRed = new MenuItem("赤色");
-        menuCharBlue = new MenuItem("青色");
-        menuCharColor.add(menuCharBlack);
-        menuCharColor.add(menuCharRed);
-        menuCharColor.add(menuCharBlue);        
-        
+        menuCharColor.add(new MenuItem("Black"));
+        menuCharColor.add(new MenuItem("Red"));
+        menuCharColor.add(new MenuItem("Blue"));
+        menuCharColor.add(new MenuItem("Cyan"));
+        menuCharColor.add(new MenuItem("DarkGray"));
+        menuCharColor.add(new MenuItem("Gray"));
+        menuCharColor.add(new MenuItem("Green"));
+        menuCharColor.add(new MenuItem("LightGray"));
+        menuCharColor.add(new MenuItem("Magenta"));
+        menuCharColor.add(new MenuItem("Orange"));
+        menuCharColor.add(new MenuItem("Pink"));
+        menuCharColor.add(new MenuItem("White"));
+        menuCharColor.add(new MenuItem("Yellow"));
+       
         menuCharColor.addActionListener(new ActionListener() {
-        	// フォント・オブジェクトの作成
             public void actionPerformed(ActionEvent e) {
-                if (e.getActionCommand().equals("黒色")) {
+                if (e.getActionCommand().equals("Black")) {
                 	color = Color.BLACK;
-                } else if (e.getActionCommand().equals("青色")) {
+                } else if (e.getActionCommand().equals("Blue")) {
                 	color = Color.BLUE;
-                } else if (e.getActionCommand().equals("赤色")) {
+                } else if (e.getActionCommand().equals("Red")) {
                 	color = Color.RED;
+                } else if (e.getActionCommand().equals("Cyan")) {
+                	color = Color.CYAN;
+                } else if (e.getActionCommand().equals("DarkGray")) {
+                	color = Color.DARK_GRAY;
+                } else if (e.getActionCommand().equals("Gray")) {
+                	color = Color.GRAY;
+                } else if (e.getActionCommand().equals("Green")) {
+                	color = Color.GREEN;
+                } else if (e.getActionCommand().equals("LightGray")) {
+                	color = Color.LIGHT_GRAY;
+                } else if (e.getActionCommand().equals("Magenta")) {
+                	color = Color.MAGENTA;
+                } else if (e.getActionCommand().equals("Orange")) {
+                	color = Color.ORANGE;
+                } else if (e.getActionCommand().equals("Pink")) {
+                	color = Color.PINK;
+                } else if (e.getActionCommand().equals("White")) {
+                	color = Color.WHITE;
+                } else if (e.getActionCommand().equals("Yellow")) {
+                	color = Color.YELLOW;
                 }
                 repaint();
             }
         });
         
         //背景色
-        menuBackgroundWhite = new MenuItem("白色");
-        menuBackgroundRed = new MenuItem("赤色");
-        menuBackgroundBlue = new MenuItem("青色");
-        menuBackgroundColor.add(menuBackgroundWhite);
-        menuBackgroundColor.add(menuBackgroundRed);
-        menuBackgroundColor.add(menuBackgroundBlue);        
-        
+        menuBackgroundColor.add(new MenuItem("Black"));
+        menuBackgroundColor.add(new MenuItem("Red"));
+        menuBackgroundColor.add(new MenuItem("Blue"));
+        menuBackgroundColor.add(new MenuItem("Cyan"));
+        menuBackgroundColor.add(new MenuItem("DarkGray"));
+        menuBackgroundColor.add(new MenuItem("Gray"));
+        menuBackgroundColor.add(new MenuItem("Green"));
+        menuBackgroundColor.add(new MenuItem("LightGray"));
+        menuBackgroundColor.add(new MenuItem("Magenta"));
+        menuBackgroundColor.add(new MenuItem("Orange"));
+        menuBackgroundColor.add(new MenuItem("Pink"));
+        menuBackgroundColor.add(new MenuItem("White"));
+        menuBackgroundColor.add(new MenuItem("Yellow"));
+       
         menuBackgroundColor.addActionListener(new ActionListener() {
-        	// フォント・オブジェクトの作成
             public void actionPerformed(ActionEvent e) {
-                if (e.getActionCommand().equals("白色")) {
-                	backgroundColor = Color.WHITE;
-                } else if (e.getActionCommand().equals("青色")) {
+                if (e.getActionCommand().equals("Black")) {
+                	backgroundColor = Color.BLACK;
+                } else if (e.getActionCommand().equals("Blue")) {
                 	backgroundColor = Color.BLUE;
-                } else if (e.getActionCommand().equals("赤色")) {
+                } else if (e.getActionCommand().equals("Red")) {
                 	backgroundColor = Color.RED;
+                } else if (e.getActionCommand().equals("Cyan")) {
+                	backgroundColor = Color.CYAN;
+                } else if (e.getActionCommand().equals("DarkGray")) {
+                	backgroundColor = Color.DARK_GRAY;
+                } else if (e.getActionCommand().equals("Gray")) {
+                	backgroundColor = Color.GRAY;
+                } else if (e.getActionCommand().equals("Green")) {
+                	backgroundColor = Color.GREEN;
+                } else if (e.getActionCommand().equals("LightGray")) {
+                	backgroundColor = Color.LIGHT_GRAY;
+                } else if (e.getActionCommand().equals("Magenta")) {
+                	backgroundColor = Color.MAGENTA;
+                } else if (e.getActionCommand().equals("Orange")) {
+                	backgroundColor = Color.ORANGE;
+                } else if (e.getActionCommand().equals("Pink")) {
+                	backgroundColor = Color.PINK;
+                } else if (e.getActionCommand().equals("White")) {
+                	backgroundColor = Color.WHITE;
+                } else if (e.getActionCommand().equals("Yellow")) {
+                	backgroundColor = Color.YELLOW;
                 }
                 repaint();
             }
         });
 
-        //メニューバーへの追加
-        menuBar.add(menuProperty);
-        
-        //メニューバーをフレームへ追加
-        //this.setMenuBar(menuBar);
         add(pop);
         addMouseListener(this);
         addMouseMotionListener(this);
         
-        startPos = getLocation();
         this.show();
         this.toFront();
     }
@@ -245,7 +270,6 @@ public class DegitalClock extends Window implements Runnable, ItemListener, Mous
 		// TODO Auto-generated method stub
 		
 	}
-
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -269,8 +293,7 @@ public class DegitalClock extends Window implements Runnable, ItemListener, Mous
 
 	@Override
 	public void mouseMoved(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub	
 	}
 	
 	/**
