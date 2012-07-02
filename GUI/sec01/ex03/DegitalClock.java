@@ -11,6 +11,8 @@ public class DegitalClock extends Window implements Runnable, ItemListener, Mous
 	private static int s;           //秒を入れる変数を宣言
 	private static int height = 200;
 	private static int width = 400;
+	
+	private static Point startDrag, startPos;
     
     private static final int LARGE_FONT_SIZE = 200;
 	private static final int NORMAL_FONT_SIZE = 80;	
@@ -160,6 +162,8 @@ public class DegitalClock extends Window implements Runnable, ItemListener, Mous
         add(pop);
         addMouseListener(this);
         addMouseMotionListener(this);
+        
+        startPos = getLocation();
         this.show();
         this.toFront();
     }
@@ -187,6 +191,7 @@ public class DegitalClock extends Window implements Runnable, ItemListener, Mous
 	    
 		drawTimeCenter();
 		setSize(width, height);
+	    
 		g.drawImage(back, 0, 0, this);      //バッファを画面に描画
 	}
 	
@@ -228,10 +233,11 @@ public class DegitalClock extends Window implements Runnable, ItemListener, Mous
 		
 	}
 
+	private MouseEvent start;
 	@Override
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
+	public void mousePressed(MouseEvent e) {
+		start = e;
+		//System.out.println("mousePressed");
 	}
 
 	@Override
@@ -240,13 +246,31 @@ public class DegitalClock extends Window implements Runnable, ItemListener, Mous
 		
 	}
 
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		int btn = e.getButton();
     	if (btn == MouseEvent.BUTTON3) {
-    		System.out.println("right click");
+    		//System.out.println("right click");
     		pop.show(this , e.getX() , e.getY());
     	}	
+	}
+	
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		int btn = e.getButton();
+    	if (btn == MouseEvent.BUTTON1) {
+    		// System.out.println("drag");
+    		Point eventLocationOnScreen = e.getLocationOnScreen();
+    	    setLocation(eventLocationOnScreen.x - start.getX(),
+                    eventLocationOnScreen.y - start.getY());
+    	}
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	/**
@@ -257,20 +281,6 @@ public class DegitalClock extends Window implements Runnable, ItemListener, Mous
 	    //clock.setVisible(true);
 	    //clock.setResizable(false);
 	    clock.addWindowListener(new windowListener());
-	}
-
-	@Override
-	public void mouseDragged(MouseEvent e) {
-		int btn = e.getButton();
-    	if (btn == MouseEvent.BUTTON1) {
-    		System.out.println("left drag");
-    	}
-	}
-
-	@Override
-	public void mouseMoved(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
 	}
 }
 
