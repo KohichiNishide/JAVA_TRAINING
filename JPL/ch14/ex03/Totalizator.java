@@ -2,7 +2,7 @@ package ch14.ex03;
 
 public class Totalizator {
 	private int currentVal = 0;
-	public void add(int val) {
+	public synchronized void add(int val) {
 		currentVal += val;
 		System.out.println("Val: " + currentVal + " Thread name: " + Thread.currentThread().getName());
 	}
