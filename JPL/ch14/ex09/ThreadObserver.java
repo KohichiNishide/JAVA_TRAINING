@@ -22,7 +22,7 @@ public class ThreadObserver{
 		
 		System.out.println("----------Start-----------");
 		for (Thread thread: list) {
-			System.out.println("Thread name: " + thread.getName());
+			System.out.println("Thread name: " + thread.getName() + ", Group name: " + thread.getThreadGroup().getName());
 		}
 		System.out.println("-----------End-----------");
 	}
@@ -30,24 +30,20 @@ public class ThreadObserver{
 	public static void main(String[] args) {
 		ThreadObserver obj = new ThreadObserver();
 		ThreadGroup group1 = new ThreadGroup("Group1");
+		ThreadGroup group2 = new ThreadGroup(group1, "Group2");
+		ThreadGroup group3 = new ThreadGroup(group2, "Group3");
 		Thread th1 = new Thread(group1, new ActiveShortRunnable(), "Thread1");
 		Thread th2 = new Thread(group1, new ActiveShortRunnable(), "Thread2");
 		Thread th3 = new Thread(group1, new ActiveShortRunnable(), "Thread3");
+		Thread th4 = new Thread(group2, new ActiveShortRunnable(), "Thread4");
+		Thread th5 = new Thread(group3, new ActiveShortRunnable(), "Thread5");
 		th1.start();
 		th2.start();
 		th3.start();
+		th4.start();
+		th5.start();
 		
 		// 指定のスレッドグループに所属するスレッドの名前を1秒間隔で表示する
 		obj.ShowThread(group1);
-		
-		// テストとして、3秒後に新しいスレッドを走らせる
-		try {
-			Thread.sleep(3000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		
-		Thread th4 = new Thread(group1, new ActiveShortRunnable(), "Thread4");
-		th4.start();
 	}
 }
