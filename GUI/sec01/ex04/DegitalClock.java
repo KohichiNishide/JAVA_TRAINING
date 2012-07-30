@@ -11,6 +11,8 @@ public class DegitalClock extends Frame implements Runnable{
 	private static int s;           //秒を入れる変数を宣言
 	private static int height = 200;
 	private static int width = 400;
+	private static int x;
+	private static int y;
 	private static final int BLANK_SPACE_SIZE = 50;
 	
 	private Graphics buffer;        //オフスクリーンバッファのグラフィックコンテキスト
@@ -31,7 +33,7 @@ public class DegitalClock extends Frame implements Runnable{
     	
     	setTitle("Degital clock");
         setLayout(new FlowLayout());
-        setSize(width, height);
+        
                
         //メニューバーの生成
         MenuBar menuBar = new MenuBar();
@@ -52,12 +54,14 @@ public class DegitalClock extends Frame implements Runnable{
         //×を押されたときの処理
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e)  {
+            	PropertyData.setData(e.getWindow().getX(), e.getWindow().getY());
             	System.exit(0);
             }
         });
 
         //メニューバーをフレームへ追加
-        this.setMenuBar(menuBar);
+        setMenuBar(menuBar);
+        setBounds(PropertyData.x, PropertyData.y, width, height);
     }
     
 	public void run() {

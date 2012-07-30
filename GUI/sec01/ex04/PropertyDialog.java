@@ -5,9 +5,6 @@ import java.awt.event.*;
 
 public class PropertyDialog extends Frame implements ActionListener{
 	private static final long serialVersionUID = 1L;
-	private static final int NORMAL_FONT_SIZE = 80;
-	private static final int MAX_FONT_SIZE = 500;
-	private static final int FONT_SIZE_INTERVAL = 50;
 	private static final int NORMAL_LABEL_FONT_SIZE = 15;
 	private GridBagLayout gbl = new GridBagLayout();
 	
