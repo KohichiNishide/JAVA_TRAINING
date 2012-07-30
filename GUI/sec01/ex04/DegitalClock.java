@@ -113,7 +113,7 @@ public class DegitalClock extends Frame implements Runnable{
 	 */
 	public static void main(String args[]) {	
 		DegitalClock clock = new DegitalClock();
+		clock.setResizable(false);
 	    clock.setVisible(true);
-	    clock.setResizable(false);
 	}
 }
