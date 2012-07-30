@@ -20,7 +20,8 @@ public class PropertyDialog extends Frame implements ActionListener{
 
 	public PropertyDialog() {
 		setTitle("Property dialog");
-        setBounds(10, 10, 550, 200);
+        setSize(550, 200);
+        setLocationRelativeTo(null);
         setResizable(false);
         setLayout(gbl);
         
