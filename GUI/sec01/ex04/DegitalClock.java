@@ -54,7 +54,7 @@ public class DegitalClock extends Frame implements Runnable{
         propertyItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	System.out.println("Property");
-            	pDialog.setVisible(true);
+            	pDialog.load();
             }
         });
         
