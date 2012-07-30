@@ -11,17 +11,8 @@ public class DegitalClock extends Frame implements Runnable{
 	private static int s;           //秒を入れる変数を宣言
 	private static int height = 200;
 	private static int width = 400;
-    
-    private static final int LARGE_FONT_SIZE = 200;
-	private static final int NORMAL_FONT_SIZE = 80;	
-	private static final int SMALL_FONT_SIZE = 10;
 	private static final int BLANK_SPACE_SIZE = 50;
 	
-	private static String fontName = "Default";
-	private static int fontStyle = Font.PLAIN;
-	private static int fontSize = NORMAL_FONT_SIZE;
-	private static Color color = Color.BLACK;
-	private static Color backgroundColor = Color.WHITE;
 	private Graphics buffer;        //オフスクリーンバッファのグラフィックコンテキスト
 	private Image back = null;
     
@@ -30,10 +21,11 @@ public class DegitalClock extends Frame implements Runnable{
 	private MenuItem propertyItem;
 	
 	private PropertyDialog pDialog = new PropertyDialog();
+	
     /*
      * コンストラクタ
      */
-    DegitalClock() {   	
+    public DegitalClock() {   	
     	timerThread = new Thread(this);
     	timerThread.start();
     	
@@ -53,7 +45,6 @@ public class DegitalClock extends Frame implements Runnable{
         //プロパティを押された時の処理
         propertyItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	System.out.println("Property");
             	pDialog.load();
             }
         });
@@ -86,9 +77,10 @@ public class DegitalClock extends Frame implements Runnable{
 	public void paint(Graphics g) {    
 		back = this.createImage(width, height);  
 		buffer = back.getGraphics();
-		buffer.setFont(new Font(fontName, fontStyle, fontSize));
-		buffer.setColor(color);
-		setBackground(backgroundColor);
+		
+		buffer.setFont(new Font(PropertyData.font, PropertyData.fontStyle, PropertyData.fontSize));
+		buffer.setColor(PropertyData.parseColor(PropertyData.color));
+		setBackground(PropertyData.parseColor(PropertyData.backgroundColor));
 	    
 		drawTimeCenter();
 		setSize(width, height);
