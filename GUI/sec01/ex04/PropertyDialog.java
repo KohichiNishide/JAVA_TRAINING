@@ -17,10 +17,12 @@ public class PropertyDialog extends Frame implements ActionListener{
 	private Choice sizeChoice;
 	private Choice colorChoice;
 	private Choice backgroundColorChoice;
+	
+	private static Label preview;
 
 	public PropertyDialog() {
 		setTitle("Property dialog");
-        setSize(550, 200);
+        setSize(560, 200);
         setLocationRelativeTo(null);
         setResizable(false);
         setLayout(gbl);
@@ -54,7 +56,7 @@ public class PropertyDialog extends Frame implements ActionListener{
         setColorChoice(colorChoice);
         setColorChoice(backgroundColorChoice);
         
-        addChoice(fontChoice, 1, 0, 1, 1);
+        addChoice(fontChoice, 1, 0, 3, 1);
         addChoice(sizeChoice, 1, 1, 1, 1);
         addChoice(colorChoice, 1, 2, 1, 1);
         addChoice(backgroundColorChoice, 1, 3, 1, 1);
@@ -66,8 +68,8 @@ public class PropertyDialog extends Frame implements ActionListener{
         okButton.addActionListener(this);
         cancelButton.addActionListener(this);
         
-        addButton(okButton, 2, 4, 1, 1);
-        addButton(cancelButton, 3, 4, 1, 1);
+        addButton(okButton, 3, 4, 1, 1);
+        addButton(cancelButton, 4, 4, 1, 1);
         
         // ÉäÉXÉiÅ[ÇÃí«â¡
         fontChoice.addItemListener(new ItemListener() {
@@ -75,6 +77,8 @@ public class PropertyDialog extends Frame implements ActionListener{
 			public void itemStateChanged(ItemEvent e) {
 				Choice cho = (Choice)e.getItemSelectable();
 				PropertyDialog.buFont = PropertyData.fonts[cho.getSelectedIndex()];
+				Font f = new Font(buFont, Font.PLAIN, 35);
+				PropertyDialog.preview.setFont(f);
 			}
         });
         sizeChoice.addItemListener(new ItemListener() {
@@ -98,6 +102,18 @@ public class PropertyDialog extends Frame implements ActionListener{
 				PropertyDialog.buBackgroundColor = PropertyData.strColors[cho.getSelectedIndex()];
 			}
         });
+        
+        preview = new Label("Preview", Label.CENTER);
+        Font f = new Font(buFont, Font.PLAIN, 35);
+        preview.setFont(f);
+        preview.setBackground(Color.LIGHT_GRAY);
+        preview.setForeground(Color.DARK_GRAY);
+        addPreviewLabel(preview, 2, 2, 2, 2);
+        
+        Label memo = new Label("Å´For font", Label.CENTER);
+        Font memoFont = new Font("Casual", Font.BOLD, 20);
+        memo.setFont(memoFont);
+        addLabel(memo, 2, 1, 1, 1);
         
         //Å~ÇâüÇ≥ÇÍÇΩÇ∆Ç´ÇÃèàóù
         addWindowListener(new WindowAdapter() {
@@ -152,6 +168,22 @@ public class PropertyDialog extends Frame implements ActionListener{
         gbc.gridwidth = w;
         gbc.gridheight = h;
         gbc.anchor = GridBagConstraints.EAST;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbl.setConstraints(label, gbc);
+        add(label);
+    }
+	
+	private void addPreviewLabel(Label label, int x, int y, int w, int h) {
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.weightx = 100.0;
+        gbc.weighty = 100.0;
+        gbc.gridx = x;
+        gbc.gridy = y;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.gridheight = h;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(5, 5, 5, 5);
         gbl.setConstraints(label, gbc);
         add(label);
