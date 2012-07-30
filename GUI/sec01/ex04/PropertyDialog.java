@@ -11,10 +11,10 @@ public class PropertyDialog extends Frame implements ActionListener{
 	private static final int NORMAL_LABEL_FONT_SIZE = 15;
 	private GridBagLayout gbl = new GridBagLayout();
 	
-	public static String font = PropertyData.font; 
-	public static int fontSize = PropertyData.fontSize;
-	public static String color = PropertyData.color;
-	public static String backgroundColor = PropertyData.backgroundColor;
+	public static String buFont = PropertyData.font;  // バッファ用
+	public static int buFontSize = PropertyData.fontSize; // バッファ用
+	public static String buColor = PropertyData.color; // バッファ用
+	public static String buBackgroundColor = PropertyData.backgroundColor; // バッファ用
 	
 	private Choice fontChoice;
 	private Choice sizeChoice;
@@ -26,6 +26,8 @@ public class PropertyDialog extends Frame implements ActionListener{
         setBounds(10, 10, 550, 200);
         setResizable(false);
         setLayout(gbl);
+        
+        PropertyData.load();
         
         // ラベルの配置
         Label fontLabel = new Label("Font");
@@ -74,28 +76,28 @@ public class PropertyDialog extends Frame implements ActionListener{
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				Choice cho = (Choice)e.getItemSelectable();
-				PropertyDialog.font = PropertyData.fonts[cho.getSelectedIndex()];
+				PropertyDialog.buFont = PropertyData.fonts[cho.getSelectedIndex()];
 			}
         });
         sizeChoice.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				Choice cho = (Choice)e.getItemSelectable();
-				PropertyDialog.fontSize = PropertyData.sizes[cho.getSelectedIndex()];
+				PropertyDialog.buFontSize = PropertyData.sizes[cho.getSelectedIndex()];
 			}
         });
         colorChoice.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				Choice cho = (Choice)e.getItemSelectable();
-				PropertyDialog.color = PropertyData.strColors[cho.getSelectedIndex()];
+				PropertyDialog.buColor = PropertyData.strColors[cho.getSelectedIndex()];
 			}
         });
         backgroundColorChoice.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				Choice cho = (Choice)e.getItemSelectable();
-				PropertyDialog.backgroundColor = PropertyData.strColors[cho.getSelectedIndex()];
+				PropertyDialog.buBackgroundColor = PropertyData.strColors[cho.getSelectedIndex()];
 			}
         });
         
@@ -120,11 +122,10 @@ public class PropertyDialog extends Frame implements ActionListener{
 	}
 	
 	private void setSizeChoice(Choice ch) {
-		int size = NORMAL_FONT_SIZE;
-        while(size < MAX_FONT_SIZE) {
-        	ch.addItem(Integer.toString(size));
-        	size += FONT_SIZE_INTERVAL;
-        }    
+		int[] sizes = PropertyData.sizes;
+		for(int i = 0; i < sizes.length; i++){
+			ch.addItem(Integer.toString(sizes[i]));
+		}
 	}
 	
 	private void setColorChoice(Choice ch) {
@@ -193,34 +194,30 @@ public class PropertyDialog extends Frame implements ActionListener{
 		if (e.getActionCommand() == "OK") {
 			setPropertyData();
 			repaint();
-			this.setVisible(false);
+			setVisible(false);
 		} else if (e.getActionCommand() == "Cancel") {
-			this.setVisible(false);
+			setVisible(false);
 		}
 	}
 	
-	private void setPropertyData() {
-		PropertyData.font = this.font;
-		PropertyData.fontSize = this.fontSize;
-		PropertyData.color = this.color;
-		PropertyData.backgroundColor = this.backgroundColor;
+	private void setPropertyData() {		
+		PropertyData.setData(buFont, buFontSize, buColor, buBackgroundColor);
 	}
 	
 	private void reloadPropertyData() {
-		this.font = PropertyData.font;
-		this.fontSize = PropertyData.fontSize;
-		this.color = PropertyData.color;
-		this.backgroundColor = PropertyData.backgroundColor;
-		
+		buFont = PropertyData.font;
+		buFontSize = PropertyData.fontSize;
+		buColor = PropertyData.color;
+		buBackgroundColor = PropertyData.backgroundColor;
 		resetComboBoxSelectedItem();
 	}
 	
 	private void resetComboBoxSelectedItem() {
-		this.fontChoice.select(PropertyData.font);
+		fontChoice.select(PropertyData.font);
 		Integer size = PropertyData.fontSize;
-		this.sizeChoice.select(size.toString());
-		this.colorChoice.select(PropertyData.color);
-		this.backgroundColorChoice.select(PropertyData.backgroundColor);
+		sizeChoice.select(size.toString());
+		colorChoice.select(PropertyData.color);
+		backgroundColorChoice.select(PropertyData.backgroundColor);
 	}
 }
 
