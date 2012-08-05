@@ -50,8 +50,12 @@ public class Interpret extends WindowAdapter implements ActionListener{
 		field.set(o, nv);
 	}
 	
-	public void fixFields() {
-		
+	public void setFieldValues(String[] vals) {
+		model.setFieldValues(vals);
+	}
+	
+	public void callMethod(int index) {
+		model.invokeMethod(index);
 	}
 	
 	public void windowOpened(WindowEvent windowEvent){
