@@ -9,6 +9,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Label;
 import java.awt.Scrollbar;
+import java.awt.TextArea;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -51,6 +52,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, Ad
 	private Label methodReturnValContent = new Label("");
 	private Label[] methodTypes = new Label[PARAMETER_COUNT];
 	private TextField[] methodValues = new TextField[PARAMETER_COUNT];
+	private TextField exceptionTextField = new TextField("");
 	
 	public InterpretView(Interpret controller) {
 		con = controller;
@@ -134,6 +136,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, Ad
         addLabel(methodReturnValLabel, 12, GridBagConstraints.RELATIVE, 2, 1);
         addLabel(methodReturnTypeContent, 10, GridBagConstraints.RELATIVE, 2, 1);
         addLabel(methodReturnValContent, 12, GridBagConstraints.RELATIVE, 2, 1);
+        addExceptionTextField(exceptionTextField, 10, GridBagConstraints.RELATIVE, 4, 4);
         addButton(invokeMButton, 10, GridBagConstraints.RELATIVE, 4, 1);
 	}
 	
@@ -154,7 +157,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, Ad
 	
 	private void addLabel(Label label, int x, int y, int w, int h) {
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.BOTH;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 100.0;
         gbc.weighty = 100.0;
         gbc.gridx = x;
@@ -170,6 +173,21 @@ public class InterpretView extends Frame implements Observer, ActionListener, Ad
 	private void addTextField(TextField tf, int x, int y, int w, int h) {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 100.0;
+        gbc.weighty = 100.0;
+        gbc.gridx = x;
+        gbc.gridy = y;
+        gbc.gridwidth = w;
+        gbc.gridheight = h;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbl.setConstraints(tf, gbc);
+        add(tf);
+    }
+	
+	private void addExceptionTextField(TextField tf, int x, int y, int w, int h) {
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 100.0;
         gbc.weighty = 100.0;
         gbc.gridx = x;
@@ -221,6 +239,10 @@ public class InterpretView extends Frame implements Observer, ActionListener, Ad
 				for (int i = 0; i < methodTypeList.size(); i++) {
 					methodTypes[i].setText(methodTypeList.get(i));
 				}
+				methodReturnTypeContent.setText(model.getReturnType());
+			} else if (str.equals("methodReturnVal")) {
+				methodReturnValContent.setText(model.getReturnValue());
+				exceptionTextField.setText(model.getExceptionStr());
 			} else {			
 				System.out.println("************Else*************");
 			}
@@ -245,6 +267,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, Ad
 			}
 			con.setFieldValues(vals);
 		} else if (e.getActionCommand() == "Invoke method") {
+			// ˆø”‚Ì”‚ðŒvŽZ‚·‚é
 			int argCount = 0;
 			for (Label tx : methodTypes) {
 				if (tx.getText() != "") {

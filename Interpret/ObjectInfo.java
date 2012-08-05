@@ -11,7 +11,9 @@ import java.util.Observable;
 
 public class ObjectInfo extends Observable{
 	public Object obj;
+	public Object ret;
 	public Method method;
+	public String exception;
 	public List<Field> fields = new ArrayList<Field>();
 	public List<Method> methods = new ArrayList<Method>();
 	public List<String> fieldNames = new ArrayList<String>();
@@ -84,6 +86,9 @@ public class ObjectInfo extends Observable{
 	}
 	
 	private Object[] getMethodPrameterValue(Method m, String[] args) {
+		if (args == null || args.length == 0)
+			return null;
+		
 		Object[] result = new Object[args.length];
 		Type[] types = m.getGenericParameterTypes();
 		for (int i = 0; i < types.length; i++) {
@@ -140,6 +145,18 @@ public class ObjectInfo extends Observable{
 		notifyObservers();
 	}
 	
+	public String getReturnType() {
+		return method.getGenericReturnType().toString();
+	}
+	
+	public String getReturnValue() {
+		if (ret == null) {
+			return "";
+		} else {
+			return ret.toString();
+		}
+	}
+	
 	public void setSelectedMethod(int index) {
 		parameterTypes.clear();
 		method = methods.get(index);
@@ -152,21 +169,23 @@ public class ObjectInfo extends Observable{
 	}
 	
 	public void invokeMethod(String[] args) {
-		if (method == null) return;
-		
+		if (method == null)
+			return;	
 		try {
 			if (args.length == 0) args = null;
-			Object ret = method.invoke(obj, getMethodPrameterValue(method, args));
+			ret = method.invoke(obj, getMethodPrameterValue(method, args));
 		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			exception = e.toString();
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			exception = e.toString();
 		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			exception = e.toString();
 		}
+		setChanged();
+		notifyObservers("methodReturnVal");
 	}
 	
 	private void saveFields(List<Field> fs) {
@@ -263,5 +282,9 @@ public class ObjectInfo extends Observable{
 	
 	public final List<String> getMethodParaTypes(){
 	    return parameterTypes;
+	}
+	
+	public final String getExceptionStr(){
+	    return exception;
 	}
 }
