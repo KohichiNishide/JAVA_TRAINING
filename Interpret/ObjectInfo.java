@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -103,6 +104,25 @@ public class ObjectInfo extends Observable{
 				result[i] = Boolean.valueOf(args[i]);
 			} else if (typeStr.equals("class java.lang.String")) {
 				result[i] = args[i];
+			} else if (typeStr.equals("class java.awt.Color")) {
+				Field field;
+				try {
+					field = Color.class.getField(args[i]);
+					Color color = (Color)field.get(null);
+					result[i] = color;
+				} catch (SecurityException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NoSuchFieldException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalArgumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}		
 			} else {
 				result[i] = (Object) args[i];
 			}

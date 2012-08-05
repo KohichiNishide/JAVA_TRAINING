@@ -16,7 +16,6 @@ import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -215,9 +214,6 @@ public class InterpretView extends Frame implements Observer, ActionListener, Ad
 				for (int i = 0; i < methodNameList.size(); i++) {
 					methodsChoice.add(methodNameList.get(i));
 				}
-				
-				//ObjectPropertyDialog dlg = new ObjectPropertyDialog(this, con);
-				//dlg.show();
 			} else if (str.equals("methodParameter")) {
 				resetMethods();
 				
