@@ -21,34 +21,42 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import sec01.ex04.PropertyData;
-import sec01.ex04.PropertyDialog;
-
 
 public class InterpretView extends Frame implements Observer, ActionListener, AdjustmentListener, ItemListener{
 	private static final long serialVersionUID = 1L;
 	private Scrollbar bar;
-	private Label objectNameLabel = new Label("Input class name");
+	private Label objectNameLabel = new Label("");
 	private Label successLabel = new Label("TBD");
 	private Label fieldNameLabel = new Label("Name");
 	private Label fieldTypeLabel = new Label("Type");
 	private Label fieldValLabel = new Label("Value");
+	private Label methodLabel = new Label("Method list");
 	private Choice fieldsChoice = new Choice();
 	private TextField objectNameTextField = new TextField("java.awt.Frame");
 	private Button okButton = new Button("Create object");
 	private Button setFButton = new Button("Set field value");
+	private Button invokeMButton = new Button("Invoke method");
 	private GridBagLayout gbl = new GridBagLayout();
 	private Interpret con;
 	static final int COMPONENT_COUNT = 45;
+	static final int PARAMETER_COUNT = 10;
 	private Label[] fieldNames = new Label[COMPONENT_COUNT];
 	private Label[] fieldTypes = new Label[COMPONENT_COUNT];
 	private TextField[] fieldValues = new TextField[COMPONENT_COUNT];
 	private Choice methodsChoice = new Choice();
+	private Label methodTypeLabel = new Label("Parameter type");
+	private Label methodValLabel = new Label("Parameter value");
+	private Label methodReturnTypeLabel = new Label("Return type");
+	private Label methodReturnValLabel = new Label("Return value");
+	private Label methodReturnTypeContent = new Label("");
+	private Label methodReturnValContent = new Label("");
+	private Label[] methodTypes = new Label[PARAMETER_COUNT];
+	private TextField[] methodValues = new TextField[PARAMETER_COUNT];
 	
 	public InterpretView(Interpret controller) {
 		con = controller;
 		setTitle("Interpret main view");
-	    setSize(1200, 1200);
+	    setSize(1000, 1200);
 	    setLocationRelativeTo(null);
 	    setResizable(false);
 	    setLayout(gbl);	    
@@ -60,6 +68,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, Ad
 	    okButton.addActionListener(con);
 	    setFButton.addActionListener(this);
 	    methodsChoice.addItemListener(this);
+	    invokeMButton.addActionListener(this);
 	    
 	    addComponents();
 	        
@@ -83,30 +92,50 @@ public class InterpretView extends Frame implements Observer, ActionListener, Ad
 		fieldNameLabel.setBackground(Color.LIGHT_GRAY);
 		fieldTypeLabel.setBackground(Color.LIGHT_GRAY);
 		fieldValLabel.setBackground(Color.LIGHT_GRAY);
-        addLabel(fieldNameLabel, 0, 10, 3, 1);
-        addLabel(fieldTypeLabel, 3, 10, 3, 1);
-        addLabel(fieldValLabel, 6, 10, 4, 1);
+		methodLabel.setBackground(Color.LIGHT_GRAY);
+		methodTypeLabel.setBackground(Color.LIGHT_GRAY);
+		methodValLabel.setBackground(Color.LIGHT_GRAY);
+		methodReturnTypeLabel.setBackground(Color.LIGHT_GRAY);
+		methodReturnValLabel.setBackground(Color.LIGHT_GRAY);
+		addLabel(objectNameLabel, 0, 0, 1, 1);
+        addLabel(fieldNameLabel, 0, 3, 3, 1);
+        addLabel(fieldTypeLabel, 3, 3, 3, 1);
+        addLabel(fieldValLabel, 6, 3, 4, 1);
         // ボタンフィールドの配置
-        addButton(okButton, 10, 0, 1, 1);
-       
-        
-        //successLabel.setFont(new Font("Arial", Font.PLAIN, 20));      
-        //addLabel(successLabel, 0, 3, 3, 1);
+        addButton(okButton, 10, 2, 4, 1);
         
         // テキストフィールドの配置
-        addTextField(objectNameTextField, 0, 0, 10, 1);     
+        addTextField(objectNameTextField, 0, 2, 10, 1);     
         
         for (int i = 0; i < COMPONENT_COUNT; i++) {
         	fieldNames[i] = new Label();
         	fieldTypes[i] = new Label();
         	fieldValues[i] = new TextField();
-        	addLabel(fieldNames[i], 0, 11 + i, 3, 1);
-        	addLabel(fieldTypes[i], 3, 11 + i, 3, 1);
-        	addTextField(fieldValues[i], 6, 11 + i, 4, 1);
+        	addLabel(fieldNames[i], 0, GridBagConstraints.RELATIVE, 3, 1);
+        	addLabel(fieldTypes[i], 3, GridBagConstraints.RELATIVE, 3, 1);
+        	addTextField(fieldValues[i], 6, GridBagConstraints.RELATIVE, 4, 1);
         }
         
-        addButton(setFButton, 10, GridBagConstraints.RELATIVE, 1, 1);
-        addChoice(methodsChoice, 10, GridBagConstraints.RELATIVE, 1, 1);
+        
+        addButton(setFButton, 10, GridBagConstraints.RELATIVE, 4, 1);
+        addLabel(methodLabel, 10, GridBagConstraints.RELATIVE, 4, 1);
+        addChoice(methodsChoice, 10, GridBagConstraints.RELATIVE, 4, 1);
+        addLabel(methodTypeLabel, 10, GridBagConstraints.RELATIVE, 2, 1);
+        addLabel(methodValLabel, 12, GridBagConstraints.RELATIVE, 2, 1);
+        
+
+        for(int i = 0; i < PARAMETER_COUNT; i++) {
+        	methodTypes[i] = new Label();
+        	methodValues[i] = new TextField();
+        	addLabel(methodTypes[i], 10, GridBagConstraints.RELATIVE, 2, 1);
+        	addTextField(methodValues[i], 12, GridBagConstraints.RELATIVE, 2, 1);
+        }
+        
+        addLabel(methodReturnTypeLabel, 10, GridBagConstraints.RELATIVE, 2, 1);
+        addLabel(methodReturnValLabel, 12, GridBagConstraints.RELATIVE, 2, 1);
+        addLabel(methodReturnTypeContent, 10, GridBagConstraints.RELATIVE, 2, 1);
+        addLabel(methodReturnValContent, 12, GridBagConstraints.RELATIVE, 2, 1);
+        addButton(invokeMButton, 10, GridBagConstraints.RELATIVE, 4, 1);
 	}
 	
 	private void addButton(Button button, int x, int y, int w, int h) {
@@ -172,26 +201,39 @@ public class InterpretView extends Frame implements Observer, ActionListener, Ad
 	@Override
 	public void update(Observable obs, Object obj) {
 		ObjectInfo model = (ObjectInfo)obs;
+		String str = (String) obj;
 		if (!model.IsError()) {
-			successLabel.setText("Success !!");			
-			List<String> fieldNameList = model.getFieldNames();
-			for (int i = 0; i < fieldNameList.size(); i++) {
-				fieldNames[i].setText(fieldNameList.get(i));
-				fieldTypes[i].setText(model.getFieldTypes().get(i));
-				fieldValues[i].setText(model.getFieldVals().get(i));
+			if (str == null) {
+				List<String> fieldNameList = model.getFieldNames();
+				for (int i = 0; i < fieldNameList.size(); i++) {
+					fieldNames[i].setText(fieldNameList.get(i));
+					fieldTypes[i].setText(model.getFieldTypes().get(i));
+					fieldValues[i].setText(model.getFieldVals().get(i));
+				}
+				
+				List<String> methodNameList = model.getMethodNames();
+				for (int i = 0; i < methodNameList.size(); i++) {
+					methodsChoice.add(methodNameList.get(i));
+				}
+				
+				//ObjectPropertyDialog dlg = new ObjectPropertyDialog(this, con);
+				//dlg.show();
+			} else if (str.equals("methodParameter")) {
+				resetMethods();
+				
+				List<String> methodTypeList = model.getMethodParaTypes();
+				for (int i = 0; i < methodTypeList.size(); i++) {
+					methodTypes[i].setText(methodTypeList.get(i));
+				}
+			} else {			
+				System.out.println("************Else*************");
 			}
-			
-			List<String> methodNameList = model.getMethodNames();
-			for (int i = 0; i < methodNameList.size(); i++) {
-				methodsChoice.add(methodNameList.get(i));
-			}
-			
-			//ObjectPropertyDialog dlg = new ObjectPropertyDialog(this, con);
-			//dlg.show();
 		} else {
 			successLabel.setText("Failed !!");
 			for (int i = 0; i < fieldNames.length; i++) {
 				fieldNames[i].setText("");
+				fieldTypes[i].setText("");
+				fieldValues[i].setText("");
 			}
 		}
 	}
@@ -206,6 +248,19 @@ public class InterpretView extends Frame implements Observer, ActionListener, Ad
 				vals[i] = fieldValues[i].getText();
 			}
 			con.setFieldValues(vals);
+		} else if (e.getActionCommand() == "Invoke method") {
+			int argCount = 0;
+			for (Label tx : methodTypes) {
+				if (tx.getText() != "") {
+					argCount ++;
+				}
+			}
+			
+			String[] vals = new String[argCount];
+			for (int i = 0; i < vals.length; i++) {
+				vals[i] = methodValues[i].getText();
+			}
+			con.callMethod(vals);
 		} else {
 			
 		}
@@ -220,6 +275,14 @@ public class InterpretView extends Frame implements Observer, ActionListener, Ad
 	@Override
 	public void itemStateChanged(ItemEvent e) {
 		Choice cho = (Choice)e.getItemSelectable();
-		con.callMethod(cho.getSelectedIndex());	
+		con.setSelectedMethod(cho.getSelectedIndex());
+		//con.callMethod(cho.getSelectedIndex());	
+	}
+	
+	private void resetMethods() {
+		for (int i = 0; i < PARAMETER_COUNT; i++) {
+			methodTypes[i].setText("");
+			methodValues[i].setText("");
+		}
 	}
 }

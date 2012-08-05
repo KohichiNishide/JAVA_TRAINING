@@ -21,6 +21,10 @@ public class Interpret extends WindowAdapter implements ActionListener{
 		objectName = name;
 	}
 	
+	public void setSelectedMethod(int index) {
+		model.setSelectedMethod(index);
+	}
+	
 	public void createObject(String objName) {
 		try {
 			// ToDo : ?‚ðŒ^‚É‚µ‚½‚¢
@@ -54,8 +58,8 @@ public class Interpret extends WindowAdapter implements ActionListener{
 		model.setFieldValues(vals);
 	}
 	
-	public void callMethod(int index) {
-		model.invokeMethod(index);
+	public void callMethod(String[] args) {
+		model.invokeMethod(args);
 	}
 	
 	public void windowOpened(WindowEvent windowEvent){

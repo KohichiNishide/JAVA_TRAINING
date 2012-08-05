@@ -2,6 +2,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -9,6 +10,7 @@ import java.util.Observable;
 
 public class ObjectInfo extends Observable{
 	public Object obj;
+	public Method method;
 	public List<Field> fields = new ArrayList<Field>();
 	public List<Method> methods = new ArrayList<Method>();
 	public List<String> fieldNames = new ArrayList<String>();
@@ -16,6 +18,7 @@ public class ObjectInfo extends Observable{
 	public List<String> methodNames = new ArrayList<String>();
 	public List<String> methodTypes = new ArrayList<String>();
 	public List<String> fieldVals = new ArrayList<String>();
+	public List<String> parameterTypes = new ArrayList<String>();
 	Boolean isError = false;
 	
 	public void saveObject(Object o) {
@@ -79,6 +82,34 @@ public class ObjectInfo extends Observable{
 		}
 	}
 	
+	private Object[] getMethodPrameterValue(Method m, String[] args) {
+		Object[] result = new Object[args.length];
+		Type[] types = m.getGenericParameterTypes();
+		for (int i = 0; i < types.length; i++) {
+			String typeStr = types[i].toString();
+			if (typeStr.equals("int")) {
+				result[i] = Integer.parseInt(args[i]);
+			} else if (typeStr.equals("short")) {
+				result[i] = Short.parseShort(args[i]);
+			} else if (typeStr.equals("long")) {
+				result[i] = Long.parseLong(args[i]);
+			} else if (typeStr.equals("float")) {
+				result[i] = Float.parseFloat(args[i]);
+			} else if (typeStr.equals("double")) {
+				result[i] = Double.parseDouble(args[i]);
+			} else if (typeStr.equals("byte")) {
+				result[i] = Byte.parseByte(args[i]);
+			} else if (typeStr.equals("boolean")) {
+				result[i] = Boolean.valueOf(args[i]);
+			} else if (typeStr.equals("class java.lang.String")) {
+				result[i] = args[i];
+			} else {
+				result[i] = (Object) args[i];
+			}
+		}
+		return result;
+	}
+	
 	public Boolean IsError() {
 		return isError;
 	}
@@ -89,10 +120,23 @@ public class ObjectInfo extends Observable{
 		notifyObservers();
 	}
 	
-	public void invokeMethod(int index) {
-		Method method = methods.get(index);
+	public void setSelectedMethod(int index) {
+		parameterTypes.clear();
+		method = methods.get(index);
+		Type[] paras = method.getGenericParameterTypes();
+		for (Type para : paras) {
+			parameterTypes.add(para.toString());
+		}
+		setChanged();
+		notifyObservers("methodParameter");
+	}
+	
+	public void invokeMethod(String[] args) {
+		if (method == null) return;
+		
 		try {
-			Object ret = method.invoke(obj, null);
+			if (args.length == 0) args = null;
+			Object ret = method.invoke(obj, getMethodPrameterValue(method, args));
 		} catch (IllegalArgumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -195,5 +239,9 @@ public class ObjectInfo extends Observable{
 	
 	public final List<String> getMethodNames(){
 	    return methodNames;
+	}
+	
+	public final List<String> getMethodParaTypes(){
+	    return parameterTypes;
 	}
 }
