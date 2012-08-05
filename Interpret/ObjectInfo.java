@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -16,12 +17,15 @@ public class ObjectInfo extends Observable{
 	public String exception;
 	public List<Field> fields = new ArrayList<Field>();
 	public List<Method> methods = new ArrayList<Method>();
+	public List<Constructor> constructors = new ArrayList<Constructor>();
 	public List<String> fieldNames = new ArrayList<String>();
 	public List<String> fieldTypes = new ArrayList<String>();
 	public List<String> methodNames = new ArrayList<String>();
 	public List<String> methodTypes = new ArrayList<String>();
 	public List<String> fieldVals = new ArrayList<String>();
 	public List<String> parameterTypes = new ArrayList<String>();
+	public List<String> conNames = new ArrayList<String>();
+	
 	Boolean isError = false;
 	
 	public void saveObject(Object o) {
@@ -188,6 +192,17 @@ public class ObjectInfo extends Observable{
 		notifyObservers("methodReturnVal");
 	}
 	
+	public void saveConstructors(Constructor[] cons) {
+		constructors.clear();
+		conNames.clear();
+		for (Constructor con : cons) {
+			constructors.add(con);
+			conNames.add(con.toString());
+		}
+		setChanged();
+		notifyObservers("constructors");
+	}
+	
 	private void saveFields(List<Field> fs) {
 		fields = fs;
 		
@@ -286,5 +301,9 @@ public class ObjectInfo extends Observable{
 	
 	public final String getExceptionStr(){
 	    return exception;
+	}
+	
+	public final List<String> getConNames(){
+	    return conNames;
 	}
 }

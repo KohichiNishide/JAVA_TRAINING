@@ -3,6 +3,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.Observer;
 
@@ -27,7 +28,6 @@ public class Interpret extends WindowAdapter implements ActionListener{
 	
 	public void createObject(String objName) {
 		try {
-			// ToDo : ?‚ðŒ^‚É‚µ‚½‚¢
 			Class<?> clazz = Class.forName(objName);
 			if (clazz != null) {
 				Object obj = clazz.newInstance();
@@ -82,11 +82,25 @@ public class Interpret extends WindowAdapter implements ActionListener{
 	private void saveObject(Object obj) {
 		model.saveObject(obj);
 	}
+	
+	private void showConstructor(String objName) {
+		try {
+			Class<?> clazz = Class.forName(objName);
+			if (clazz != null ) {
+				Constructor[] cons = clazz.getConstructors();
+				model.saveConstructors(cons);
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand() == "Create object") {
 			createObject(objectName);
+		} else if (e.getActionCommand() == "Show constructor") {
+			showConstructor(objectName);
 		}
 	}
 }
