@@ -24,6 +24,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 	private Label fieldTypeLabel = new Label("Type");
 	private Label fieldValLabel = new Label("Value");
 	private Label methodLabel = new Label("Method list");
+	private Label fieldLabel = new Label("Field list");
 	private Label constructorLabel = new Label("Constructor list");
 	private TextField objectNameTextField = new TextField("java.awt.Frame");
 	private Button okButton = new Button("Create object");
@@ -90,6 +91,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 		fieldTypeLabel.setBackground(Color.LIGHT_GRAY);
 		fieldValLabel.setBackground(Color.LIGHT_GRAY);
 		methodLabel.setBackground(Color.LIGHT_GRAY);
+		fieldLabel.setBackground(Color.LIGHT_GRAY);
 		constructorLabel.setBackground(Color.LIGHT_GRAY);
 		methodTypeLabel.setBackground(Color.LIGHT_GRAY);
 		methodValLabel.setBackground(Color.LIGHT_GRAY);
@@ -103,7 +105,8 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
         addButton(okButton, 6, 2, 4, 1);
         addButton(setFButton, 6, 3, 4, 1);
         addButton(showConButton, 6, 4, 4, 1);
-        addLabel(fieldValLabel, 6, 5, 4, 1);
+        addLabel(fieldLabel, 0, 5, 10, 1);
+        addLabel(fieldValLabel, 6, 6, 4, 1);
         addLabel(constructorLabel, 10, 1, 4, 1);
         addChoice(constructorsChoice, 10, 2, 3, 1);
         addButton(invokeConButton, 13, GridBagConstraints.RELATIVE, 1, 1);
@@ -122,8 +125,8 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
         // テキストフィールドの配置
         addTextField(objectNameTextField, 0, 1, 10, 1);  
         addLabel(objectNameLabel, 0, 0, 1, 1);
-        addLabel(fieldNameLabel, 0, 5, 3, 1);
-        addLabel(fieldTypeLabel, 3, 5, 3, 1);
+        addLabel(fieldNameLabel, 0, 6, 3, 1);
+        addLabel(fieldTypeLabel, 3, 6, 3, 1);
         
         for (int i = 0; i < COMPONENT_COUNT; i++) {
         	fieldNames[i] = new Label();
