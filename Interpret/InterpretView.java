@@ -65,6 +65,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 	private Choice arrayChoice = new Choice();
 	private Button setElementButton = new Button("Set element");
 	private Button getElementButton = new Button("Get element");
+	private Label elementsLabel = new Label("Elements");
 	
 	
 	public InterpretView(Interpret controller) {
@@ -125,6 +126,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 		methodReturnValLabel.setBackground(Color.LIGHT_GRAY);
 		arrayTypeLabel.setBackground(Color.LIGHT_GRAY);
 		arraySizeLabel.setBackground(Color.LIGHT_GRAY);
+		elementsLabel.setBackground(Color.LIGHT_GRAY);
 		
         
         // ボタンフィールドの配置
@@ -195,6 +197,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
         addTextField(arraySizeText, 17, GridBagConstraints.RELATIVE, 2, 1);
         addButton(arrayButton, 17, GridBagConstraints.RELATIVE, 2, 1);
         
+        addLabel(elementsLabel, 15, 9, 2, 1);
         addChoice(arrayChoice, 15, GridBagConstraints.RELATIVE, 4, 1);
         addButton(setElementButton, 15, GridBagConstraints.RELATIVE, 2, 1);
         addButton(getElementButton, 17, GridBagConstraints.RELATIVE, 2, 1);
@@ -332,6 +335,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 				for (int i = 0; i < arrayList.size(); i++) {
 					arrayChoice.add(arrayList.get(i));
 				}
+				exceptionTextField.setText(model.getExceptionStr());
 			} else {			
 				System.out.println("************Else*************");
 			}

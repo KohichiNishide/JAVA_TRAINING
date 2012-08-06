@@ -264,6 +264,7 @@ public class ObjectInfo extends Observable{
 			array = (Object[]) Array.newInstance(clazz, Integer.parseInt(size));
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
+			exception = e.toString();
 		}
 		setChanged();
 		notifyObservers("arrayReturnVal");
