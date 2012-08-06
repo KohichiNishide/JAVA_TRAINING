@@ -40,7 +40,6 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 	private Label[] fieldNames = new Label[COMPONENT_COUNT];
 	private Label[] fieldTypes = new Label[COMPONENT_COUNT];
 	private TextField[] fieldValues = new TextField[COMPONENT_COUNT];
-	private Choice fieldsChoice = new Choice();
 	private Choice methodsChoice = new Choice();
 	private Choice constructorsChoice = new Choice();
 	private Label methodTypeLabel = new Label("Parameter type");
@@ -67,6 +66,11 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 	private Button getElementButton = new Button("Get element");
 	private Label elementsLabel = new Label("Elements");
 	
+	private Label stockLabel = new Label("Stock object");
+	private Label stockNumberLabel = new Label("No.");
+	private Label stockNameLabel = new Label("Name");
+	private Label[] numberLabels = new Label[PARAMETER_COUNT];
+	private Label[] stockNames = new Label[PARAMETER_COUNT];
 	
 	public InterpretView(Interpret controller) {
 		con = controller;
@@ -100,7 +104,6 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				Choice cho = (Choice)e.getItemSelectable();
-				//con.setSelectedConstructor(cho.getSelectedIndex());
 			}
         });
 	    
@@ -127,6 +130,9 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 		arrayTypeLabel.setBackground(Color.LIGHT_GRAY);
 		arraySizeLabel.setBackground(Color.LIGHT_GRAY);
 		elementsLabel.setBackground(Color.LIGHT_GRAY);
+		stockLabel.setBackground(Color.CYAN);
+		stockNumberLabel.setBackground(Color.LIGHT_GRAY);
+		stockNameLabel.setBackground(Color.LIGHT_GRAY);
 		
         
         // ボタンフィールドの配置
@@ -201,6 +207,17 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
         addChoice(arrayChoice, 15, GridBagConstraints.RELATIVE, 4, 1);
         addButton(setElementButton, 15, GridBagConstraints.RELATIVE, 2, 1);
         addButton(getElementButton, 17, GridBagConstraints.RELATIVE, 2, 1);
+        
+        addLabel(stockLabel, 15, 25, 4, 1);
+        addLabel(stockNumberLabel, 15, GridBagConstraints.RELATIVE, 1, 1);
+        addLabel(stockNameLabel, 16, GridBagConstraints.RELATIVE, 3, 1);
+        
+        for(int i = 0; i < PARAMETER_COUNT; i++) {
+        	numberLabels[i] = new Label("#" + i);
+        	stockNames[i] = new Label("");
+        	addLabel(numberLabels[i], 15, GridBagConstraints.RELATIVE, 1, 1);
+        	addLabel(stockNames[i], 16, GridBagConstraints.RELATIVE, 3, 1);
+        }
 	}
 	
 	private void addButton(Button button, int x, int y, int w, int h) {
@@ -284,6 +301,12 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 		String str = (String) obj;
 		if (!model.IsError()) {
 			if (str == null) {
+				for (int i = 0; i < fieldNames.length; i++) {
+					fieldNames[i].setText("");
+					fieldTypes[i].setText("");
+					fieldValues[i].setText("");
+				}
+				
 				List<String> fieldNameList = model.getFieldNames();
 				for (int i = 0; i < fieldNameList.size(); i++) {
 					fieldNames[i].setText(fieldNameList.get(i));
@@ -297,6 +320,11 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 				for (int i = 0; i < methodNameList.size(); i++) {
 					methodsChoice.add(methodNameList.get(i));
 				}
+				List<String> stockNameList = model.getStockObjs();
+				for (int i = 0; i < numberLabels.length; i++) {
+					stockNames[i].setText(stockNameList.get(i));
+				}
+				
 			} else if (str.equals("methodParameter")) {
 				resetMethodProperty();
 				List<String> methodTypeList = model.getMethodParaTypes();

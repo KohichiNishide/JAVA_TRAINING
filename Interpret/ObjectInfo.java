@@ -10,6 +10,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class ObjectInfo extends Observable{
@@ -17,6 +19,7 @@ public class ObjectInfo extends Observable{
 	public Object ret;
 	public Method method;
 	public Object[] array;
+	public List<Object> stockObjs = new ArrayList<Object>();
 	public Constructor constructor;
 	public String exception;
 	public List<Field> fields = new ArrayList<Field>();
@@ -35,6 +38,7 @@ public class ObjectInfo extends Observable{
 	
 	public void saveObject(Object o) {
 		obj = o;
+		stockObjs.add(obj);
 		reset();
 		saveFields(getAllFieldsFromClass(o.getClass()));
 		saveMethods(getAllMethodsFromClass(o.getClass()));
@@ -101,44 +105,49 @@ public class ObjectInfo extends Observable{
 		Object[] result = new Object[args.length];
 		Type[] types = m.getGenericParameterTypes();
 		for (int i = 0; i < types.length; i++) {
-			String typeStr = types[i].toString();
-			if (typeStr.equals("int")) {
-				result[i] = Integer.parseInt(args[i]);
-			} else if (typeStr.equals("short")) {
-				result[i] = Short.parseShort(args[i]);
-			} else if (typeStr.equals("long")) {
-				result[i] = Long.parseLong(args[i]);
-			} else if (typeStr.equals("float")) {
-				result[i] = Float.parseFloat(args[i]);
-			} else if (typeStr.equals("double")) {
-				result[i] = Double.parseDouble(args[i]);
-			} else if (typeStr.equals("byte")) {
-				result[i] = Byte.parseByte(args[i]);
-			} else if (typeStr.equals("boolean")) {
-				result[i] = Boolean.valueOf(args[i]);
-			} else if (typeStr.equals("class java.lang.String")) {
-				result[i] = args[i];
-			} else if (typeStr.equals("class java.awt.Color")) {
-				Field field;
-				try {
-					field = Color.class.getField(args[i]);
-					Color color = (Color)field.get(null);
-					result[i] = color;
-				} catch (SecurityException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (NoSuchFieldException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalArgumentException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}		
+			if (isStocked(args[i])) {
+				int re = Integer.parseInt(args[i].replaceAll("[^0-9]",""));
+				result[i] = stockObjs.get(re);
 			} else {
-				result[i] = (Object) args[i];
+				String typeStr = types[i].toString();
+				if (typeStr.equals("int")) {
+					result[i] = Integer.parseInt(args[i]);
+				} else if (typeStr.equals("short")) {
+					result[i] = Short.parseShort(args[i]);
+				} else if (typeStr.equals("long")) {
+					result[i] = Long.parseLong(args[i]);
+				} else if (typeStr.equals("float")) {
+					result[i] = Float.parseFloat(args[i]);
+				} else if (typeStr.equals("double")) {
+					result[i] = Double.parseDouble(args[i]);
+				} else if (typeStr.equals("byte")) {
+					result[i] = Byte.parseByte(args[i]);
+				} else if (typeStr.equals("boolean")) {
+					result[i] = Boolean.valueOf(args[i]);
+				} else if (typeStr.equals("class java.lang.String")) {
+					result[i] = args[i];
+				} else if (typeStr.equals("class java.awt.Color")) {
+					Field field;
+					try {
+						field = Color.class.getField(args[i]);
+						Color color = (Color)field.get(null);
+						result[i] = color;
+					} catch (SecurityException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (NoSuchFieldException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalArgumentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}		
+				} else {
+					result[i] = (Object) args[i];
+				}
 			}
 		}
 		return result;
@@ -151,44 +160,50 @@ public class ObjectInfo extends Observable{
 		Object[] result = new Object[args.length];
 		Type[] types = m.getGenericParameterTypes();
 		for (int i = 0; i < types.length; i++) {
-			String typeStr = types[i].toString();
-			if (typeStr.equals("int")) {
-				result[i] = Integer.parseInt(args[i]);
-			} else if (typeStr.equals("short")) {
-				result[i] = Short.parseShort(args[i]);
-			} else if (typeStr.equals("long")) {
-				result[i] = Long.parseLong(args[i]);
-			} else if (typeStr.equals("float")) {
-				result[i] = Float.parseFloat(args[i]);
-			} else if (typeStr.equals("double")) {
-				result[i] = Double.parseDouble(args[i]);
-			} else if (typeStr.equals("byte")) {
-				result[i] = Byte.parseByte(args[i]);
-			} else if (typeStr.equals("boolean")) {
-				result[i] = Boolean.valueOf(args[i]);
-			} else if (typeStr.equals("class java.lang.String")) {
-				result[i] = args[i];
-			} else if (typeStr.equals("class java.awt.Color")) {
-				Field field;
-				try {
-					field = Color.class.getField(args[i]);
-					Color color = (Color)field.get(null);
-					result[i] = color;
-				} catch (SecurityException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (NoSuchFieldException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalArgumentException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}		
+			if (isStocked(args[i])) {
+				int re = Integer.parseInt(args[i].replaceAll("[^0-9]",""));
+				result[i] = stockObjs.get(re);
 			} else {
-				result[i] = (Object) args[i];
+				
+				String typeStr = types[i].toString();
+				if (typeStr.equals("int")) {
+					result[i] = Integer.parseInt(args[i]);
+				} else if (typeStr.equals("short")) {
+					result[i] = Short.parseShort(args[i]);
+				} else if (typeStr.equals("long")) {
+					result[i] = Long.parseLong(args[i]);
+				} else if (typeStr.equals("float")) {
+					result[i] = Float.parseFloat(args[i]);
+				} else if (typeStr.equals("double")) {
+					result[i] = Double.parseDouble(args[i]);
+				} else if (typeStr.equals("byte")) {
+					result[i] = Byte.parseByte(args[i]);
+				} else if (typeStr.equals("boolean")) {
+					result[i] = Boolean.valueOf(args[i]);
+				} else if (typeStr.equals("class java.lang.String")) {
+					result[i] = args[i];
+				} else if (typeStr.equals("class java.awt.Color")) {
+					Field field;
+					try {
+						field = Color.class.getField(args[i]);
+						Color color = (Color)field.get(null);
+						result[i] = color;
+					} catch (SecurityException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (NoSuchFieldException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalArgumentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}		
+				} else {
+					result[i] = (Object) args[i];
+				}
 			}
 		}
 		return result;
@@ -433,5 +448,25 @@ public class ObjectInfo extends Observable{
 			}
 		}
 		return list;
+	}
+	
+	public final List<String> getStockObjs() {
+		List<String> list = new ArrayList<String>();
+		for (Object o : stockObjs) {
+			if (o == null) {
+				list.add("null");
+			} else {
+				list.add(o.toString());
+			}
+		}
+		return list;
+	}
+	
+	private Boolean isStocked(String str) {
+        if (str.indexOf("#") == -1) {
+        	return false;
+        } else {
+        	return true;
+        }
 	}
 }
