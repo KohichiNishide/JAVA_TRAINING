@@ -26,6 +26,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 	private Label methodLabel = new Label("Method list");
 	private Label fieldLabel = new Label("Field list");
 	private Label constructorLabel = new Label("Constructor list");
+	private Label arrayLabel = new Label("Array");
 	private TextField objectNameTextField = new TextField("java.awt.Frame");
 	private Button okButton = new Button("Create object");
 	private Button showConButton = new Button("Show constructor");
@@ -115,6 +116,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 		methodLabel.setBackground(Color.CYAN);
 		fieldLabel.setBackground(Color.CYAN);
 		constructorLabel.setBackground(Color.CYAN);
+		arrayLabel.setBackground(Color.CYAN);
 		methodTypeLabel.setBackground(Color.LIGHT_GRAY);
 		methodValLabel.setBackground(Color.LIGHT_GRAY);
 		conTypeLabel.setBackground(Color.LIGHT_GRAY);
@@ -127,14 +129,15 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
         
         // ボタンフィールドの配置
         addButton(okButton, 6, 2, 4, 1);
-        addButton(setFButton, 6, 3, 4, 1);
-        addButton(showConButton, 6, 4, 4, 1);
+        addButton(setFButton, 6, 6, 4, 1);
+        //addButton(showConButton, 6, 4, 4, 1);
         addLabel(fieldLabel, 0, 5, 10, 1);
-        addLabel(fieldValLabel, 6, 6, 4, 1);
-        addLabel(constructorLabel, 10, 1, 4, 1);
-        addChoice(constructorsChoice, 10, 2, 3, 1);
+        addLabel(fieldValLabel, 6, 7, 4, 1);
+        addLabel(constructorLabel, 10, 5, 4, 1);
+        addChoice(constructorsChoice, 10, 6, 3, 1);
+        addButton(showConButton, 13, GridBagConstraints.RELATIVE, 1, 1);
         addButton(invokeConButton, 13, GridBagConstraints.RELATIVE, 1, 1);
-        addLabel(conTypeLabel, 10, GridBagConstraints.RELATIVE, 2, 1);
+        addLabel(conTypeLabel, 10, 8, 2, 1);
         addLabel(conValLabel, 12, GridBagConstraints.RELATIVE, 2, 1);
         
         for(int i = 0; i < PARAMETER_COUNT; i++) {
@@ -149,16 +152,16 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
         // テキストフィールドの配置
         addTextField(objectNameTextField, 0, 1, 10, 1);  
         addLabel(objectNameLabel, 0, 0, 1, 1);
-        addLabel(fieldNameLabel, 0, 6, 3, 1);
-        addLabel(fieldTypeLabel, 3, 6, 3, 1);
+        addLabel(fieldNameLabel, 0, 7, 3, 1);
+        addLabel(fieldTypeLabel, 3, 7, 3, 1);
         
         for (int i = 0; i < COMPONENT_COUNT; i++) {
         	fieldNames[i] = new Label();
         	fieldTypes[i] = new Label();
         	fieldValues[i] = new TextField();
-        	addLabel(fieldNames[i], 0, 7 + i, 3, 1);
-        	addLabel(fieldTypes[i], 3, 7 + i, 3, 1);
-        	addTextField(fieldValues[i], 6, 7 + i, 4, 1);
+        	addLabel(fieldNames[i], 0, 8 + i, 3, 1);
+        	addLabel(fieldTypes[i], 3, 8 + i, 3, 1);
+        	addTextField(fieldValues[i], 6, 8 + i, 4, 1);
         }
         
         
@@ -185,8 +188,9 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
         addLabel(methodReturnValContent, 12, GridBagConstraints.RELATIVE, 2, 1);
         addExceptionTextField(exceptionTextField, 10, GridBagConstraints.RELATIVE, 4, 4);
         
-        addLabel(arrayTypeLabel, 15, 1, 2, 1);
-        addLabel(arraySizeLabel, 17, 1, 2, 1);
+        addLabel(arrayLabel, 15, 5, 4, 1);
+        addLabel(arrayTypeLabel, 15, 6, 2, 1);
+        addLabel(arraySizeLabel, 17, 6, 2, 1);
         addTextField(arrayTypeText, 15, GridBagConstraints.RELATIVE, 2, 1);
         addTextField(arraySizeText, 17, GridBagConstraints.RELATIVE, 2, 1);
         addButton(arrayButton, 17, GridBagConstraints.RELATIVE, 2, 1);
