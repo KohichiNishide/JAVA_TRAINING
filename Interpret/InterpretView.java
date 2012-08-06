@@ -20,6 +20,9 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import sec01.ex04.PropertyData;
+import sec01.ex04.PropertyDialog;
+
 
 public class InterpretView extends Frame implements Observer, ActionListener, AdjustmentListener, ItemListener{
 	private static final long serialVersionUID = 1L;
@@ -55,6 +58,8 @@ public class InterpretView extends Frame implements Observer, ActionListener, Ad
 	private Label methodReturnValContent = new Label("");
 	private Label[] methodTypes = new Label[PARAMETER_COUNT];
 	private TextField[] methodValues = new TextField[PARAMETER_COUNT];
+	private Label[] conTypes = new Label[PARAMETER_COUNT];
+	private TextField[] conValues = new TextField[PARAMETER_COUNT];
 	private TextField exceptionTextField = new TextField("Exception log...");
 	
 	public InterpretView(Interpret controller) {
@@ -75,6 +80,15 @@ public class InterpretView extends Frame implements Observer, ActionListener, Ad
 	    setFButton.addActionListener(this);
 	    methodsChoice.addItemListener(this);
 	    invokeMButton.addActionListener(this);
+	    invokeConButton.addActionListener(this);
+	    
+	    this.constructorsChoice.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				Choice cho = (Choice)e.getItemSelectable();
+				con.setSelectedConstructor(cho.getSelectedIndex());
+			}
+        });
 	    
 	    addComponents();
 	        
@@ -115,6 +129,14 @@ public class InterpretView extends Frame implements Observer, ActionListener, Ad
         addLabel(constructorLabel, 10, GridBagConstraints.RELATIVE, 4, 1);
         addChoice(constructorsChoice, 10, GridBagConstraints.RELATIVE, 3, 1);
         addButton(invokeConButton, 13, GridBagConstraints.RELATIVE, 1, 1);
+        for(int i = 0; i < PARAMETER_COUNT; i++) {
+        	conTypes[i] = new Label();
+        	conValues[i] = new TextField();
+        	
+        	addLabel(conTypes[i], 10, GridBagConstraints.RELATIVE, 2, 1);
+        	addTextField(conValues[i], 12, GridBagConstraints.RELATIVE, 2, 1);
+        }
+        
         
         // テキストフィールドの配置
         addTextField(objectNameTextField, 0, 2, 10, 1);     
@@ -141,6 +163,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, Ad
         for(int i = 0; i < PARAMETER_COUNT; i++) {
         	methodTypes[i] = new Label();
         	methodValues[i] = new TextField();
+        	
         	addLabel(methodTypes[i], 10, GridBagConstraints.RELATIVE, 2, 1);
         	addTextField(methodValues[i], 12, GridBagConstraints.RELATIVE, 2, 1);
         }
@@ -150,7 +173,6 @@ public class InterpretView extends Frame implements Observer, ActionListener, Ad
         addLabel(methodReturnTypeContent, 10, GridBagConstraints.RELATIVE, 2, 1);
         addLabel(methodReturnValContent, 12, GridBagConstraints.RELATIVE, 2, 1);
         addExceptionTextField(exceptionTextField, 10, GridBagConstraints.RELATIVE, 4, 4);
-        //addButton(invokeMButton, 10, GridBagConstraints.RELATIVE, 4, 1);
 	}
 	
 	private void addButton(Button button, int x, int y, int w, int h) {
@@ -240,7 +262,6 @@ public class InterpretView extends Frame implements Observer, ActionListener, Ad
 					fieldTypes[i].setText(model.getFieldTypes().get(i));
 					fieldValues[i].setText(model.getFieldVals().get(i));
 				}
-				
 				List<String> methodNameList = model.getMethodNames();
 				for (int i = 0; i < methodNameList.size(); i++) {
 					methodsChoice.add(methodNameList.get(i));
@@ -261,6 +282,14 @@ public class InterpretView extends Frame implements Observer, ActionListener, Ad
 				for (int i = 0; i < conList.size(); i++) {
 					constructorsChoice.add(conList.get(i));
 				}
+			} else if (str.equals("conParameter")) {
+				List<String> conTypeList = model.getConParaTypes();
+				for (int i = 0; i < conTypeList.size(); i++) {
+					conTypes[i].setText(conTypeList.get(i));
+				}
+			} else if (str.equals("conReturnVal")) {
+				// TBD
+				exceptionTextField.setText(model.getExceptionStr());
 			} else {			
 				System.out.println("************Else*************");
 			}
@@ -300,7 +329,21 @@ public class InterpretView extends Frame implements Observer, ActionListener, Ad
 				vals[i] = methodValues[i].getText();
 			}
 			con.callMethod(vals);
-		} else {
+		} else if (e.getActionCommand() == "Invoke constructor") {
+			// 引数の数を計算する
+			int argCount = 0;
+			for (Label tx : conTypes) {
+				if (tx.getText() != "") {
+					argCount ++;
+				}
+			}
+			
+			String[] vals = new String[argCount];
+			for (int i = 0; i < vals.length; i++) {
+				vals[i] = conValues[i].getText();
+			}
+			con.callConstructor(vals);
+		}  else {
 			// TBD
 		}
 	}

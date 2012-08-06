@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
@@ -14,6 +15,7 @@ public class ObjectInfo extends Observable{
 	public Object obj;
 	public Object ret;
 	public Method method;
+	public Constructor constructor;
 	public String exception;
 	public List<Field> fields = new ArrayList<Field>();
 	public List<Method> methods = new ArrayList<Method>();
@@ -25,6 +27,7 @@ public class ObjectInfo extends Observable{
 	public List<String> fieldVals = new ArrayList<String>();
 	public List<String> parameterTypes = new ArrayList<String>();
 	public List<String> conNames = new ArrayList<String>();
+	public List<String> conParameterTypes = new ArrayList<String>();
 	
 	Boolean isError = false;
 	
@@ -139,6 +142,56 @@ public class ObjectInfo extends Observable{
 		return result;
 	}
 	
+	private Object[] getConPrameterValue(Constructor m, String[] args) {
+		if (args == null || args.length == 0)
+			return null;
+		
+		Object[] result = new Object[args.length];
+		Type[] types = m.getGenericParameterTypes();
+		for (int i = 0; i < types.length; i++) {
+			String typeStr = types[i].toString();
+			if (typeStr.equals("int")) {
+				result[i] = Integer.parseInt(args[i]);
+			} else if (typeStr.equals("short")) {
+				result[i] = Short.parseShort(args[i]);
+			} else if (typeStr.equals("long")) {
+				result[i] = Long.parseLong(args[i]);
+			} else if (typeStr.equals("float")) {
+				result[i] = Float.parseFloat(args[i]);
+			} else if (typeStr.equals("double")) {
+				result[i] = Double.parseDouble(args[i]);
+			} else if (typeStr.equals("byte")) {
+				result[i] = Byte.parseByte(args[i]);
+			} else if (typeStr.equals("boolean")) {
+				result[i] = Boolean.valueOf(args[i]);
+			} else if (typeStr.equals("class java.lang.String")) {
+				result[i] = args[i];
+			} else if (typeStr.equals("class java.awt.Color")) {
+				Field field;
+				try {
+					field = Color.class.getField(args[i]);
+					Color color = (Color)field.get(null);
+					result[i] = color;
+				} catch (SecurityException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NoSuchFieldException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalArgumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}		
+			} else {
+				result[i] = (Object) args[i];
+			}
+		}
+		return result;
+	}
+	
 	public Boolean IsError() {
 		return isError;
 	}
@@ -172,6 +225,17 @@ public class ObjectInfo extends Observable{
 		notifyObservers("methodParameter");
 	}
 	
+	public void setSelectedConstructor(int index) {
+		conParameterTypes.clear();
+		constructor = constructors.get(index);
+		Type[] paras = constructor.getGenericParameterTypes();
+		for (Type para : paras) {
+			conParameterTypes.add(para.toString());
+		}
+		setChanged();
+		notifyObservers("conParameter");
+	}
+	
 	public void invokeMethod(String[] args) {
 		if (method == null)
 			return;	
@@ -190,6 +254,30 @@ public class ObjectInfo extends Observable{
 		}
 		setChanged();
 		notifyObservers("methodReturnVal");
+	}
+	
+	public void invokeConstructor(String[] args) {
+		if (constructor == null)
+			return;	
+		try {
+			if (args.length == 0) args = null;
+			saveObject(constructor.newInstance(getConPrameterValue(constructor, args)));
+			
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+			exception = e.toString();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+			exception = e.toString();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+			exception = e.toString();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+			exception = e.toString();
+		}
+		setChanged();
+		notifyObservers("conReturnVal");
 	}
 	
 	public void saveConstructors(Constructor[] cons) {
@@ -305,5 +393,9 @@ public class ObjectInfo extends Observable{
 	
 	public final List<String> getConNames(){
 	    return conNames;
+	}
+	
+	public final List<String> getConParaTypes(){
+	    return conParameterTypes;
 	}
 }
