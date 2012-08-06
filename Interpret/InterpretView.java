@@ -1,32 +1,23 @@
-import java.awt.BorderLayout;
+
 import java.awt.Button;
 import java.awt.Choice;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Label;
-import java.awt.Scrollbar;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import sec01.ex04.PropertyData;
-import sec01.ex04.PropertyDialog;
-
-
-public class InterpretView extends Frame implements Observer, ActionListener, AdjustmentListener, ItemListener{
+public class InterpretView extends Frame implements Observer, ActionListener, ItemListener{
 	private static final long serialVersionUID = 1L;
-	private Scrollbar bar;
 	private Label objectNameLabel = new Label("");
 	private Label successLabel = new Label("TBD");
 	private Label fieldNameLabel = new Label("Name");
@@ -34,7 +25,6 @@ public class InterpretView extends Frame implements Observer, ActionListener, Ad
 	private Label fieldValLabel = new Label("Value");
 	private Label methodLabel = new Label("Method list");
 	private Label constructorLabel = new Label("Constructor list");
-	private Choice fieldsChoice = new Choice();
 	private TextField objectNameTextField = new TextField("java.awt.Frame");
 	private Button okButton = new Button("Create object");
 	private Button showConButton = new Button("Show constructor");
@@ -52,6 +42,8 @@ public class InterpretView extends Frame implements Observer, ActionListener, Ad
 	private Choice constructorsChoice = new Choice();
 	private Label methodTypeLabel = new Label("Parameter type");
 	private Label methodValLabel = new Label("Parameter value");
+	private Label conTypeLabel = new Label("Parameter type");
+	private Label conValLabel = new Label("Parameter value");
 	private Label methodReturnTypeLabel = new Label("Return type");
 	private Label methodReturnValLabel = new Label("Return value");
 	private Label methodReturnTypeContent = new Label("");
@@ -70,9 +62,6 @@ public class InterpretView extends Frame implements Observer, ActionListener, Ad
 	    setResizable(false);
 	    setLayout(gbl);	    
 	   
-        bar = new Scrollbar(Scrollbar.VERTICAL, 0, 10, 0, 1000);
-        
-        bar.addAdjustmentListener(this);
 	    okButton.addActionListener(this);
 	    okButton.addActionListener(con);
 	    showConButton.addActionListener(this);
@@ -92,20 +81,8 @@ public class InterpretView extends Frame implements Observer, ActionListener, Ad
 	    
 	    addComponents();
 	        
-        addWindowListener(con);       
-        //pack();
+        addWindowListener(con);   
         show();
-	}
-	
-	private void addBar(Scrollbar bar) {
-		GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = 100.0;
-        gbc.weighty = 100.0;
-        gbc.anchor = GridBagConstraints.EAST;
-        gbc.insets = new Insets(10, 10, 10, 10);
-        gbl.setConstraints(bar, gbc);
-        add(bar, BorderLayout.EAST);
 	}
 	
 	private void addComponents() {
@@ -116,19 +93,23 @@ public class InterpretView extends Frame implements Observer, ActionListener, Ad
 		constructorLabel.setBackground(Color.LIGHT_GRAY);
 		methodTypeLabel.setBackground(Color.LIGHT_GRAY);
 		methodValLabel.setBackground(Color.LIGHT_GRAY);
+		conTypeLabel.setBackground(Color.LIGHT_GRAY);
+		conValLabel.setBackground(Color.LIGHT_GRAY);
 		methodReturnTypeLabel.setBackground(Color.LIGHT_GRAY);
 		methodReturnValLabel.setBackground(Color.LIGHT_GRAY);
-		addLabel(objectNameLabel, 0, 0, 1, 1);
-        addLabel(fieldNameLabel, 0, 3, 3, 1);
-        addLabel(fieldTypeLabel, 3, 3, 3, 1);
-        addLabel(fieldValLabel, 6, 3, 4, 1);
+		
+        
         // ボタンフィールドの配置
-        addButton(okButton, 10, 2, 4, 1);
-        addButton(setFButton, 10, GridBagConstraints.RELATIVE, 4, 1);
-        addButton(showConButton, 10, GridBagConstraints.RELATIVE, 4, 1);
-        addLabel(constructorLabel, 10, GridBagConstraints.RELATIVE, 4, 1);
-        addChoice(constructorsChoice, 10, GridBagConstraints.RELATIVE, 3, 1);
+        addButton(okButton, 6, 2, 4, 1);
+        addButton(setFButton, 6, 3, 4, 1);
+        addButton(showConButton, 6, 4, 4, 1);
+        addLabel(fieldValLabel, 6, 5, 4, 1);
+        addLabel(constructorLabel, 10, 1, 4, 1);
+        addChoice(constructorsChoice, 10, 2, 3, 1);
         addButton(invokeConButton, 13, GridBagConstraints.RELATIVE, 1, 1);
+        addLabel(conTypeLabel, 10, GridBagConstraints.RELATIVE, 2, 1);
+        addLabel(conValLabel, 12, GridBagConstraints.RELATIVE, 2, 1);
+        
         for(int i = 0; i < PARAMETER_COUNT; i++) {
         	conTypes[i] = new Label();
         	conValues[i] = new TextField();
@@ -139,15 +120,18 @@ public class InterpretView extends Frame implements Observer, ActionListener, Ad
         
         
         // テキストフィールドの配置
-        addTextField(objectNameTextField, 0, 2, 10, 1);     
+        addTextField(objectNameTextField, 0, 1, 10, 1);  
+        addLabel(objectNameLabel, 0, 0, 1, 1);
+        addLabel(fieldNameLabel, 0, 5, 3, 1);
+        addLabel(fieldTypeLabel, 3, 5, 3, 1);
         
         for (int i = 0; i < COMPONENT_COUNT; i++) {
         	fieldNames[i] = new Label();
         	fieldTypes[i] = new Label();
         	fieldValues[i] = new TextField();
-        	addLabel(fieldNames[i], 0, GridBagConstraints.RELATIVE, 3, 1);
-        	addLabel(fieldTypes[i], 3, GridBagConstraints.RELATIVE, 3, 1);
-        	addTextField(fieldValues[i], 6, GridBagConstraints.RELATIVE, 4, 1);
+        	addLabel(fieldNames[i], 0, 6 + i, 3, 1);
+        	addLabel(fieldTypes[i], 3, 6 + i, 3, 1);
+        	addTextField(fieldValues[i], 6, 6 + i, 4, 1);
         }
         
         
@@ -346,11 +330,6 @@ public class InterpretView extends Frame implements Observer, ActionListener, Ad
 		}  else {
 			// TBD
 		}
-	}
-
-	@Override
-	public void adjustmentValueChanged(AdjustmentEvent arg0) {
-		// TODO Auto-generated method stub
 	}
 
 	@Override
