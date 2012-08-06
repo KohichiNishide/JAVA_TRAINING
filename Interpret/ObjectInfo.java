@@ -336,6 +336,16 @@ public class ObjectInfo extends Observable{
 		}		
 	}
 	
+	public void setElement(int index) {
+		array[index] = obj;
+		setChanged();
+		notifyObservers("arrayReturnVal");
+	}
+	
+	public void readSelectedElement(int index) {
+		saveObject(array[index]);
+	}
+	
 	private void reset() {
 		fieldNames.clear();
 		fieldTypes.clear();

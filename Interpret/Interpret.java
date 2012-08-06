@@ -30,6 +30,10 @@ public class Interpret extends WindowAdapter implements ActionListener{
 		model.setSelectedConstructor(index);
 	}
 	
+	public void readSelectedElement(int index) {
+		model.readSelectedElement(index);
+	}
+	
 	public void createObject(String objName) {
 		try {
 			Class<?> clazz = Class.forName(objName);
@@ -72,6 +76,10 @@ public class Interpret extends WindowAdapter implements ActionListener{
 	
 	public void createArray(String type, String size) {
 		model.createArray(type, size);
+	}
+	
+	public void setElement(int index) {
+		model.setElement(index);
 	}
 	
 	public void windowOpened(WindowEvent windowEvent){

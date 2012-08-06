@@ -62,8 +62,8 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 	private TextField arraySizeText = new TextField("");
 	private Button arrayButton = new Button("Create array");
 	private Choice arrayChoice = new Choice();
-	private Button setElementButton = new Button("Set");
-	private Button getElementButton = new Button("Get");
+	private Button setElementButton = new Button("Set element");
+	private Button getElementButton = new Button("Get element");
 	
 	
 	public InterpretView(Interpret controller) {
@@ -112,9 +112,9 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 		fieldNameLabel.setBackground(Color.LIGHT_GRAY);
 		fieldTypeLabel.setBackground(Color.LIGHT_GRAY);
 		fieldValLabel.setBackground(Color.LIGHT_GRAY);
-		methodLabel.setBackground(Color.LIGHT_GRAY);
-		fieldLabel.setBackground(Color.LIGHT_GRAY);
-		constructorLabel.setBackground(Color.LIGHT_GRAY);
+		methodLabel.setBackground(Color.CYAN);
+		fieldLabel.setBackground(Color.CYAN);
+		constructorLabel.setBackground(Color.CYAN);
 		methodTypeLabel.setBackground(Color.LIGHT_GRAY);
 		methodValLabel.setBackground(Color.LIGHT_GRAY);
 		conTypeLabel.setBackground(Color.LIGHT_GRAY);
@@ -156,9 +156,9 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
         	fieldNames[i] = new Label();
         	fieldTypes[i] = new Label();
         	fieldValues[i] = new TextField();
-        	addLabel(fieldNames[i], 0, 6 + i, 3, 1);
-        	addLabel(fieldTypes[i], 3, 6 + i, 3, 1);
-        	addTextField(fieldValues[i], 6, 6 + i, 4, 1);
+        	addLabel(fieldNames[i], 0, 7 + i, 3, 1);
+        	addLabel(fieldTypes[i], 3, 7 + i, 3, 1);
+        	addTextField(fieldValues[i], 6, 7 + i, 4, 1);
         }
         
         
@@ -284,13 +284,14 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 					fieldValues[i].setText(model.getFieldVals().get(i));
 				}
 				List<String> methodNameList = model.getMethodNames();
+				resetMethods();
 				if (methodNameList == null)
 					return;
 				for (int i = 0; i < methodNameList.size(); i++) {
 					methodsChoice.add(methodNameList.get(i));
 				}
 			} else if (str.equals("methodParameter")) {
-				resetMethods();
+				resetMethodProperty();
 				List<String> methodTypeList = model.getMethodParaTypes();
 				if (methodTypeList == null)
 					return;
@@ -382,6 +383,10 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 			con.callConstructor(vals);
 		} else if (e.getActionCommand() == "Create array") {
 			con.createArray(arrayTypeText.getText(), arraySizeText.getText());
+		} else if (e.getActionCommand() == "Set element") {
+			con.setElement(arrayChoice.getSelectedIndex());
+		} else if (e.getActionCommand() == "Get element") {
+			con.readSelectedElement(arrayChoice.getSelectedIndex());
 		}  else {
 			// TBD
 		}
@@ -394,11 +399,15 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 		//con.callMethod(cho.getSelectedIndex());	
 	}
 	
-	private void resetMethods() {
+	private void resetMethodProperty() {
 		for (int i = 0; i < PARAMETER_COUNT; i++) {
 			methodTypes[i].setText("");
 			methodValues[i].setText("");
 		}
+	}
+	
+	private void resetMethods() {
+		methodsChoice.removeAll();
 	}
 	
 	private void resetConstructors() {
