@@ -39,6 +39,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 	private Label[] fieldNames = new Label[COMPONENT_COUNT];
 	private Label[] fieldTypes = new Label[COMPONENT_COUNT];
 	private TextField[] fieldValues = new TextField[COMPONENT_COUNT];
+	private Choice fieldsChoice = new Choice();
 	private Choice methodsChoice = new Choice();
 	private Choice constructorsChoice = new Choice();
 	private Label methodTypeLabel = new Label("Parameter type");
@@ -54,6 +55,16 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 	private Label[] conTypes = new Label[PARAMETER_COUNT];
 	private TextField[] conValues = new TextField[PARAMETER_COUNT];
 	private TextField exceptionTextField = new TextField("Exception log...");
+	
+	private Label arrayTypeLabel = new Label("Array type");
+	private TextField arrayTypeText = new TextField("");
+	private Label arraySizeLabel = new Label("Array size");
+	private TextField arraySizeText = new TextField("");
+	private Button arrayButton = new Button("Create array");
+	private Choice arrayChoice = new Choice();
+	private Button setElementButton = new Button("Set");
+	private Button getElementButton = new Button("Get");
+	
 	
 	public InterpretView(Interpret controller) {
 		con = controller;
@@ -71,12 +82,23 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 	    methodsChoice.addItemListener(this);
 	    invokeMButton.addActionListener(this);
 	    invokeConButton.addActionListener(this);
+	    arrayButton.addActionListener(this);
+	    setElementButton.addActionListener(this);
+	    getElementButton.addActionListener(this);
 	    
-	    this.constructorsChoice.addItemListener(new ItemListener() {
+	    constructorsChoice.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				Choice cho = (Choice)e.getItemSelectable();
 				con.setSelectedConstructor(cho.getSelectedIndex());
+			}
+        });
+	    
+	    arrayChoice.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				Choice cho = (Choice)e.getItemSelectable();
+				//con.setSelectedConstructor(cho.getSelectedIndex());
 			}
         });
 	    
@@ -99,6 +121,8 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 		conValLabel.setBackground(Color.LIGHT_GRAY);
 		methodReturnTypeLabel.setBackground(Color.LIGHT_GRAY);
 		methodReturnValLabel.setBackground(Color.LIGHT_GRAY);
+		arrayTypeLabel.setBackground(Color.LIGHT_GRAY);
+		arraySizeLabel.setBackground(Color.LIGHT_GRAY);
 		
         
         // ボタンフィールドの配置
@@ -160,6 +184,16 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
         addLabel(methodReturnTypeContent, 10, GridBagConstraints.RELATIVE, 2, 1);
         addLabel(methodReturnValContent, 12, GridBagConstraints.RELATIVE, 2, 1);
         addExceptionTextField(exceptionTextField, 10, GridBagConstraints.RELATIVE, 4, 4);
+        
+        addLabel(arrayTypeLabel, 15, 1, 2, 1);
+        addLabel(arraySizeLabel, 17, 1, 2, 1);
+        addTextField(arrayTypeText, 15, GridBagConstraints.RELATIVE, 2, 1);
+        addTextField(arraySizeText, 17, GridBagConstraints.RELATIVE, 2, 1);
+        addButton(arrayButton, 17, GridBagConstraints.RELATIVE, 2, 1);
+        
+        addChoice(arrayChoice, 15, GridBagConstraints.RELATIVE, 4, 1);
+        addButton(setElementButton, 15, GridBagConstraints.RELATIVE, 2, 1);
+        addButton(getElementButton, 17, GridBagConstraints.RELATIVE, 2, 1);
 	}
 	
 	private void addButton(Button button, int x, int y, int w, int h) {
@@ -250,12 +284,16 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 					fieldValues[i].setText(model.getFieldVals().get(i));
 				}
 				List<String> methodNameList = model.getMethodNames();
+				if (methodNameList == null)
+					return;
 				for (int i = 0; i < methodNameList.size(); i++) {
 					methodsChoice.add(methodNameList.get(i));
 				}
 			} else if (str.equals("methodParameter")) {
 				resetMethods();
 				List<String> methodTypeList = model.getMethodParaTypes();
+				if (methodTypeList == null)
+					return;
 				for (int i = 0; i < methodTypeList.size(); i++) {
 					methodTypes[i].setText(methodTypeList.get(i));
 				}
@@ -266,17 +304,29 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 			} else if (str.equals("constructors")) {
 				resetConstructors();
 				List<String> conList = model.getConNames();
+				if (conList == null)
+					return;
 				for (int i = 0; i < conList.size(); i++) {
 					constructorsChoice.add(conList.get(i));
 				}
 			} else if (str.equals("conParameter")) {
 				List<String> conTypeList = model.getConParaTypes();
+				if (conTypeList == null)
+					return;
 				for (int i = 0; i < conTypeList.size(); i++) {
 					conTypes[i].setText(conTypeList.get(i));
 				}
 			} else if (str.equals("conReturnVal")) {
 				// TBD
 				exceptionTextField.setText(model.getExceptionStr());
+			} else if (str.equals("arrayReturnVal")) {
+				resetElements();
+				List<String> arrayList = model.getArrayNames();
+				if (arrayList == null)
+					return;
+				for (int i = 0; i < arrayList.size(); i++) {
+					arrayChoice.add(arrayList.get(i));
+				}
 			} else {			
 				System.out.println("************Else*************");
 			}
@@ -330,6 +380,8 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 				vals[i] = conValues[i].getText();
 			}
 			con.callConstructor(vals);
+		} else if (e.getActionCommand() == "Create array") {
+			con.createArray(arrayTypeText.getText(), arraySizeText.getText());
 		}  else {
 			// TBD
 		}
@@ -351,5 +403,9 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 	
 	private void resetConstructors() {
 		constructorsChoice.removeAll();
+	}
+	
+	private void resetElements() {
+		arrayChoice.removeAll();
 	}
 }

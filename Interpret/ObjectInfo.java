@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -15,6 +16,7 @@ public class ObjectInfo extends Observable{
 	public Object obj;
 	public Object ret;
 	public Method method;
+	public Object[] array;
 	public Constructor constructor;
 	public String exception;
 	public List<Field> fields = new ArrayList<Field>();
@@ -256,6 +258,17 @@ public class ObjectInfo extends Observable{
 		notifyObservers("methodReturnVal");
 	}
 	
+	public void createArray(String type, String size) {
+		try {
+			Class<?> clazz = Class.forName(type);
+			array = (Object[]) Array.newInstance(clazz, Integer.parseInt(size));
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		setChanged();
+		notifyObservers("arrayReturnVal");
+	}
+	
 	public void invokeConstructor(String[] args) {
 		if (constructor == null)
 			return;	
@@ -397,5 +410,17 @@ public class ObjectInfo extends Observable{
 	
 	public final List<String> getConParaTypes(){
 	    return conParameterTypes;
+	}
+	
+	public final List<String> getArrayNames(){
+		List<String> list = new ArrayList<String>();
+		for (Object o : array) {
+			if (o == null) {
+				list.add("null");
+			} else {
+				list.add(o.toString());
+			}
+		}
+		return list;
 	}
 }

@@ -70,6 +70,10 @@ public class Interpret extends WindowAdapter implements ActionListener{
 		model.invokeConstructor(args);
 	}
 	
+	public void createArray(String type, String size) {
+		model.createArray(type, size);
+	}
+	
 	public void windowOpened(WindowEvent windowEvent){
 	    model.addObserver((Observer)windowEvent.getSource());
 	    //View‚ðModel‚ÌObserver‚Æ‚µ‚Ä’Ç‰Á
