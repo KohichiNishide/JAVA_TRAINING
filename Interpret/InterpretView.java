@@ -2,6 +2,7 @@
 import java.awt.Button;
 import java.awt.Choice;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -16,10 +17,12 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.JButton;
+
 public class InterpretView extends Frame implements Observer, ActionListener, ItemListener{
 	private static final long serialVersionUID = 1L;
 	private Label objectNameLabel = new Label("");
-	private Label successLabel = new Label("TBD");
+	private Label successLabel = new Label("");
 	private Label fieldNameLabel = new Label("Name");
 	private Label fieldTypeLabel = new Label("Type");
 	private Label fieldValLabel = new Label("Value");
@@ -35,7 +38,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 	private Button invokeConButton = new Button("Invoke constructor");
 	private GridBagLayout gbl = new GridBagLayout();
 	private Interpret con;
-	static final int COMPONENT_COUNT = 45;
+	static final int COMPONENT_COUNT = 44;
 	static final int PARAMETER_COUNT = 10;
 	private Label[] fieldNames = new Label[COMPONENT_COUNT];
 	private Label[] fieldTypes = new Label[COMPONENT_COUNT];
@@ -75,7 +78,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 	public InterpretView(Interpret controller) {
 		con = controller;
 		setTitle("Interpret main view");
-	    setSize(1000, 1200);
+	    setSize(1600, 1200);
 	    setLocationRelativeTo(null);
 	    setResizable(false);
 	    setLayout(gbl);	    
@@ -135,10 +138,11 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 		stockNameLabel.setBackground(Color.LIGHT_GRAY);
 		
         
+		
         // ボタンフィールドの配置
-        addButton(okButton, 6, 2, 4, 1);
+        addButton(okButton, 11, 1, 1, 1);
+        addLabel(successLabel, 6, 2, 1, 2);
         addButton(setFButton, 6, 6, 4, 1);
-        //addButton(showConButton, 6, 4, 4, 1);
         addLabel(fieldLabel, 0, 5, 10, 1);
         addLabel(fieldValLabel, 6, 7, 4, 1);
         addLabel(constructorLabel, 10, 5, 4, 1);
@@ -230,7 +234,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
         gbc.gridwidth = w;
         gbc.gridheight = h;
         gbc.anchor = GridBagConstraints.EAST;
-        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.insets = new Insets(2, 2, 2, 2);
         gbl.setConstraints(button, gbc);
         add(button);
 	}
@@ -260,7 +264,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
         gbc.gridwidth = w;
         gbc.gridheight = h;
         gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.insets = new Insets(2, 2, 2, 2);
         gbl.setConstraints(tf, gbc);
         add(tf);
     }
@@ -290,7 +294,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
         gbc.gridwidth = w;
         gbc.gridheight = h;
         gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.insets = new Insets(1, 1, 1, 1);
         gbl.setConstraints(choice, gbc);
         add(choice);
     }
