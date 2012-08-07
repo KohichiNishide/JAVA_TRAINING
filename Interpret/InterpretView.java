@@ -12,6 +12,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -106,6 +108,37 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 			public void itemStateChanged(ItemEvent e) {
 				Choice cho = (Choice)e.getItemSelectable();
 				con.setSelectedConstructor(cho.getSelectedIndex());
+			}
+        });
+	    
+	    constructorsChoice.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				con.setSelectedConstructor(constructorsChoice.getSelectedIndex());
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
 			}
         });
 	    
@@ -383,7 +416,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 				System.out.println("************Else*************");
 			}
 		} else {
-			successLabel.setText("Failed !!");
+			successLabel.setText("");
 			/*for (int i = 0; i < fieldNames.length; i++) {
 				fieldNames[i].setText("");
 				fieldTypes[i].setText("");
