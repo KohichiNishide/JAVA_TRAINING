@@ -19,6 +19,6 @@ public class CharPrint {
 		CharPrint.print('a', 'x');
 		CharPrint.print('A', 'a');
 		CharPrint.print('y', 'D');
-		CharPrint.print('В†', 'Вс');
+		CharPrint.print('a', 'A');
 	}
 }
