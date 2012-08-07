@@ -8,10 +8,10 @@ public class PropertyDialog extends Frame implements ActionListener{
 	private static final int NORMAL_LABEL_FONT_SIZE = 15;
 	private GridBagLayout gbl = new GridBagLayout();
 	
-	public static String buFont = PropertyData.font;  // ƒoƒbƒtƒ@—p
-	public static int buFontSize = PropertyData.fontSize; // ƒoƒbƒtƒ@—p
-	public static String buColor = PropertyData.color; // ƒoƒbƒtƒ@—p
-	public static String buBackgroundColor = PropertyData.backgroundColor; // ƒoƒbƒtƒ@—p
+	public static String buFont = PropertyData.font;  // ï¿½oï¿½bï¿½tï¿½@ï¿½p
+	public static int buFontSize = PropertyData.fontSize; // ï¿½oï¿½bï¿½tï¿½@ï¿½p
+	public static String buColor = PropertyData.color; // ï¿½oï¿½bï¿½tï¿½@ï¿½p
+	public static String buBackgroundColor = PropertyData.backgroundColor; // ï¿½oï¿½bï¿½tï¿½@ï¿½p
 	
 	private Choice fontChoice;
 	private Choice sizeChoice;
@@ -29,7 +29,7 @@ public class PropertyDialog extends Frame implements ActionListener{
         
         PropertyData.load();
         
-        // ƒ‰ƒxƒ‹‚Ì”z’u
+        // ï¿½ï¿½ï¿½xï¿½ï¿½ï¿½Ì”zï¿½u
         Label fontLabel = new Label("Font");
         Label sizeLabel = new Label("Font size");
         Label colorLabel = new Label("Color");
@@ -45,7 +45,7 @@ public class PropertyDialog extends Frame implements ActionListener{
         addLabel(colorLabel, 0, 2, 1, 1);
         addLabel(backgroundColorLabel, 0, 3, 1, 1);
         
-        // ƒƒjƒ…[ƒ{ƒbƒNƒX‚Ì”z’u
+        // ï¿½ï¿½ï¿½jï¿½ï¿½ï¿½[ï¿½{ï¿½bï¿½Nï¿½Xï¿½Ì”zï¿½u
         fontChoice = new Choice();
         sizeChoice = new Choice();
         colorChoice = new Choice();
@@ -61,7 +61,7 @@ public class PropertyDialog extends Frame implements ActionListener{
         addChoice(colorChoice, 1, 2, 1, 1);
         addChoice(backgroundColorChoice, 1, 3, 1, 1);
         
-        // ƒ{ƒ^ƒ“‚Ì”z’u
+        // ï¿½{ï¿½^ï¿½ï¿½ï¿½Ì”zï¿½u
         Button okButton = new Button("OK");
         Button cancelButton = new Button("Cancel");
         
@@ -71,7 +71,7 @@ public class PropertyDialog extends Frame implements ActionListener{
         addButton(okButton, 3, 4, 1, 1);
         addButton(cancelButton, 4, 4, 1, 1);
         
-        // ƒŠƒXƒi[‚Ì’Ç‰Á
+        // ï¿½ï¿½ï¿½Xï¿½iï¿½[ï¿½Ì’Ç‰ï¿½
         fontChoice.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -111,12 +111,12 @@ public class PropertyDialog extends Frame implements ActionListener{
         preview.setForeground(Color.DARK_GRAY);
         addPreviewLabel(preview, 2, 2, 2, 2);
         
-        Label memo = new Label("«For font", Label.CENTER);
-        Font memoFont = new Font("Arial Black", Font.BOLD, 20);
+        Label memo = new Label("Font", Label.CENTER);
+        Font memoFont = new Font("Serif", Font.BOLD, 20);
         memo.setFont(memoFont);
         addLabel(memo, 2, 1, 1, 1);
         
-        //~‚ğ‰Ÿ‚³‚ê‚½‚Æ‚«‚Ìˆ—
+        //ï¿½~ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½Æ‚ï¿½ï¿½Ìï¿½ï¿½ï¿½
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e)  {
                 e.getWindow().setVisible(false);

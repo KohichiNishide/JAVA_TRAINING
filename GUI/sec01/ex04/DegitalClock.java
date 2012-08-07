@@ -13,7 +13,7 @@ public class DegitalClock extends Frame implements Runnable{
 	private static int width = 400;
 	private static int x;
 	private static int y;
-	private static final int BLANK_SPACE_SIZE = 50;
+	private static final int BLANK_SPACE_SIZE = 110;
 	
 	private Graphics buffer;        //オフスクリーンバッファのグラフィックコンテキスト
 	private Image back = null;
