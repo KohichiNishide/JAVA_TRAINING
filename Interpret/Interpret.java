@@ -22,6 +22,14 @@ public class Interpret extends WindowAdapter implements ActionListener{
 		objectName = name;
 	}
 	
+	public void setFieldVal(int index, String val) {
+		model.setFieldVal(index, val);
+	}
+	
+	public void setSelectedField(int index) {
+		model.setSelectedField(index);
+	}
+	
 	public void setSelectedMethod(int index) {
 		model.setSelectedMethod(index);
 	}
@@ -42,15 +50,12 @@ public class Interpret extends WindowAdapter implements ActionListener{
 				saveObject(obj);
 			}
 		} catch (ClassNotFoundException e) {
-			// 指定した名称のクラスが存在しなかった場合
 			e.printStackTrace();
 			model.notifyError();
 		} catch (InstantiationException e) {
-			// インスタンス作成不可の場合
 			e.printStackTrace();
 			model.notifyError();
 		} catch (IllegalAccessException e) {
-			// 権限がないとき
 			e.printStackTrace();
 			model.notifyError();
 		}
@@ -84,15 +89,12 @@ public class Interpret extends WindowAdapter implements ActionListener{
 	
 	public void windowOpened(WindowEvent windowEvent){
 	    model.addObserver((Observer)windowEvent.getSource());
-	    //ViewをModelのObserverとして追加
 	}
 	
 	public void windowClosing(WindowEvent windowEvent){
 	    model.deleteObserver((Observer)windowEvent.getSource());
-	    //閉じるViewをModelのObserverから削除
 	    ((Frame)windowEvent.getSource()).dispose();
 	    if(model.countObservers()==0){
-	    //Modelに登録していたView(Observer)がなくなったらプログラム終了
 	    System.exit(0);
 	  }
 	}

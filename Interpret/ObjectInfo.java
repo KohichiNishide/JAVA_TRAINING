@@ -18,6 +18,7 @@ public class ObjectInfo extends Observable{
 	public Object obj;
 	public Object ret;
 	public Method method;
+	public Field field;
 	public Object[] array;
 	public List<Object> stockObjs = new ArrayList<Object>();
 	public Constructor constructor;
@@ -56,7 +57,6 @@ public class ObjectInfo extends Observable{
 				f.setAccessible(true);
 				System.out.println("fieldName: " + f.getName() + ", valueToInput: " + vals[i] + ", isAccessible: " + f.isAccessible());
 				if (!Modifier.isStatic(f.getModifiers())) {
-					// staticフィールドは変更できないためスキップ
 					setFieldValue(f, vals[i]);
 				}
 				fieldVals.add(vals[i]);
@@ -231,6 +231,14 @@ public class ObjectInfo extends Observable{
 		}
 	}
 	
+	public void setSelectedField(int index) {
+		parameterTypes.clear();
+		field = fields.get(index);
+		
+		setChanged();
+		notifyObservers("field");
+	}
+	
 	public void setSelectedMethod(int index) {
 		parameterTypes.clear();
 		method = methods.get(index);
@@ -318,6 +326,20 @@ public class ObjectInfo extends Observable{
 		}
 		setChanged();
 		notifyObservers("constructors");
+	}
+	
+	public void setFieldVal(int index, String val) {
+		try {
+			setFieldValue(field, val);
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		setChanged();
+		notifyObservers("setFieldVal");
 	}
 	
 	private void saveFields(List<Field> fs) {
@@ -436,6 +458,25 @@ public class ObjectInfo extends Observable{
 	
 	public final List<String> getConParaTypes(){
 	    return conParameterTypes;
+	}
+	
+	public final String getFieldName() {
+		return field.getName();
+	}
+	
+	public final String getFieldType() {
+		return field.getGenericType().toString();
+	}
+	
+	public final String getFieldVal() {
+		try {
+			return field.get(obj).toString();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return "";
 	}
 	
 	public final List<String> getArrayNames(){

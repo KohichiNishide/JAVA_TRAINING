@@ -2,7 +2,6 @@
 import java.awt.Button;
 import java.awt.Choice;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -17,12 +16,11 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.swing.JButton;
-
 public class InterpretView extends Frame implements Observer, ActionListener, ItemListener{
 	private static final long serialVersionUID = 1L;
 	private Label objectNameLabel = new Label("");
 	private Label successLabel = new Label("");
+	private Choice fieldChoice = new Choice();
 	private Label fieldNameLabel = new Label("Name");
 	private Label fieldTypeLabel = new Label("Type");
 	private Label fieldValLabel = new Label("Value");
@@ -40,9 +38,9 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 	private Interpret con;
 	static final int COMPONENT_COUNT = 44;
 	static final int PARAMETER_COUNT = 10;
-	private Label[] fieldNames = new Label[COMPONENT_COUNT];
-	private Label[] fieldTypes = new Label[COMPONENT_COUNT];
-	private TextField[] fieldValues = new TextField[COMPONENT_COUNT];
+	private Label fieldName = new Label("");
+	private Label fieldType = new Label("");
+	private TextField fieldValue = new TextField("");
 	private Choice methodsChoice = new Choice();
 	private Choice constructorsChoice = new Choice();
 	private Label methodTypeLabel = new Label("Parameter type");
@@ -95,6 +93,14 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 	    setElementButton.addActionListener(this);
 	    getElementButton.addActionListener(this);
 	    
+	    fieldChoice.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				Choice cho = (Choice)e.getItemSelectable();
+				con.setSelectedField(cho.getSelectedIndex());
+			}
+        });
+	    
 	    constructorsChoice.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -139,10 +145,11 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 		
         
 		
-        // ボタンフィールドの配置
+        // Add components
         addButton(okButton, 11, 1, 1, 1);
         addLabel(successLabel, 6, 2, 1, 2);
         addButton(setFButton, 6, 6, 4, 1);
+        addChoice(fieldChoice, 0, 6, 6, 1);
         addLabel(fieldLabel, 0, 5, 10, 1);
         addLabel(fieldValLabel, 6, 7, 4, 1);
         addLabel(constructorLabel, 10, 5, 4, 1);
@@ -161,21 +168,23 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
         }
         
         
-        // テキストフィールドの配置
+        
         addTextField(objectNameTextField, 0, 1, 10, 1);  
         addLabel(objectNameLabel, 0, 0, 1, 1);
         addLabel(fieldNameLabel, 0, 7, 3, 1);
         addLabel(fieldTypeLabel, 3, 7, 3, 1);
         
-        for (int i = 0; i < COMPONENT_COUNT; i++) {
+        /*for (int i = 0; i < COMPONENT_COUNT; i++) {
         	fieldNames[i] = new Label();
         	fieldTypes[i] = new Label();
         	fieldValues[i] = new TextField();
         	addLabel(fieldNames[i], 0, 8 + i, 3, 1);
         	addLabel(fieldTypes[i], 3, 8 + i, 3, 1);
         	addTextField(fieldValues[i], 6, 8 + i, 4, 1);
-        }
-        
+        }*/
+        addLabel(fieldName, 0, 8 , 3, 1);
+    	addLabel(fieldType, 3, 8 , 3, 1);
+    	addTextField(fieldValue, 6, 8 , 4, 1);
         
         
         addLabel(methodLabel, 10, GridBagConstraints.RELATIVE, 4, 1);
@@ -305,20 +314,15 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 		String str = (String) obj;
 		if (!model.IsError()) {
 			if (str == null) {
-				for (int i = 0; i < fieldNames.length; i++) {
-					fieldNames[i].setText("");
-					fieldTypes[i].setText("");
-					fieldValues[i].setText("");
-				}
-				
+				resetFields();
 				List<String> fieldNameList = model.getFieldNames();
+				fieldChoice.removeAll();
 				for (int i = 0; i < fieldNameList.size(); i++) {
-					fieldNames[i].setText(fieldNameList.get(i));
-					fieldTypes[i].setText(model.getFieldTypes().get(i));
-					fieldValues[i].setText(model.getFieldVals().get(i));
+					fieldChoice.add(fieldNameList.get(i));
 				}
 				List<String> methodNameList = model.getMethodNames();
 				resetMethods();
+				resetConstructors();
 				if (methodNameList == null)
 					return;
 				for (int i = 0; i < methodNameList.size(); i++) {
@@ -329,6 +333,12 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 					stockNames[i].setText(stockNameList.get(i));
 				}
 				
+			} else if (str.equals("field")) {
+				fieldName.setText(model.getFieldName());
+				fieldType.setText(model.getFieldType());
+				fieldValue.setText(model.getFieldVal());
+			} else if (str.equals("setFieldVal")) {
+				// Do nothing
 			} else if (str.equals("methodParameter")) {
 				resetMethodProperty();
 				List<String> methodTypeList = model.getMethodParaTypes();
@@ -350,6 +360,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 					constructorsChoice.add(conList.get(i));
 				}
 			} else if (str.equals("conParameter")) {
+				resetConProperty();
 				List<String> conTypeList = model.getConParaTypes();
 				if (conTypeList == null)
 					return;
@@ -373,11 +384,11 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 			}
 		} else {
 			successLabel.setText("Failed !!");
-			for (int i = 0; i < fieldNames.length; i++) {
+			/*for (int i = 0; i < fieldNames.length; i++) {
 				fieldNames[i].setText("");
 				fieldTypes[i].setText("");
 				fieldValues[i].setText("");
-			}
+			}*/
 		}
 	}
 
@@ -386,15 +397,15 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 		if (e.getActionCommand() == "Create object") {
 			con.setObjectName(objectNameTextField.getText());
 		} else if (e.getActionCommand() == "Set field value") {	
-			String[] vals = new String[fieldValues.length];
+			/*String[] vals = new String[fieldValues.length];
 			for (int i = 0; i < vals.length; i++) {
 				vals[i] = fieldValues[i].getText();
 			}
-			con.setFieldValues(vals);
+			con.setFieldValues(vals);*/
+			con.setFieldVal(fieldChoice.getSelectedIndex(), fieldValue.getText());
 		} else if (e.getActionCommand() == "Show constructor") {
 			con.setObjectName(objectNameTextField.getText());
 		} else if (e.getActionCommand() == "Invoke method") {
-			// 引数の数を計算する
 			int argCount = 0;
 			for (Label tx : methodTypes) {
 				if (tx.getText() != "") {
@@ -408,7 +419,6 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 			}
 			con.callMethod(vals);
 		} else if (e.getActionCommand() == "Invoke constructor") {
-			// 引数の数を計算する
 			int argCount = 0;
 			for (Label tx : conTypes) {
 				if (tx.getText() != "") {
@@ -436,7 +446,6 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 	public void itemStateChanged(ItemEvent e) {
 		Choice cho = (Choice)e.getItemSelectable();
 		con.setSelectedMethod(cho.getSelectedIndex());
-		//con.callMethod(cho.getSelectedIndex());	
 	}
 	
 	private void resetMethodProperty() {
@@ -446,12 +455,29 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 		}
 	}
 	
-	private void resetMethods() {
+	private void resetMethods() {	
 		methodsChoice.removeAll();
+		 for(int i = 0; i < PARAMETER_COUNT; i++) {
+	        	methodTypes[i].setText("");
+	        	methodValues[i].setText("");
+	        }
+	}
+	
+	private void resetFields() {
+		fieldName.setText("");
+		fieldType.setText("");
+		fieldValue.setText("");
 	}
 	
 	private void resetConstructors() {
 		constructorsChoice.removeAll();
+	}
+	
+	private void resetConProperty() {
+		for (int i = 0; i < PARAMETER_COUNT; i++) {
+			conTypes[i].setText("");
+			conValues[i].setText("");
+		}
 	}
 	
 	private void resetElements() {
