@@ -79,6 +79,7 @@ public class PropertyDialog extends Frame implements ActionListener{
 				PropertyDialog.buFont = PropertyData.fonts[cho.getSelectedIndex()];
 				Font f = new Font(buFont, Font.PLAIN, 35);
 				PropertyDialog.preview.setFont(f);
+				PropertyDialog.preview.setText("Preview");
 			}
         });
         sizeChoice.addItemListener(new ItemListener() {
@@ -111,7 +112,7 @@ public class PropertyDialog extends Frame implements ActionListener{
         addPreviewLabel(preview, 2, 2, 2, 2);
         
         Label memo = new Label("Å´For font", Label.CENTER);
-        Font memoFont = new Font("Casual", Font.BOLD, 20);
+        Font memoFont = new Font("Arial Black", Font.BOLD, 20);
         memo.setFont(memoFont);
         addLabel(memo, 2, 1, 1, 1);
         
