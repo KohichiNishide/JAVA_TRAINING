@@ -22,9 +22,11 @@ public class Refctor {
 			methods = getAllMethodsFromClass(clzz);
 			int mod = clzz.getModifiers();			
 			
+			// Package declaration
 			System.out.println("package " + pkg.getName());
 			String modStr = getModifier(mod);
 			
+			// Class declaration
 			System.out.print(modStr + "class " + clzz.getSimpleName() + " ");
 			if( sup != null && !sup.getSimpleName().equals("Object")) {
                 System.out.println( "extends " + sup.getSimpleName());
@@ -32,11 +34,13 @@ public class Refctor {
 				System.out.println( "{");
 			}
 			
+			// Field declaration
 			for (Field f : fields) {
 				String str = getModifier(f.getModifiers());
 				System.out.println( str + f.getType().getSimpleName() + " " + f.getName() + ";");
 			}
 			
+			// Method declaration
 			for (Method m : methods) {
 				String str = getModifier(m.getModifiers());
 				String returnStr = m.getGenericReturnType().toString();
