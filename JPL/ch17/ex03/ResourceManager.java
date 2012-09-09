@@ -1,8 +1,10 @@
 package ch17.ex03;
 
+import java.io.File;
 import java.lang.ref.PhantomReference;
 import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,11 +62,11 @@ public final class ResourceManager {
 	}
 	
 	private static class ResourceImpl implements Resource {
-		Object storedKey; // keyを直接格納するように変更。use, release時に強参照を解除する
+		WeakReference<Object> storedKey; // keyを直接格納するように変更。
 		boolean needsRelease = false;
 		
 		ResourceImpl(Object key) {
-			storedKey = key;
+			storedKey = new WeakReference<Object>(key);
 			
 			// .. 外部リソースの設定
 			
@@ -76,7 +78,6 @@ public final class ResourceManager {
 				throw new IllegalArgumentException("wrong key");
 			
 			// ... リソースの使用 ...
-			storedKey = null;
 		}
 		
 		public synchronized void release() {
@@ -84,7 +85,6 @@ public final class ResourceManager {
 				needsRelease = false;
 				
 				// ..リソースの解放 ...
-				storedKey = null;
 			}		
 		}
 	}
