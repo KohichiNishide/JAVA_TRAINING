@@ -48,6 +48,8 @@ public class StreamManager implements Attributed, Iterable<Attr>{
 				case VALUE:
 					attr.setValue(new Double(in.sval));
 					break;
+				default:
+					throw new IOException("bad state");
 				}
 				attr = null;
 			}
