@@ -241,7 +241,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
         addLabel(methodReturnValLabel, 12, GridBagConstraints.RELATIVE, 2, 1);
         addLabel(methodReturnTypeContent, 10, GridBagConstraints.RELATIVE, 2, 1);
         addLabel(methodReturnValContent, 12, GridBagConstraints.RELATIVE, 2, 1);
-        addExceptionTextField(exceptionTextField, 10, GridBagConstraints.RELATIVE, 4, 4);
+        addExceptionTextField(exceptionTextField, 0, GridBagConstraints.RELATIVE, 15, 4);
         
         addLabel(arrayLabel, 15, 5, 4, 1);
         addLabel(arrayTypeLabel, 15, 6, 2, 1);
