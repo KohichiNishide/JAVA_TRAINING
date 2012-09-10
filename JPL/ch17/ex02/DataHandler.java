@@ -37,6 +37,10 @@ public class DataHandler {
 		
 		DataHandler handler = new DataHandler();
 		handler.readFile(file);
-		handler.readFile(file); // "Data still is restored"が出力されていればOK
+		file = null;
+		System.gc();
+		
+		File file2 = new File("/Users/knishide/Desktop/test.dat");
+		handler.readFile(file2); // "Data still is restored"が出力されなければOK
 	}
 }
