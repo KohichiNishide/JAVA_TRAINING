@@ -30,7 +30,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 	private Label fieldLabel = new Label("Field list");
 	private Label constructorLabel = new Label("Constructor list");
 	private Label arrayLabel = new Label("Array");
-	private TextField objectNameTextField = new TextField("java.awt.Frame");
+	private TextField objectNameTextField = new TextField("java.lang.Integer");
 	private Button okButton = new Button("Create object");
 	private Button showConButton = new Button("Show constructor");
 	private Button setFButton = new Button("Set field value");
@@ -58,6 +58,8 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 	private Label[] conTypes = new Label[PARAMETER_COUNT];
 	private TextField[] conValues = new TextField[PARAMETER_COUNT];
 	private TextField exceptionTextField = new TextField("Exception log...");
+	private Label fieldResultVal = new Label("");
+	private Label fieldResultIcon = new Label("");
 	
 	private Label arrayTypeLabel = new Label("Array type");
 	private TextField arrayTypeText = new TextField("");
@@ -218,6 +220,8 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
         addLabel(fieldName, 0, 8 , 3, 1);
     	addLabel(fieldType, 3, 8 , 3, 1);
     	addTextField(fieldValue, 6, 8 , 4, 1);
+    	addLabel(fieldResultIcon, 3, 9, 3, 1);
+    	addLabel(fieldResultVal, 6, 9, 4, 1);
         
         
         addLabel(methodLabel, 10, GridBagConstraints.RELATIVE, 4, 1);
@@ -373,6 +377,10 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 				fieldValue.setText(model.getFieldVal());
 			} else if (str.equals("setFieldVal")) {
 				// Do nothing
+				fieldResultIcon.setText("➡");
+				fieldResultIcon.setForeground(Color.RED);
+				fieldResultVal.setText(model.getFieldVal());
+				fieldResultVal.setForeground(Color.RED);
 			} else if (str.equals("methodParameter")) {
 				resetMethodProperty();
 				List<String> methodTypeList = model.getMethodParaTypes();
@@ -432,11 +440,6 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 		if (e.getActionCommand() == "Create object") {
 			con.setObjectName(objectNameTextField.getText());
 		} else if (e.getActionCommand() == "Set field value") {	
-			/*String[] vals = new String[fieldValues.length];
-			for (int i = 0; i < vals.length; i++) {
-				vals[i] = fieldValues[i].getText();
-			}
-			con.setFieldValues(vals);*/
 			con.setFieldVal(fieldChoice.getSelectedIndex(), fieldValue.getText());
 		} else if (e.getActionCommand() == "Show constructor") {
 			con.setObjectName(objectNameTextField.getText());
@@ -502,6 +505,8 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 		fieldName.setText("");
 		fieldType.setText("");
 		fieldValue.setText("");
+		fieldResultIcon.setText("");
+		fieldResultVal.setText("");
 	}
 	
 	private void resetConstructors() {
