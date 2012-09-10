@@ -80,7 +80,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 	public InterpretView(Interpret controller) {
 		con = controller;
 		setTitle("Interpret main view");
-	    setSize(1000, 800);
+	    setSize(1000, 1000);
 	    setLocationRelativeTo(null);
 	    setResizable(true);
 	    setLayout(gbl);	    
@@ -101,7 +101,9 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				Choice cho = (Choice)e.getItemSelectable();
-				con.setSelectedField(cho.getSelectedIndex());
+				int index = cho.getSelectedIndex();
+				if (index != -1)
+					con.setSelectedField(index);
 			}
         });
 	    
@@ -109,14 +111,18 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				Choice cho = (Choice)e.getItemSelectable();
-				con.setSelectedConstructor(cho.getSelectedIndex());
+				int index = cho.getSelectedIndex();
+				if (index != -1)
+					con.setSelectedConstructor(index);
 			}
         });
 	    
 	    constructorsChoice.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				con.setSelectedConstructor(constructorsChoice.getSelectedIndex());
+				int index = constructorsChoice.getSelectedIndex();
+				if (index != -1)
+					con.setSelectedConstructor(index);
 			}
 
 			@Override
@@ -366,7 +372,8 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 				showIndicatorForSetField();
 				fieldResultVal.setText(model.getFieldVal());
 				fieldResultVal.setForeground(Color.RED);
-				updateStockObjectList(model);		
+				updateStockObjectList(model);
+				updateArrayList(model);
 			} else if (str.equals("methodParameter")) {
 				resetMethodProperty();
 				List<String> methodTypeList = model.getMethodParaTypes();
@@ -399,13 +406,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 				// TBD
 				exceptionTextField.setText(model.getExceptionStr());
 			} else if (str.equals("arrayReturnVal")) {
-				resetElements();
-				List<String> arrayList = model.getArrayNames();
-				if (arrayList == null)
-					return;
-				for (int i = 0; i < arrayList.size(); i++) {
-					arrayChoice.add(arrayList.get(i));
-				}
+				updateArrayList(model);
 				exceptionTextField.setText(model.getExceptionStr());
 			} else {			
 				System.out.println("************Else*************");
@@ -413,11 +414,6 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 		} else {
 			successLabel.setText("");
 			exceptionTextField.setText(model.getExceptionStr());
-			/*for (int i = 0; i < fieldNames.length; i++) {
-				fieldNames[i].setText("");
-				fieldTypes[i].setText("");
-				fieldValues[i].setText("");
-			}*/
 		}
 	}
 	
@@ -425,6 +421,16 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 		List<String> stockNameList = model.getStockObjs();
 		for (int i = 0; i < numberLabels.length; i++) {
 			stockNames[i].setText(stockNameList.get(i));
+		}
+	}
+	
+	private void updateArrayList(ObjectInfo model) {
+		resetElements();
+		List<String> arrayList = model.getArrayNames();
+		if (arrayList == null)
+			return;
+		for (int i = 0; i < arrayList.size(); i++) {
+			arrayChoice.add(arrayList.get(i));
 		}
 	}
 	
