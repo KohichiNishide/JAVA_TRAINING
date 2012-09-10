@@ -51,13 +51,13 @@ public class Interpret extends WindowAdapter implements ActionListener{
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-			model.notifyError();
+			model.notifyError(e.toString());
 		} catch (InstantiationException e) {
 			e.printStackTrace();
-			model.notifyError();
+			model.notifyError(e.toString());
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
-			model.notifyError();
+			model.notifyError(e.toString());
 		}
 	}
 	

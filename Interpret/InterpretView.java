@@ -78,9 +78,9 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 	public InterpretView(Interpret controller) {
 		con = controller;
 		setTitle("Interpret main view");
-	    setSize(1600, 1200);
+	    setSize(1000, 800);
 	    setLocationRelativeTo(null);
-	    setResizable(false);
+	    setResizable(true);
 	    setLayout(gbl);	    
 	   
 	    okButton.addActionListener(this);
@@ -346,6 +346,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 		ObjectInfo model = (ObjectInfo)obs;
 		String str = (String) obj;
 		if (!model.IsError()) {
+			exceptionTextField.setText("");
 			if (str == null) {
 				resetFields();
 				List<String> fieldNameList = model.getFieldNames();
@@ -417,6 +418,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 			}
 		} else {
 			successLabel.setText("");
+			exceptionTextField.setText(model.getExceptionStr());
 			/*for (int i = 0; i < fieldNames.length; i++) {
 				fieldNames[i].setText("");
 				fieldTypes[i].setText("");

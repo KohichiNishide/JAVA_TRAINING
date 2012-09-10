@@ -77,6 +77,7 @@ public class ObjectInfo extends Observable{
 	
 	private void setFieldValue(Field f, String val) throws NumberFormatException, IllegalArgumentException, IllegalAccessException {
 		String typeStr = f.getType().toString();
+		f.setAccessible(true);
 		if (typeStr.equals("int")) {
 			f.set(obj, Integer.parseInt(val));
 		} else if (typeStr.equals("short")) {
@@ -126,7 +127,7 @@ public class ObjectInfo extends Observable{
 					result[i] = Boolean.valueOf(args[i]);
 				} else if (typeStr.equals("class java.lang.String")) {
 					result[i] = args[i];
-				} else if (typeStr.equals("class java.awt.Color")) {
+				}/* else if (typeStr.equals("class java.awt.Color")) {
 					Field field;
 					try {
 						field = Color.class.getField(args[i]);
@@ -145,7 +146,7 @@ public class ObjectInfo extends Observable{
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}		
-				} else {
+				} */else {
 					result[i] = (Object) args[i];
 				}
 			}
@@ -182,7 +183,7 @@ public class ObjectInfo extends Observable{
 					result[i] = Boolean.valueOf(args[i]);
 				} else if (typeStr.equals("class java.lang.String")) {
 					result[i] = args[i];
-				} else if (typeStr.equals("class java.awt.Color")) {
+				}/* else if (typeStr.equals("class java.awt.Color")) {
 					Field field;
 					try {
 						field = Color.class.getField(args[i]);
@@ -201,7 +202,8 @@ public class ObjectInfo extends Observable{
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}		
-				} else {
+				}*/
+				else {
 					result[i] = (Object) args[i];
 				}
 			}
@@ -213,8 +215,9 @@ public class ObjectInfo extends Observable{
 		return isError;
 	}
 	
-	public void notifyError() {
+	public void notifyError(String ex) {
 		isError = true;
+		this.exception = ex;
 		setChanged();
 		notifyObservers();
 	}
@@ -234,6 +237,7 @@ public class ObjectInfo extends Observable{
 	public void setSelectedField(int index) {
 		parameterTypes.clear();
 		field = fields.get(index);
+		field.setAccessible(true);
 		
 		setChanged();
 		notifyObservers("field");
