@@ -48,6 +48,16 @@ public class ObjectInfo extends Observable{
 		notifyObservers();
 	}
 	
+	public void setStockedObjectToWorkSpace() {
+		reset();
+		saveFields(getAllFieldsFromClass(obj.getClass()));
+		saveMethods(getAllMethodsFromClass(obj.getClass()));
+
+		isError = false;
+		setChanged();
+		notifyObservers();
+	}
+	
 	public void setFieldValues(String[] vals) {
 		fieldVals.clear();
 		for (int i = 0; i < vals.length; i++) {			
@@ -453,6 +463,17 @@ public class ObjectInfo extends Observable{
 			}
 		}
 		return list;
+	}
+	
+	public final void getStockObject(String name) {
+		if (isStocked(name)) {			
+			int re = Integer.parseInt(name.replaceAll("[^0-9]",""));
+			obj = stockObjs.get(re);
+			setStockedObjectToWorkSpace();
+			isError = false;
+			setChanged();
+			notifyObservers();
+		}
 	}
 	
 	public final List<String> getStockObjs() {

@@ -31,7 +31,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 	private Label constructorLabel = new Label("Constructor list");
 	private Label arrayLabel = new Label("Array");
 	private TextField objectNameTextField = new TextField("java.lang.Integer");
-	private Button okButton = new Button("Create object");
+	private Button okButton = new Button("Set #");
 	private Button showConButton = new Button("Show constructor");
 	private Button setFButton = new Button("Set field value");
 	private Button invokeMButton = new Button("Invoke method");
@@ -208,15 +208,6 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
         addLabel(objectNameLabel, 0, 0, 1, 1);
         addLabel(fieldNameLabel, 0, 7, 3, 1);
         addLabel(fieldTypeLabel, 3, 7, 3, 1);
-        
-        /*for (int i = 0; i < COMPONENT_COUNT; i++) {
-        	fieldNames[i] = new Label();
-        	fieldTypes[i] = new Label();
-        	fieldValues[i] = new TextField();
-        	addLabel(fieldNames[i], 0, 8 + i, 3, 1);
-        	addLabel(fieldTypes[i], 3, 8 + i, 3, 1);
-        	addTextField(fieldValues[i], 6, 8 + i, 4, 1);
-        }*/
         addLabel(fieldName, 0, 8 , 3, 1);
     	addLabel(fieldType, 3, 8 , 3, 1);
     	addTextField(fieldValue, 6, 8 , 4, 1);
@@ -366,11 +357,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 				for (int i = 0; i < methodNameList.size(); i++) {
 					methodsChoice.add(methodNameList.get(i));
 				}
-				List<String> stockNameList = model.getStockObjs();
-				for (int i = 0; i < numberLabels.length; i++) {
-					stockNames[i].setText(stockNameList.get(i));
-				}
-				
+				updateStockObjectList(model);				
 			} else if (str.equals("field")) {
 				fieldName.setText(model.getFieldName());
 				fieldType.setText(model.getFieldType());
@@ -379,6 +366,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 				showIndicatorForSetField();
 				fieldResultVal.setText(model.getFieldVal());
 				fieldResultVal.setForeground(Color.RED);
+				updateStockObjectList(model);		
 			} else if (str.equals("methodParameter")) {
 				resetMethodProperty();
 				List<String> methodTypeList = model.getMethodParaTypes();
@@ -433,6 +421,13 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 		}
 	}
 	
+	private void updateStockObjectList(ObjectInfo model) {
+		List<String> stockNameList = model.getStockObjs();
+		for (int i = 0; i < numberLabels.length; i++) {
+			stockNames[i].setText(stockNameList.get(i));
+		}
+	}
+	
 	private void showIndicatorForSetField() {
 		try {
 			fieldResultIcon.setForeground(Color.RED);
@@ -449,16 +444,17 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 			fieldResultIcon.setText("➡➡➡➡➡➡");
 			Thread.sleep(200);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand() == "Create object") {
-			con.setObjectName(objectNameTextField.getText());
+		if (e.getActionCommand() == "Set #") {
+			//con.setObjectName(objectNameTextField.getText());
+			con.getStockObject(objectNameTextField.getText());
 		} else if (e.getActionCommand() == "Set field value") {	
+			fieldResultVal.setText("");
 			con.setFieldVal(fieldChoice.getSelectedIndex(), fieldValue.getText());
 		} else if (e.getActionCommand() == "Show constructor") {
 			con.setObjectName(objectNameTextField.getText());
@@ -530,6 +526,10 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 	
 	private void resetConstructors() {
 		constructorsChoice.removeAll();
+		for(int i = 0; i < PARAMETER_COUNT; i++) {
+        	conTypes[i].setText("");
+        	conValues[i].setText("");
+        }
 	}
 	
 	private void resetConProperty() {

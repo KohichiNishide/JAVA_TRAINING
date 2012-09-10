@@ -87,6 +87,10 @@ public class Interpret extends WindowAdapter implements ActionListener{
 		model.setElement(index);
 	}
 	
+	public void getStockObject(String name) {
+		model.getStockObject(name);
+	}
+	
 	public void windowOpened(WindowEvent windowEvent){
 	    model.addObserver((Observer)windowEvent.getSource());
 	}
