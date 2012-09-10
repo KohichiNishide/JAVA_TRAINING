@@ -376,9 +376,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 				fieldType.setText(model.getFieldType());
 				fieldValue.setText(model.getFieldVal());
 			} else if (str.equals("setFieldVal")) {
-				// Do nothing
-				fieldResultIcon.setText("➡");
-				fieldResultIcon.setForeground(Color.RED);
+				showIndicatorForSetField();
 				fieldResultVal.setText(model.getFieldVal());
 				fieldResultVal.setForeground(Color.RED);
 			} else if (str.equals("methodParameter")) {
@@ -432,6 +430,27 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 				fieldTypes[i].setText("");
 				fieldValues[i].setText("");
 			}*/
+		}
+	}
+	
+	private void showIndicatorForSetField() {
+		try {
+			fieldResultIcon.setForeground(Color.RED);
+			fieldResultIcon.setText("➡");
+			Thread.sleep(200);
+			fieldResultIcon.setText("➡➡");
+			Thread.sleep(200);
+			fieldResultIcon.setText("➡➡➡");
+			Thread.sleep(200);
+			fieldResultIcon.setText("➡➡➡➡");
+			Thread.sleep(200);
+			fieldResultIcon.setText("➡➡➡➡➡");
+			Thread.sleep(200);
+			fieldResultIcon.setText("➡➡➡➡➡➡");
+			Thread.sleep(200);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
