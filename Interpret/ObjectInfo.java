@@ -58,6 +58,16 @@ public class ObjectInfo extends Observable{
 		notifyObservers();
 	}
 	
+	public void setArrayObjectToWorkSpace(Object obj) {
+		reset();
+		saveFields(getAllFieldsFromClass(obj.getClass()));
+		saveMethods(getAllMethodsFromClass(obj.getClass()));
+
+		isError = false;
+		setChanged();
+		notifyObservers();
+	}
+	
 	public void setFieldValues(String[] vals) {
 		fieldVals.clear();
 		for (int i = 0; i < vals.length; i++) {			
@@ -355,7 +365,7 @@ public class ObjectInfo extends Observable{
 	}
 	
 	public void readSelectedElement(int index) {
-		saveObject(array[index]);
+		setArrayObjectToWorkSpace(array[index]);
 	}
 	
 	private void reset() {

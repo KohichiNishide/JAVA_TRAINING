@@ -419,7 +419,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 	
 	private void updateStockObjectList(ObjectInfo model) {
 		List<String> stockNameList = model.getStockObjs();
-		for (int i = 0; i < numberLabels.length; i++) {
+		for (int i = 0; i < stockNameList.size(); i++) {
 			stockNames[i].setText(stockNameList.get(i));
 		}
 	}
