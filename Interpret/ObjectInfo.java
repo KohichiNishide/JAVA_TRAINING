@@ -461,6 +461,8 @@ public class ObjectInfo extends Observable{
 	
 	public final List<String> getArrayNames(){
 		List<String> list = new ArrayList<String>();
+		if (array == null)
+			return list;
 		for (Object o : array) {
 			if (o == null) {
 				list.add("null");
@@ -484,6 +486,8 @@ public class ObjectInfo extends Observable{
 	
 	public final List<String> getStockObjs() {
 		List<String> list = new ArrayList<String>();
+		if (stockObjs == null)
+			return list;
 		for (Object o : stockObjs) {
 			if (o == null) {
 				list.add("null");
