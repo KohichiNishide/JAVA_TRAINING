@@ -374,6 +374,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 				fieldResultVal.setForeground(Color.RED);
 				updateStockObjectList(model);
 				updateArrayList(model);
+				exceptionTextField.setText(model.getExceptionStr());
 			} else if (str.equals("methodParameter")) {
 				resetMethodProperty();
 				List<String> methodTypeList = model.getMethodParaTypes();

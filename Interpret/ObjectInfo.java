@@ -79,14 +79,11 @@ public class ObjectInfo extends Observable{
 					setFieldValue(f, vals[i]);
 				}
 				fieldVals.add(vals[i]);
-			} catch (NullPointerException e) {
-				e.printStackTrace();
+			} catch (NullPointerException e) {				
 				fieldVals.add("");
 			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
 				fieldVals.add("");
 			} catch (IllegalAccessException e) {
-				e.printStackTrace();
 				fieldVals.add("");
 			}
 		}
@@ -252,17 +249,21 @@ public class ObjectInfo extends Observable{
 			if (args.length == 0) args = null;
 			ret = method.invoke(obj, getMethodPrameterValue(method, args));
 		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-			exception = e.toString();
+			setException(e);
 		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-			exception = e.toString();
+			setException(e);
 		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-			exception = e.toString();
+			setException(e);
 		}
 		setChanged();
 		notifyObservers("methodReturnVal");
+	}
+	
+	private void setException(Exception e) {
+		Exception newEx = new Exception();
+		newEx.initCause(e);
+		newEx.printStackTrace();
+		exception = newEx.getCause().toString();
 	}
 	
 	public void createArray(String type, String size) {
@@ -270,8 +271,7 @@ public class ObjectInfo extends Observable{
 			Class<?> clazz = Class.forName(type);
 			array = (Object[]) Array.newInstance(clazz, Integer.parseInt(size));
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			exception = e.toString();
+			setException(e);
 		}
 		setChanged();
 		notifyObservers("arrayReturnVal");
@@ -285,17 +285,13 @@ public class ObjectInfo extends Observable{
 			saveObject(constructor.newInstance(getConPrameterValue(constructor, args)));
 			
 		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-			exception = e.toString();
+			setException(e);
 		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-			exception = e.toString();
+			setException(e);
 		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-			exception = e.toString();
+			setException(e);
 		} catch (InstantiationException e) {
-			e.printStackTrace();
-			exception = e.toString();
+			setException(e);
 		}
 		setChanged();
 		notifyObservers("conReturnVal");
@@ -316,11 +312,11 @@ public class ObjectInfo extends Observable{
 		try {
 			setFieldValue(field, val);
 		} catch (NumberFormatException e) {
-			e.printStackTrace();
+			setException(e);
 		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
+			setException(e);
 		} catch (IllegalAccessException e) {
-			e.printStackTrace();
+			setException(e);
 		}
 		setChanged();
 		notifyObservers("setFieldVal");
