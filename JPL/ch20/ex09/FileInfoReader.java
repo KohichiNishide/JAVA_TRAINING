@@ -16,6 +16,15 @@ public class FileInfoReader {
 			System.out.println("getParent() = " + file.getParent());
 			System.out.println("lastModified() = " + file.lastModified());
 			System.out.println("length() = " + file.length());
+			System.out.println("exists() = " + file.exists());
+			System.out.println("canRead() = " + file.canRead());
+			System.out.println("canWrite() = " + file.canWrite());
+			System.out.println("isFile() = " + file.isFile());
+			System.out.println("isDirectory() = " + file.isDirectory());
+			System.out.println("isAbsolute() = " + file.isAbsolute());
+			System.out.println("isHidden = " + file.isHidden());
+			
+				
 			System.out.print("list() = ");
 			String[] sameDirFiles = file.list();
 			if (sameDirFiles != null) {
