@@ -45,7 +45,6 @@ public class LineReader extends FilterReader  {
 
         StringReader sr = new StringReader(sb.toString());
         LineReader lr = new LineReader(sr);
-        // LineReader lr = new LineReader(new InputStreamReader(System.in));
 
         // １行目
         System.out.println(lr.readLine());

@@ -57,12 +57,14 @@ public class Attr {
 	}
 	
 	public static void main(String[] args) throws IOException {
-		InputStream fin = new FileInputStream("/Users/knishide/Desktop/input.txt");
+		final String INPUT_FILE_PATH = "JPL/ch20/ex07/input.txt";
+		final String OUTPUT_FILE_PATH = "JPL/ch20/ex07/output.txt";
+		InputStream fin = new FileInputStream(INPUT_FILE_PATH);
 		DataInputStream in = new DataInputStream(fin);
 		Attr attr = new Attr(in);
 		attr.setValue("kohichi");
 		
-		OutputStream fout = new FileOutputStream("/Users/knishide/Desktop/output.txt");
+		OutputStream fout = new FileOutputStream(OUTPUT_FILE_PATH);
 		DataOutputStream out = new DataOutputStream(fout);
 		attr.addContentToDataOutputStream(out);
 	}

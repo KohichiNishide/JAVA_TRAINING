@@ -90,7 +90,7 @@ public class StreamManager implements Attributed, Iterable<Attr>{
 		// value="1"
 		// op="-"
 
-		Reader source = new FileReader("/Users/knishide/Desktop/nameOPValue.txt");
+		Reader source = new FileReader("JPL/ch20/ex06/nameOPValue.txt");
 		Iterator<Attr> attrs = manager.readStream(source);
 		while (attrs.hasNext()) {
 			Attr attr = attrs.next();

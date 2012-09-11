@@ -8,7 +8,7 @@ public class FindWordTest {
 
 	@Test
 	public void test() throws IOException {
-		String[] args = {"nishide", "/Users/knishide/Desktop/findWord.txt"};
+		String[] args = {"nishide", "JPL/ch20/ex05/findWord.txt"};
 		FindWord.main(args);
 	}
 

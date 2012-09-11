@@ -44,6 +44,10 @@ public class Main {
         for (byte tmp : decrypt)
             System.out.println(toBinaryString(tmp));
 
+        baos.close();
+        encos.close();
+        bais.close();
+        decis.close();
     }
 	
 	public static String toBinaryString(byte b) {

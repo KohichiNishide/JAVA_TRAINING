@@ -21,10 +21,10 @@ public class TranslateByte {
 	}
 	
 	
-	public static void main(String[] args) throws FileNotFoundException {
+	public static void main(String[] args) throws IOException {
 		String[] strs = {"b", "B"};
-		InputStream input = new FileInputStream("/Users/knishide/Desktop/input.txt");
-		OutputStream output = new FileOutputStream("/Users/knishide/Desktop/output.txt");
+		InputStream input = new FileInputStream("JPL/ch20/ex01/input.txt");
+		OutputStream output = new FileOutputStream("JPL/ch20/ex01/output.txt");
 		TranslateByte.createOutputStreamFromInputStream(input, output, strs);
 	}
 }

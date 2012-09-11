@@ -38,7 +38,7 @@ public class TranslateByte extends FilterInputStream  {
     }
 
     public static void main(String[] args) throws IOException {
-    	InputStream input = new FileInputStream("/Users/knishide/Desktop/input.txt");
+    	InputStream input = new FileInputStream("JPL/ch20/ex02/input.txt");
     	TranslateByte filter = new TranslateByte(input);
         filter.setFrom((byte)args[0].charAt(0));
         filter.setTo((byte)args[1].charAt(0));
@@ -47,5 +47,6 @@ public class TranslateByte extends FilterInputStream  {
             System.out.write(b);
             System.out.println(b);
         }
+        input.close();
     }
 }
