@@ -377,8 +377,8 @@ public class ObjectInfo extends Observable{
 		Field[] fields = cls.getDeclaredFields();
 		Field[] publicFields = cls.getFields();
 		for (Field f : publicFields) {
-            if(f.getDeclaringClass() == Object.class)
-                    continue;
+            //if(f.getDeclaringClass() == Object.class)
+                    //continue;
             if(cls.toString().equals(f.getDeclaringClass().toString()))
                     continue;
             allFields.add(f);
@@ -395,8 +395,8 @@ public class ObjectInfo extends Observable{
 		Method[] methods = cls.getDeclaredMethods();
 		Method[] publicMethods = cls.getMethods();
 		for (Method m : publicMethods) {
-            if(m.getDeclaringClass() == Object.class)
-                    continue;
+            //if(m.getDeclaringClass() == Object.class)
+                    //continue;
             if(cls.toString().equals(m.getDeclaringClass().toString()))
                     continue;
             allMethods.add(m);
