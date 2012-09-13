@@ -87,6 +87,7 @@ public class ObjectInfo extends Observable{
 				fieldVals.add("");
 			}
 		}
+		isError = false;
 		setChanged();
 		notifyObservers();
 	}
@@ -215,7 +216,7 @@ public class ObjectInfo extends Observable{
 		parameterTypes.clear();
 		field = fields.get(index);
 		field.setAccessible(true);
-		
+		isError = false;
 		setChanged();
 		notifyObservers("field");
 	}
@@ -227,6 +228,7 @@ public class ObjectInfo extends Observable{
 		for (Type para : paras) {
 			parameterTypes.add(para.toString());
 		}
+		isError = false;
 		setChanged();
 		notifyObservers("methodParameter");
 	}
@@ -238,6 +240,7 @@ public class ObjectInfo extends Observable{
 		for (Type para : paras) {
 			conParameterTypes.add(para.toString());
 		}
+		isError = false;
 		setChanged();
 		notifyObservers("conParameter");
 	}
@@ -255,6 +258,7 @@ public class ObjectInfo extends Observable{
 		} catch (InvocationTargetException e) {
 			setException(e);
 		}
+		isError = false;
 		setChanged();
 		notifyObservers("methodReturnVal");
 	}
@@ -273,6 +277,7 @@ public class ObjectInfo extends Observable{
 		} catch (ClassNotFoundException e) {
 			setException(e);
 		}
+		isError = false;
 		setChanged();
 		notifyObservers("arrayReturnVal");
 	}
@@ -293,6 +298,7 @@ public class ObjectInfo extends Observable{
 		} catch (InstantiationException e) {
 			setException(e);
 		}
+		isError = false;
 		setChanged();
 		notifyObservers("conReturnVal");
 	}
@@ -304,6 +310,7 @@ public class ObjectInfo extends Observable{
 			constructors.add(con);
 			conNames.add(con.toString());
 		}
+		isError = false;
 		setChanged();
 		notifyObservers("constructors");
 	}
@@ -318,6 +325,7 @@ public class ObjectInfo extends Observable{
 		} catch (IllegalAccessException e) {
 			setException(e);
 		}
+		isError = false;
 		setChanged();
 		notifyObservers("setFieldVal");
 	}
@@ -356,6 +364,7 @@ public class ObjectInfo extends Observable{
 	
 	public void setElement(int index) {
 		array[index] = obj;
+		isError = false;
 		setChanged();
 		notifyObservers("arrayReturnVal");
 	}
@@ -474,6 +483,12 @@ public class ObjectInfo extends Observable{
 	}
 	
 	public final void getStockObject(String name) {
+		if (stockObjs == null || stockObjs.size() == 0) {
+			obj = null;
+			setChanged();
+			notifyObservers();
+		}
+		
 		if (isStocked(name)) {			
 			int re = Integer.parseInt(name.replaceAll("[^0-9]",""));
 			obj = stockObjs.get(re);
@@ -496,6 +511,13 @@ public class ObjectInfo extends Observable{
 			}
 		}
 		return list;
+	}
+	
+	public void removeAllStockObjects() {
+		isError = false;
+		stockObjs.clear();
+		setChanged();
+		notifyObservers();
 	}
 	
 	private Boolean isStocked(String str) {

@@ -102,6 +102,10 @@ public class Interpret extends WindowAdapter implements ActionListener{
 	    System.exit(0);
 	  }
 	}
+	
+	public void removeAllStockObjects() {
+		model.removeAllStockObjects();
+	}
 	//--------------------------------------------------------------------
 	//							Private methods
 	//--------------------------------------------------------------------
@@ -112,7 +116,7 @@ public class Interpret extends WindowAdapter implements ActionListener{
 	private void showConstructor(String objName) {
 		try {
 			Class<?> clazz = Class.forName(objName);
-			if (clazz != null ) {
+			if (clazz != null) {
 				Constructor[] cons = clazz.getConstructors();
 				model.saveConstructors(cons);
 			}

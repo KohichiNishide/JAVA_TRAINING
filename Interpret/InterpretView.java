@@ -77,6 +77,8 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 	private Label[] numberLabels = new Label[PARAMETER_COUNT];
 	private Label[] stockNames = new Label[PARAMETER_COUNT];
 	
+	private Button removeButton = new Button("Remove all");
+	
 	public InterpretView(Interpret controller) {
 		con = controller;
 		setTitle("Interpret main view");
@@ -96,6 +98,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 	    arrayButton.addActionListener(this);
 	    setElementButton.addActionListener(this);
 	    getElementButton.addActionListener(this);
+	    removeButton.addActionListener(this);
 	    
 	    fieldChoice.addItemListener(new ItemListener() {
 			@Override
@@ -255,6 +258,7 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
         addButton(setElementButton, 15, GridBagConstraints.RELATIVE, 2, 1);
         addButton(getElementButton, 17, GridBagConstraints.RELATIVE, 2, 1);
         
+        //addButton(removeButton, 18, 24, 1, 1);
         addLabel(stockLabel, 15, 25, 4, 1);
         addLabel(stockNumberLabel, 15, GridBagConstraints.RELATIVE, 1, 1);
         addLabel(stockNameLabel, 16, GridBagConstraints.RELATIVE, 3, 1);
@@ -420,6 +424,12 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 	
 	private void updateStockObjectList(ObjectInfo model) {
 		List<String> stockNameList = model.getStockObjs();
+		if (stockNameList == null || stockNameList.size() == 0) {
+			for (int i = 0; i < stockNames.length; i++) {
+				stockNames[i].setText("");
+			}
+		}
+			
 		for (int i = 0; i < stockNameList.size(); i++) {
 			stockNames[i].setText(stockNameList.get(i));
 		}
@@ -458,7 +468,6 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand() == "Set #") {
-			//con.setObjectName(objectNameTextField.getText());
 			con.getStockObject(objectNameTextField.getText());
 		} else if (e.getActionCommand() == "Set field value") {	
 			fieldResultVal.setText("");
@@ -497,7 +506,9 @@ public class InterpretView extends Frame implements Observer, ActionListener, It
 			con.setElement(arrayChoice.getSelectedIndex());
 		} else if (e.getActionCommand() == "Get element") {
 			con.readSelectedElement(arrayChoice.getSelectedIndex());
-		}  else {
+		} else if (e.getActionCommand() == "Remove all") {
+			con.removeAllStockObjects();
+		} else {
 			// TBD
 		}
 	}
