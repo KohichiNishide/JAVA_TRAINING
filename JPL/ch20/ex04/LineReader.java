@@ -11,11 +11,11 @@ public class LineReader extends FilterReader  {
 	 }
 
     public String readLine() throws IOException {
-        String ls = System.getProperty("line.separator");
+        String line = System.getProperty("line.separator");
         StringBuffer sb = new StringBuffer();
 
-        while (!sb.toString().endsWith(ls)) {
-            System.out.println(ready());
+        while (!sb.toString().endsWith(line)) {
+            System.out.println("Reading...");
             sb.append((char)read());
         }
         return sb.toString();
@@ -24,39 +24,23 @@ public class LineReader extends FilterReader  {
     public static void main(String[] args) throws IOException {
 
         // 行区切り文字
-        String ls = System.getProperty("line.separator");
+        String line = System.getProperty("line.separator");
 
         // 読み取り元資源
         StringBuffer sb = new StringBuffer();
 
-        sb.append("This ");
-        sb.append("is ");
-        sb.append("LineReader ");
-        sb.append("LineTest.");
-        sb.append(ls);
-        sb.append("2 Line ");
-        sb.append(ls);
-        sb.append("3 Line ");
-        sb.append(ls);
-        sb.append("Last Line will be ");
-        sb.append("not read, ");
-        sb.append("because this line have ");
-        sb.append("not line separator");
+        sb.append("1 Line Test");
+        sb.append(line);
+        sb.append("2 Line Test");
+        sb.append(line);
+        sb.append("3 Line Test");
+        sb.append(line);
 
         StringReader sr = new StringReader(sb.toString());
         LineReader lr = new LineReader(sr);
 
-        // １行目
-        System.out.println(lr.readLine());
-
-        // ２行目
-        System.out.println(lr.readLine());
-
-        // ３行目
-        System.out.println(lr.readLine());
-
-        // ４行目（→行区切り文字が無いので、読めない。無限ループ。）
-        System.out.println(lr.readLine());
-
+        for (int i = 0; i < 3; i++) {
+        	System.out.println(lr.readLine());
+        }
     }
 }
