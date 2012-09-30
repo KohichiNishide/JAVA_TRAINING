@@ -1,11 +1,13 @@
-package ch17.ex02;
+package ch21.ex02;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 public class DataHandler {
 	private WeakReference<File> lastFile; // （おそらく）最後に読んだファイル
-	private WeakReference<byte[]> lastData; // （おそらく）最後のデータ
+	Map<Integer, byte[]> dataMap = new WeakHashMap<Integer, byte[]>();
 	
 	public byte[] readFile(File file) {
 		byte[] data;
@@ -13,7 +15,7 @@ public class DataHandler {
 		//　データを記憶しているか調べる
 		if (lastFile != null && file.equals(lastFile.get())) {
 			System.out.println("Data still is restored");
-			data = lastData.get();
+			data = dataMap.get(new Integer(1));
 			if (data != null)
 				return data;
 		}
@@ -21,7 +23,7 @@ public class DataHandler {
 		// 記憶していないので、読み込む
 		data = readBytesFromFile(file);
 		lastFile = new WeakReference<File>(file);
-		lastData = new WeakReference<byte[]>(data);
+		dataMap.put(new Integer(1), data); 
 		return data;
 	}
 	
@@ -33,7 +35,7 @@ public class DataHandler {
 	
 	public static void main(String[] args) {
 		// テスト用ファイルオブジェクト生成
-	    File file = new File("JPL/ch17/ex02/input.dat");
+	    File file = new File("JPL/ch21/ex02/input.dat");
 		
 		DataHandler handler = new DataHandler();
 		handler.readFile(file);
