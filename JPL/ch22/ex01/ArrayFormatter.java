@@ -15,7 +15,7 @@ public class ArrayFormatter {
 	
 	
 	public static void main(String[] args) {
-		double[] array = { 3.0001, 3.2211, 5000.43425, 452738764.000325235252 };
-		printArray(array, 4);
+		double[] array = { 266.7878, 7.72878, 289.9022, 90.15671, 1781111.989 };
+		printArray(array, 5);
 	}
 }
