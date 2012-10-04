@@ -264,10 +264,11 @@ public class ObjectInfo extends Observable{
 	}
 	
 	private void setException(Exception e) {
-		Exception newEx = new Exception();
-		newEx.initCause(e);
-		newEx.printStackTrace();
-		exception = newEx.getCause().toString();
+		if (e.getCause() != null) {
+			exception = e.getCause().toString();
+		} else {
+			exception = e.toString();
+		}
 	}
 	
 	public void createArray(String type, String size) {
