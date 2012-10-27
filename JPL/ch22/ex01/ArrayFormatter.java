@@ -9,7 +9,7 @@ public class ArrayFormatter {
 			count = array.length;
 		}
 		for (int i = 0; i < count; i++) {
-			System.out.println(array[i]);
+			System.out.printf("%080.40f%n", array[i]);
 		}
 	}
 	
