@@ -25,8 +25,12 @@ public class ProcessManager {
 		thread.start();
 	}
 	
-	public static void main(String[] args) throws IOException, InterruptedException {
+	public static void main(String[] args) throws IOException{
 		Process proc = ProcessManager.userProg("ls");
-		proc.waitFor();
+		try {
+			proc.waitFor();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 }
