@@ -74,9 +74,8 @@ public class CSVManagerTest {
 	public void testreadCSVTable4() {
 		String INPUT_FILE_PATH = "JPL/ch22/ex11/test2.csv";
 		try {
-			String[] expected = {"test1","test2","test3","test4","test5"};
 			FileReader br = new FileReader(INPUT_FILE_PATH);			
-			List<String[]> vals = CSVManager.readCSVTable(br, 4);
+			CSVManager.readCSVTable(br, 4);
 			fail();
 		} catch (FileNotFoundException e) {
 			fail();
