@@ -1,36 +1,34 @@
 package sec02.ex02;
 
 import java.awt.Dimension;
-import java.awt.Menu;
-import java.awt.MenuBar;
-import java.awt.MenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
-public class DigitalClock extends JFrame implements Observer{
+public class DigitalClock extends JFrame{
 	private static final long serialVersionUID = 1L;
 	private final static String TITLE = "Digital clock";
 	Thread timerThread;
 	private PropertyDialog pDialog;
-	private MenuItem propertyItem;
+	private JMenuItem propertyItem;
 	private DigitalPanel panel;
 	private PropertyData data = new PropertyData();
 	
 	public DigitalClock() {		
 	    //メニューバーの生成
-        MenuBar menuBar = new MenuBar();    	
+        JMenuBar menuBar = new JMenuBar();    	
     	//メニューの生成
-        Menu menuProperty = new Menu("Property");  
-        propertyItem = new MenuItem("Open");
+        JMenu menuProperty = new JMenu("Property");  
+        propertyItem = new JMenuItem("Open");
         //メニューバーへの追加
         menuProperty.add(propertyItem);
         menuBar.add(menuProperty);       
         //メニューバーをフレームへ追加
-        this.setMenuBar(menuBar);     
+        this.setJMenuBar(menuBar);     
 	}
 	
 	public void init() {
@@ -39,7 +37,6 @@ public class DigitalClock extends JFrame implements Observer{
 		getContentPane().add(panel);	  
 		pack();
 		pDialog = new PropertyDialog(panel, data);
-		data.addObserver((Observer)this);
 		 //プロパティを押された時の処理
         propertyItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -55,13 +52,5 @@ public class DigitalClock extends JFrame implements Observer{
 	    clock.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	    clock.setResizable(false);
 	    clock.setVisible(true);
-	}
-
-	@Override
-	public void update(Observable obs, Object obj) {
-		/*if (obj != null) {
-			getContentPane().setPreferredSize((Dimension)obj);
-			pack();
-		}*/
 	}
 }

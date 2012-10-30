@@ -18,12 +18,12 @@ import java.util.Observer;
 import javax.swing.JDialog;
 
 public class PropertyDialog extends JDialog implements ActionListener{
-	private  final long serialVersionUID = 1L;
+	private final long serialVersionUID = 1L;
 	private PropertyData data;
-	public  String buFont;
-	public  int buFontSize;
-	public  String buColor;
-	public  String buBackgroundColor;
+	public String buFont;
+	public int buFontSize;
+	public String buColor;
+	public String buBackgroundColor;
 	private GridBagLayout gbl = new GridBagLayout();
 
 	
@@ -32,7 +32,7 @@ public class PropertyDialog extends JDialog implements ActionListener{
 	private Choice colorChoice;
 	private Choice backgroundColorChoice;
 	
-	private  final int NORMAL_LABEL_FONT_SIZE = 15;
+	private final int NORMAL_LABEL_FONT_SIZE = 15;
 	
 	public PropertyDialog(DigitalPanel panel, PropertyData aData) {
 		data = aData;

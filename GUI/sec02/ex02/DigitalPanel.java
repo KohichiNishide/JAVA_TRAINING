@@ -13,10 +13,12 @@ import javax.swing.JPanel;
 
 public class DigitalPanel extends JPanel implements Runnable, Observer{
 	private static final long serialVersionUID = 1L;
-	private final static int UPDATE_TIME_INTERVAL = 50;
+	
 	Thread timerThread;
 	private PropertyData data;
 	private DigitalClock clock;
+	private final static int UPDATE_TIME_INTERVAL = 50;
+	private final int BLANK_SPACE = 70;
 
 	public DigitalPanel(PropertyData data, DigitalClock clock) {
 		this.data = data;
@@ -51,7 +53,7 @@ public class DigitalPanel extends JPanel implements Runnable, Observer{
 		FontMetrics met = g.getFontMetrics();
 		
         int strWidth = met.stringWidth(timeStr);
-        int strHeight = met.getAscent() + met.getDescent();
+        int strHeight = met.getAscent() + met.getDescent() + BLANK_SPACE;
         clock.setSize(new Dimension(strWidth, strHeight));
         this.setPreferredSize(null);
         
