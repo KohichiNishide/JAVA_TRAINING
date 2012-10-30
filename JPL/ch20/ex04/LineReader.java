@@ -15,7 +15,8 @@ public class LineReader extends FilterReader  {
         StringBuffer sb = new StringBuffer();
 
         while (!sb.toString().endsWith(line)) {
-        	if (!ready()) break;
+        	if (!ready()) 
+        		break;
             System.out.println("Reading...");
             sb.append((char)read());
         }
@@ -26,11 +27,11 @@ public class LineReader extends FilterReader  {
         String line = System.getProperty("line.separator");
         StringBuffer sb = new StringBuffer();
 
-        sb.append("1 Line Test");
+        sb.append("test1");
         sb.append(line);
-        sb.append("2 Line Test");
+        sb.append("test2");
         sb.append(line);
-        sb.append("3 Line Test");
+        sb.append("test3");
         sb.append(line);
 
         StringReader sr = new StringReader(sb.toString());

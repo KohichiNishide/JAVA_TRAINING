@@ -11,5 +11,4 @@ public class FindWordTest {
 		String[] args = {"nishide", "JPL/ch20/ex05/findWord.txt"};
 		FindWord.main(args);
 	}
-
 }
