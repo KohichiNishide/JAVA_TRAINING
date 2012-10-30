@@ -13,31 +13,40 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Observer;
 
 import javax.swing.JDialog;
 
 public class PropertyDialog extends JDialog implements ActionListener{
-	private static final long serialVersionUID = 1L;
-	public static String buFont = PropertyData.font;
-	public static int buFontSize = PropertyData.fontSize;
-	public static String buColor = PropertyData.color;
-	public static String buBackgroundColor = PropertyData.backgroundColor;
+	private  final long serialVersionUID = 1L;
+	private PropertyData data;
+	public  String buFont;
+	public  int buFontSize;
+	public  String buColor;
+	public  String buBackgroundColor;
 	private GridBagLayout gbl = new GridBagLayout();
+
 	
 	private Choice fontChoice;
 	private Choice sizeChoice;
 	private Choice colorChoice;
 	private Choice backgroundColorChoice;
 	
-	private static final int NORMAL_LABEL_FONT_SIZE = 15;
+	private  final int NORMAL_LABEL_FONT_SIZE = 15;
 	
-	public PropertyDialog() {
+	public PropertyDialog(DigitalPanel panel, PropertyData aData) {
+		data = aData;
+		buFont = data.font;
+		buFontSize = data.fontSize;
+		buColor = data.color;
+		buBackgroundColor = data.backgroundColor;
 		setTitle("Property dialog");
         setSize(560, 200);
         setLocationRelativeTo(null);
         setResizable(false);
         setLayout(gbl);
-        PropertyData.load();
+        data.load();
+        data.addObserver((Observer)panel);
         
         
         Label fontLabel = new Label("Font");
@@ -85,7 +94,7 @@ public class PropertyDialog extends JDialog implements ActionListener{
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				Choice cho = (Choice)e.getItemSelectable();
-				PropertyDialog.buFont = PropertyData.fonts[cho.getSelectedIndex()];
+				buFont = data.fonts[cho.getSelectedIndex()];
 				Font f = new Font(buFont, Font.PLAIN, 35);
 			}
         });
@@ -93,21 +102,21 @@ public class PropertyDialog extends JDialog implements ActionListener{
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				Choice cho = (Choice)e.getItemSelectable();
-				PropertyDialog.buFontSize = PropertyData.sizes[cho.getSelectedIndex()];
+				buFontSize = data.sizes[cho.getSelectedIndex()];
 			}
         });
         colorChoice.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				Choice cho = (Choice)e.getItemSelectable();
-				PropertyDialog.buColor = PropertyData.strColors[cho.getSelectedIndex()];
+				buColor = data.strColors[cho.getSelectedIndex()];
 			}
         });
         backgroundColorChoice.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				Choice cho = (Choice)e.getItemSelectable();
-				PropertyDialog.buBackgroundColor = PropertyData.strColors[cho.getSelectedIndex()];
+				buBackgroundColor = data.strColors[cho.getSelectedIndex()];
 			}
         });
         
@@ -124,14 +133,14 @@ public class PropertyDialog extends JDialog implements ActionListener{
 	}
 	
 	private void setFontChoice(Choice ch) {
-		String[] fonts = PropertyData.fonts;
+		String[] fonts = data.fonts;
 		for(int i = 0; i < fonts.length; i++){
 			ch.addItem(fonts[i]);
 		}
 	}
 	
 	private void setSizeChoice(Choice ch) {
-		int[] sizes = PropertyData.sizes;
+		int[] sizes = data.sizes;
 		for(int i = 0; i < sizes.length; i++){
 			ch.addItem(Integer.toString(sizes[i]));
 		}
@@ -209,22 +218,22 @@ public class PropertyDialog extends JDialog implements ActionListener{
 	}
 	
 	private void setPropertyData() {			
-		PropertyData.setData(buFont, buFontSize, buColor, buBackgroundColor);
+		data.setData(buFont, buFontSize, buColor, buBackgroundColor);
 	}
 	
 	private void reloadPropertyData() {
-		buFont = PropertyData.font;
-		buFontSize = PropertyData.fontSize;
-		buColor = PropertyData.color;
-		buBackgroundColor = PropertyData.backgroundColor;
+		buFont = data.font;
+		buFontSize = data.fontSize;
+		buColor = data.color;
+		buBackgroundColor = data.backgroundColor;
 		resetComboBoxSelectedItem();
 	}
 	
 	private void resetComboBoxSelectedItem() {
-		fontChoice.select(PropertyData.font);
-		Integer size = PropertyData.fontSize;
+		fontChoice.select(data.font);
+		Integer size = data.fontSize;
 		sizeChoice.select(size.toString());
-		colorChoice.select(PropertyData.color);
-		backgroundColorChoice.select(PropertyData.backgroundColor);
+		colorChoice.select(data.color);
+		backgroundColorChoice.select(data.backgroundColor);
 	}
 }

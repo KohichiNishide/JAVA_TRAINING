@@ -1,5 +1,6 @@
 package sec02.ex02;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -10,18 +11,16 @@ import java.util.Observer;
 
 import javax.swing.JPanel;
 
-import sec01.ex04.PropertyData;
-
 public class DigitalPanel extends JPanel implements Runnable, Observer{
 	private static final long serialVersionUID = 1L;
-	private final static int UPDATE_TIME_INTERVAL = 100;
+	private final static int UPDATE_TIME_INTERVAL = 50;
 	Thread timerThread;
-	
-	private static int height = 200;
-	private static int width = 400;
-	private static final int BLANK_SPACE_SIZE = 50;
+	private PropertyData data;
+	private DigitalClock clock;
 
-	public DigitalPanel() {
+	public DigitalPanel(PropertyData data, DigitalClock clock) {
+		this.data = data;
+		this.clock = clock;
 		timerThread = new Thread(this);
     	timerThread.start();
 	}
@@ -46,17 +45,15 @@ public class DigitalPanel extends JPanel implements Runnable, Observer{
         GregorianCalendar cal = new GregorianCalendar();
         String timeStr = sf.format(cal.getTime());       
         
-        
-        g.setFont(new Font(PropertyData.font, PropertyData.fontStyle, PropertyData.fontSize));
-		g.setColor(PropertyData.parseColor(PropertyData.color));
-		setBackground(PropertyData.parseColor(PropertyData.backgroundColor));
+        g.setFont(new Font(data.font, data.fontStyle, data.fontSize));
+		g.setColor(data.parseColor(data.color));
+		setBackground(data.parseColor(data.backgroundColor));
 		FontMetrics met = g.getFontMetrics();
-		int strWidth = met.stringWidth(timeStr);
+		
+        int strWidth = met.stringWidth(timeStr);
         int strHeight = met.getAscent() + met.getDescent();
-        
-        width = strWidth + BLANK_SPACE_SIZE;
-        height = strHeight + BLANK_SPACE_SIZE;
-		setSize(width, height);
+        clock.setSize(new Dimension(strWidth, strHeight));
+        this.setPreferredSize(null);
         
         g.drawString(timeStr, (getWidth() - met.stringWidth(timeStr)) / 2,
                 (getHeight() + met.getAscent() - met.getDescent()) / 2);
@@ -64,6 +61,6 @@ public class DigitalPanel extends JPanel implements Runnable, Observer{
 
 	@Override
 	public void update(Observable obs, Object obj) {
-		repaint();		
+		this.repaint();		
 	}
 }

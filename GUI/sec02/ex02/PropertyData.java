@@ -1,6 +1,7 @@
 package sec02.ex02;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.util.Observable;
@@ -8,10 +9,10 @@ import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
 public class PropertyData extends Observable{
-	public static final int NORMAL_FONT_SIZE = 80;	
-	public static final String fonts[] = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
-	public static final String strColors[] = {"Black", "Red", "Blue", "Cyan", "DarkGray", "Gray", "Green", "LightGray", "Magenta", "Orange", "Pink", "White", "Yellow"};
-	public static final Color colors[] = {
+	public final int NORMAL_FONT_SIZE = 80;	
+	public final String fonts[] = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
+	public final String strColors[] = {"Black", "Red", "Blue", "Cyan", "DarkGray", "Gray", "Green", "LightGray", "Magenta", "Orange", "Pink", "White", "Yellow"};
+	public final Color colors[] = {
 		Color.BLACK,
 		Color.RED,
 		Color.BLUE,
@@ -26,36 +27,37 @@ public class PropertyData extends Observable{
 		Color.WHITE,
 		Color.YELLOW
 		};
-	public static final int sizes[] = {80, 100, 150, 200, 250, 300, 350, 400};
+	public final int sizes[] = {80, 100, 150, 200, 250, 300, 350, 400};
 	
-	public static int fontStyle = Font.PLAIN;
-	public static String font = "Serif"; 
-	public static int fontSize = NORMAL_FONT_SIZE;
-	public static String color = strColors[5];
-	public static String backgroundColor = strColors[7];
-	public static int x = 100;
-	public static int y = 100;
+	public int fontStyle = Font.PLAIN;
+	public String font = "Serif"; 
+	public int fontSize = NORMAL_FONT_SIZE;
+	public String color = strColors[5];
+	public String backgroundColor = strColors[7];
+	public int x = 100;
+	public int y = 100;
+		
+	private Preferences prefs = Preferences.userNodeForPackage(PropertyData.class);
+	private String unifiedID = "KohichiNishide";
+	private final String[] keys = {unifiedID + "Font", unifiedID + "FontSize", unifiedID + "Color", unifiedID + "BackgroudColor", unifiedID + "x", unifiedID + "y"};
 	
-	private static Preferences prefs = Preferences.userNodeForPackage(PropertyData.class);
-	private static String unifiedID = "KohichiNishide";
-	private static final String[] keys = {unifiedID + "Font", unifiedID + "FontSize", unifiedID + "Color", unifiedID + "BackgroudColor", unifiedID + "x", unifiedID + "y"};
-	
-	
-	public static void setData(String fo, int si, String co, String baco) {
+	public void setData(String fo, int si, String co, String baco) {
 		font = fo;
 		fontSize = si;
 		color = co;
 		backgroundColor = baco;
 		save();
+		notifyToPanel();
 	}
 	
-	public static void setData(int xVal, int yVal) {
+	public void setData(int xVal, int yVal) {
 		x = xVal;
 		y = yVal;
 		save();
+		notifyToPanel();
 	}
 	
-	private static void save() {
+	private void save() {
         try {
             prefs.put(keys[0], font);
             Integer size = fontSize;
@@ -73,7 +75,7 @@ public class PropertyData extends Observable{
         }
     }
 	
-	public static void load() {
+	public void load() {
         font = prefs.get(keys[0], font);
         Integer size = fontSize;
         fontSize = Integer.parseInt(prefs.get(keys[1], size.toString()));
@@ -85,7 +87,7 @@ public class PropertyData extends Observable{
         y = Integer.parseInt(prefs.get(keys[5], yTemp.toString()));
     }
 	
-	public static Color parseColor(String str) {
+	public Color parseColor(String str) {
 		for (int i = 0; i < strColors.length; i++) {
 			if (str.equals(strColors[i])) {
 				return colors[i];
