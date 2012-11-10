@@ -23,7 +23,7 @@ public class ClockMainWindow extends JWindow implements Runnable, ItemListener, 
 	private Image back = null;
 	private Thread timerThread;
 
-	PropertyData data = new PropertyData(); //プロパティデータ
+	ClockPropertyData data = new ClockPropertyData(); //プロパティデータ
 	JPopupMenu pop = new ClockMenuPopup(data); //ポップアップメニュー
 	
     /*

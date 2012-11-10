@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
 
-public class PropertyData extends Observable {
+public class ClockPropertyData extends Observable {
 	public final int NORMAL_FONT_SIZE = 80;	
 	public int fontStyle = Font.PLAIN;
 	public String font = "Serif"; 

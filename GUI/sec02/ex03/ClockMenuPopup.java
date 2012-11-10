@@ -12,7 +12,7 @@ import javax.swing.JPopupMenu;
 
 public class ClockMenuPopup extends JPopupMenu{
 	private static final long serialVersionUID = 1L;
-	private PropertyData data;
+	private ClockPropertyData data;
 	private String[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
 	private String strColors[] = {"Black", "Red", "Blue", "Cyan", "DarkGray", "Gray", "Green", "LightGray", "Magenta", "Orange", "Pink", "White", "Yellow"};
 	private int sizes[] = {80, 100, 150, 200, 250, 300, 350, 400};
@@ -26,7 +26,7 @@ public class ClockMenuPopup extends JPopupMenu{
 	//-------------------------------------------------------------------
 	//   Public methods
 	//-------------------------------------------------------------------
-	public ClockMenuPopup(PropertyData data) {	
+	public ClockMenuPopup(ClockPropertyData data) {	
 		this.data = data;
         createMenu();
         createMenuItem();
