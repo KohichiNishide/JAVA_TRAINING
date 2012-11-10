@@ -38,10 +38,10 @@ public class ClockMenuPopup extends JPopupMenu{
 	//   Private methods
 	//-------------------------------------------------------------------	
 	private void createMenu() {
-        menuFont = new JMenu("フォント");
-        menuFontSize = new JMenu("フォントサイズ");
-        menuCharColor = new JMenu("文字色");
-        menuBackgroundColor = new JMenu("背景色");
+        menuFont = new JMenu("Font");
+        menuFontSize = new JMenu("Font Size");
+        menuCharColor = new JMenu("Color");
+        menuBackgroundColor = new JMenu("Background Color");
 	}
 	
 	private void createMenuItem() {

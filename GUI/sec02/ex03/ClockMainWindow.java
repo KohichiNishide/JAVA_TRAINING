@@ -135,7 +135,7 @@ public class ClockMainWindow extends JWindow implements Runnable, ItemListener, 
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		int btn = e.getButton();
-    	if (btn == MouseEvent.BUTTON1) {
+    	if (btn == MouseEvent.BUTTON1 || btn == MouseEvent.BUTTON3) {
     		// System.out.println("drag");
     		Point eventLocationOnScreen = e.getLocationOnScreen();
     	    setLocation(eventLocationOnScreen.x - start.getX(),
