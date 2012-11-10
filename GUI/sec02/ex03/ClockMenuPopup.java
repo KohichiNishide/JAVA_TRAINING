@@ -1,13 +1,10 @@
 package sec02.ex03;
 
-import java.awt.Color;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -17,25 +14,6 @@ public class ClockMenuPopup extends JPopupMenu{
 	private static final long serialVersionUID = 1L;
 	private PropertyData data;
 	private String[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
-	private Map<String, Color> colorMap = new HashMap<String, Color>() {
-		private static final long serialVersionUID = 1L;
-		{
-	    	put("Black", Color.BLACK);
-	    	put("Red", Color.RED);
-	    	put("Blue", Color.BLUE);
-	    	put("Cyan", Color.CYAN);
-	    	put("DarkGray", Color.DARK_GRAY);
-	    	put("Gray", Color.GRAY);
-	    	put("Green", Color.GREEN);
-	    	put("LightGray", Color.LIGHT_GRAY);
-	    	put("Magenta", Color.MAGENTA);
-	    	put("Orange", Color.ORANGE);
-	    	put("Pink", Color.PINK);
-	    	put("White", Color.WHITE);
-	    	put("Yellow", Color.YELLOW);    	
-	    }
-	};
-
 	private String strColors[] = {"Black", "Red", "Blue", "Cyan", "DarkGray", "Gray", "Green", "LightGray", "Magenta", "Orange", "Pink", "White", "Yellow"};
 	private int sizes[] = {80, 100, 150, 200, 250, 300, 350, 400};
 	
@@ -82,8 +60,7 @@ public class ClockMenuPopup extends JPopupMenu{
         	item = new JMenuItem(Integer.toString(sizes[i]));
         	item.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                	int fontSize = Integer.valueOf(e.getActionCommand());
-                	data.setFontSize(fontSize);
+                	data.setFontSize(e.getActionCommand());
                 }
             });
         	fontSizeMenuItems.add(item);
@@ -92,8 +69,7 @@ public class ClockMenuPopup extends JPopupMenu{
         	item = new JMenuItem(strColors[i]);
         	item.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                	Color color = colorMap.get(e.getActionCommand());
-                	data.setColor(color);
+                	data.setColor(e.getActionCommand());
                 }
             });
         	charColorMenuItems.add(item);
@@ -101,8 +77,7 @@ public class ClockMenuPopup extends JPopupMenu{
         	item = new JMenuItem(strColors[i]);
         	item.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                	Color color = colorMap.get(e.getActionCommand());
-                	data.setBackgroundColor(color);
+                	data.setBackgroundColor(e.getActionCommand());
                 }
             });
         	backgroundColorMenuItems.add(item);

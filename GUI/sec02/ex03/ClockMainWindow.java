@@ -17,19 +17,13 @@ public class ClockMainWindow extends JWindow implements Runnable, ItemListener, 
 	private static int height = 200;
 	private static int width = 400;
     
-	private static final int NORMAL_FONT_SIZE = 100;	
 	private static final int BLANK_SPACE_SIZE = 50;
 
-	private static String fontName = "Default";
-	private static int fontStyle = Font.PLAIN;
-	private static int fontSize = NORMAL_FONT_SIZE;
-	private static Color color = Color.BLACK;
-	private static Color backgroundColor = Color.WHITE;
 	private Graphics buffer;        //オフスクリーンバッファのグラフィックコンテキスト
 	private Image back = null;
 	private Thread timerThread;
 
-	PropertyData data = new PropertyData();
+	PropertyData data = new PropertyData(); //プロパティデータ
 	JPopupMenu pop = new ClockMenuPopup(data); //ポップアップメニュー
 	
     /*
