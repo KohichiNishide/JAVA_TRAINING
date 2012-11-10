@@ -34,8 +34,7 @@ public class ClockMainWindow extends JWindow implements Runnable, ItemListener, 
     	timerThread = new Thread(this);
     	timerThread.start();
     	
-        setLayout(new FlowLayout());
-        setSize(width, height);             
+        setLayout(new FlowLayout());         
 
         add(pop);
         addMouseListener(this);
