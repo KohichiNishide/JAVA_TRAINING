@@ -14,7 +14,7 @@ public class ClockMenuPopup extends JPopupMenu{
 	private static final long serialVersionUID = 1L;
 	private ClockPropertyData data;
 	private String[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
-	private String strColors[] = {"Black", "Red", "Blue", "Cyan", "DarkGray", "Gray", "Green", "LightGray", "Magenta", "Orange", "Pink", "White", "Yellow"};
+	private String colors[] = {"Black", "Red", "Blue", "Cyan", "DarkGray", "Gray", "Green", "LightGray", "Magenta", "Orange", "Pink", "White", "Yellow"};
 	private int sizes[] = {80, 100, 150, 200, 250, 300, 350, 400};
 	
 	private JMenu menuFont, menuFontSize, menuCharColor, menuBackgroundColor;
@@ -65,8 +65,8 @@ public class ClockMenuPopup extends JPopupMenu{
             });
         	fontSizeMenuItems.add(item);
         }
-        for (int i = 0; i < strColors.length; i++) {
-        	item = new JMenuItem(strColors[i]);
+        for (int i = 0; i < colors.length; i++) {
+        	item = new JMenuItem(colors[i]);
         	item.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                 	data.setColor(e.getActionCommand());
@@ -74,7 +74,7 @@ public class ClockMenuPopup extends JPopupMenu{
             });
         	charColorMenuItems.add(item);
         	
-        	item = new JMenuItem(strColors[i]);
+        	item = new JMenuItem(colors[i]);
         	item.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                 	data.setBackgroundColor(e.getActionCommand());
