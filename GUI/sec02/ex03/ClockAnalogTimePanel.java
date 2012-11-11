@@ -29,7 +29,7 @@ public class ClockAnalogTimePanel extends JPanel implements Runnable
 	}
 	
 	private void drawStructure(Graphics g){
-		g.setFont(new Font(data.font, data.fontStyle, 30));
+		g.setFont(new Font(data.font, data.fontStyle, 20));
 		g.setColor(data.backgroundColor);
 		g.fillOval(xcenter - 150, ycenter - 150, 300, 300);
 		g.setColor(data.color);
