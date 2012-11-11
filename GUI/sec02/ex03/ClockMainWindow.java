@@ -2,105 +2,69 @@ package sec02.ex03;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Calendar;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JToggleButton;
 import javax.swing.JWindow;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-public class ClockMainWindow extends JWindow implements Runnable, ItemListener, MouseListener, MouseMotionListener, Observer {
+public class ClockMainWindow extends JWindow implements MouseListener, MouseMotionListener, Observer, ChangeListener {
 	private static final long serialVersionUID = 1L;
-	private static int h;           //時を入れる変数を宣言
-	private static int m;           //分を入れる変数を宣言
-	private static int s;           //秒を入れる変数を宣言
 	private static int height = 200;
-	private static int width = 400;
-    
-	private static final int BLANK_SPACE_SIZE = 50;
-
-	private Graphics buffer;        //オフスクリーンバッファのグラフィックコンテキスト
-	private Image back = null;
-	private Thread timerThread;
-
-	ClockPropertyData data = new ClockPropertyData(); //プロパティデータ
-	JPopupMenu pop = new ClockMenuPopup(data); //ポップアップメニュー
+	private static int width = 300;
+	
+	private GridBagLayout gbl = new GridBagLayout();
+	private ClockPropertyData data = new ClockPropertyData(); //プロパティデータ
+	private JPopupMenu pop = new ClockMenuPopup(data); //ポップアップメニュー
+	private JPanel digitalTimePanel = new ClockDigitalTimePanel(data);
+	private JPanel analogTimePanel = new ClockAnalogTimePanel(data);
 	
     /*
      * コンストラクタ
      */
     public ClockMainWindow() {
-    	super(new Frame());
-    	timerThread = new Thread(this);
-    	timerThread.start();
-    	
-        setLayout(new FlowLayout());         
-
-        add(pop);
+        setLayout(gbl);    
+        digitalTimePanel.add(pop);
+        addPanel(digitalTimePanel, 0, 0, 1, 1);
         addMouseListener(this);
         addMouseMotionListener(this);
         
-        this.show();
-        this.toFront();
+        setSize(width, height);
+        this.setVisible(true);
     }
     
-	public void run() {
-	    while(true) {
-	          h = Calendar.getInstance().get(Calendar.HOUR_OF_DAY); //時を代入
-	          m = Calendar.getInstance().get(Calendar.MINUTE);      //分を代入
-	          s = Calendar.getInstance().get(Calendar.SECOND);      //秒を代入
-	          repaint();
-	          pause(100);
-	    }
+    private void addPanel(JPanel panel, int x, int y, int w, int h) {
+		GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 0.8d;
+        gbc.weighty = 0.8d;
+        gbc.gridx = x;
+        gbc.gridy = y;
+        gbc.gridwidth = w;
+        gbc.gridheight = h;
+        gbc.anchor = GridBagConstraints.NORTH;
+        //gbc.insets = new Insets(10, 10, 10, 10);
+        gbl.setConstraints(panel, gbc);
+        add(panel);
 	}
-
-	public void update(Graphics g) {
-		paint(g);
-	}
-
-	public void paint(Graphics g) {    		
-		back = this.createImage(width, height);  
-		buffer = back.getGraphics();
-		buffer.setFont(new Font(data.font, data.fontStyle, data.fontSize));
-		buffer.setColor(data.color);
-		setBackground(data.backgroundColor);
-
-		drawTimeCenter();
-		setSize(width, height);
-
-		g.drawImage(back, 0, 0, this);      //バッファを画面に描画
-	}
-
-    private void drawTimeCenter() {
-    	FontMetrics fo = buffer.getFontMetrics();
-        int strWidth = fo.stringWidth(h+":"+m+":"+s);
-        int strHeight = fo.getAscent() + fo.getDescent();
-        
-        width = strWidth + BLANK_SPACE_SIZE;
-        height = strHeight + BLANK_SPACE_SIZE;
-        
-        buffer.drawString(h+":"+m+":"+s, (width - strWidth) / 2, (height - strHeight) / 2 + fo.getMaxAscent());
-    }
-
-	private void pause(int time) {
-        try {
-        	Thread.sleep(time);
-        } catch (InterruptedException e) {}
-    }
-
-    public void itemStateChanged(ItemEvent e) {
-        CheckboxMenuItem menu = (CheckboxMenuItem)e.getSource();
-        if (menu.getState()) {
-            System.out.println(menu.getLabel() + " SELECTED");
-        } else {
-            System.out.println(menu.getLabel() + " DESELECTED");
-        }
+    
+    public void createChangePanel(){
+        getContentPane().removeAll();
+        JPanel newPanel = new JPanel();
+        getContentPane().add(newPanel);
+        System.out.println("new panel created");//for debugging purposes
+        validate();
+        setVisible(true);
     }
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -119,7 +83,6 @@ public class ClockMainWindow extends JWindow implements Runnable, ItemListener, 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -149,7 +112,16 @@ public class ClockMainWindow extends JWindow implements Runnable, ItemListener, 
 	
 	@Override
 	public void update(Observable event, Object obj) {
-		repaint();
+	}
+	
+	@Override
+	public void stateChanged(ChangeEvent e) {
+		JToggleButton btn = (JToggleButton)e.getSource();
+	      if (btn.isSelected()) {
+	         btn.setText("Analog Mode");
+	      } else {
+	         btn.setText("Digital Mode");
+	      }
 	}
 
 	/**

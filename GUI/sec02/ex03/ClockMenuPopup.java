@@ -15,9 +15,9 @@ public class ClockMenuPopup extends JPopupMenu{
 	private ClockPropertyData data;
 	private String[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
 	private String colors[] = {"Black", "Red", "Blue", "Cyan", "DarkGray", "Gray", "Green", "LightGray", "Magenta", "Orange", "Pink", "White", "Yellow"};
-	private int sizes[] = {80, 100, 150, 200, 250, 300, 350, 400};
+	private int sizes[] = {80, 100, 150, 200, 250};
 	
-	private JMenu menuFont, menuFontSize, menuCharColor, menuBackgroundColor;
+	private JMenu menuFont, menuFontSize, menuCharColor, menuBackgroundColor, menuAnalogClock;
 	private List<JMenuItem> fontMenuItems = new ArrayList<JMenuItem>();
 	private List<JMenuItem> fontSizeMenuItems = new ArrayList<JMenuItem>();
 	private List<JMenuItem> charColorMenuItems = new ArrayList<JMenuItem>();
@@ -42,6 +42,7 @@ public class ClockMenuPopup extends JPopupMenu{
         menuFontSize = new JMenu("Font Size");
         menuCharColor = new JMenu("Color");
         menuBackgroundColor = new JMenu("Background Color");
+        menuAnalogClock = new JMenu("Analog clock");
 	}
 	
 	private void createMenuItem() {
