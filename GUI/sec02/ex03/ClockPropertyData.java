@@ -33,6 +33,9 @@ public class ClockPropertyData extends Observable {
 	    }
 	};
 	
+	enum ClockMode { ANALOG, DIGITAL }
+	private ClockMode clockMode = ClockMode.DIGITAL;
+	
 	//-------------------------------------------------------------------
 	//   Public methods
 	//-------------------------------------------------------------------
@@ -54,6 +57,18 @@ public class ClockPropertyData extends Observable {
 	public void setBackgroundColor(String color) {
 		this.backgroundColor = colorMap.get(color);
 		notifyToPanel();
+	}
+	
+	public void setAnalogClockMode() {
+		clockMode = ClockMode.ANALOG;
+		setChanged();
+		notifyObservers("analog");
+	}
+	
+	public void setDigitalClockMode() {
+		clockMode = ClockMode.DIGITAL;
+		setChanged();
+		notifyObservers("digital");
 	}
 	
 	//-------------------------------------------------------------------

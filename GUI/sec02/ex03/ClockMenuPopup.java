@@ -89,12 +89,14 @@ public class ClockMenuPopup extends JPopupMenu{
         analogModeMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	//TODO
+            	data.setAnalogClockMode();
             	System.out.println("Change to analog mode");
             }
         });
         digitalModeMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	//TODO
+            	data.setDigitalClockMode();
             	System.out.println("Change to digital mode");
             }
         });
@@ -109,13 +111,6 @@ public class ClockMenuPopup extends JPopupMenu{
         this.add(menuCharColor);
         this.add(menuBackgroundColor);
         this.add(menuClockMode);
-        
-        menuClockMode.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            	//TODO
-            	System.out.println("Change mode");
-            }
-        });
 	}
 	
 	private void addMenuItem() {

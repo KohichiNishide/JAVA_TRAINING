@@ -35,7 +35,6 @@ public class ClockDigitalTimePanel extends JPanel implements Runnable, Observer{
 		
     	BevelBorder border = new BevelBorder(BevelBorder.LOWERED);
     	this.setBorder(border);
-    	//this.setLayout(null);
     	this.setVisible(true);
 	}
 	

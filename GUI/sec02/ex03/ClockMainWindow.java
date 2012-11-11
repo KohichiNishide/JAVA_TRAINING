@@ -5,15 +5,11 @@ import java.awt.event.*;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.JToggleButton;
 import javax.swing.JWindow;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
-public class ClockMainWindow extends JWindow implements MouseListener, MouseMotionListener, Observer, ChangeListener {
+public class ClockMainWindow extends JWindow implements MouseListener, MouseMotionListener, Observer{
 	private static final long serialVersionUID = 1L;
 	private static int height = 100;
 	private static int width = 200;
@@ -34,6 +30,7 @@ public class ClockMainWindow extends JWindow implements MouseListener, MouseMoti
         addPanel(digitalTimePanel, 0, 0, 1, 1);
         addMouseListener(this);
         addMouseMotionListener(this);
+        data.addObserver(this);
         
         setSize(width, height);
         this.setVisible(true);
@@ -41,7 +38,7 @@ public class ClockMainWindow extends JWindow implements MouseListener, MouseMoti
     
     private void addPanel(JPanel panel, int x, int y, int w, int h) {
 		GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 0.8d;
         gbc.weighty = 0.8d;
         gbc.gridx = x;
@@ -107,36 +104,28 @@ public class ClockMainWindow extends JWindow implements MouseListener, MouseMoti
 	}
 
 	@Override
-	public void mouseMoved(MouseEvent arg0) {
+	public void mouseMoved(MouseEvent e) {
 		// TODO Auto-generated method stub	
 	}
 	
 	@Override
-	public void update(Observable event, Object obj) {
-	}
-	
-	@Override
-	public void stateChanged(ChangeEvent e) {
-		JToggleButton btn = (JToggleButton)e.getSource();
-	      if (btn.isSelected()) {
-	         btn.setText("Analog Mode");
-	      } else {
-	         btn.setText("Digital Mode");
-	      }
+	public void update(Observable event, Object arg) {
+		String str = (String) arg;
+		if (str.equals("analog")) {
+			getContentPane().removeAll();
+			setSize(400, 400);
+			addPanel(analogTimePanel, 0, 0, 1, 1);
+			analogTimePanel.setVisible(true);
+		} else if (str.equals("digital")) {
+			getContentPane().removeAll();
+			addPanel(digitalTimePanel, 0, 0, 1, 1);
+			digitalTimePanel.setVisible(true);
+		} else {
+			System.out.println("Fatal error!");
+		}
 	}
 
-	/**
-	 * メイン関数
-	 */
 	public static void main(String args[]) {	
 		ClockMainWindow clock = new ClockMainWindow();
-	    clock.addWindowListener(new windowListener());
-	}
-}
-
-class windowListener extends WindowAdapter
-{
-	public void windowClosing(WindowEvent e) {   //×を押されたときの処理
-	   System.exit(0);
 	}
 }

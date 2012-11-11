@@ -14,7 +14,7 @@ public class ClockAnalogTimePanel extends JPanel implements Runnable
 	Thread thread = null;
 	SimpleDateFormat formatter = new SimpleDateFormat("s", Locale.getDefault());
 	Date currentDate;
-	int xcenter = 168, ycenter = 175, lastxs = 0, lastys = 0, lastxm = 0, lastym = 0, lastxh = 0,lastyh = 0;
+	int xcenter = 200, ycenter = 190, lastxs = 0, lastys = 0, lastxm = 0, lastym = 0, lastxh = 0,lastyh = 0;
 	
 	private ClockPropertyData data;
 	
