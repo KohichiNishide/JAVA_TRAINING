@@ -50,15 +50,6 @@ public class ClockMainWindow extends JWindow implements MouseListener, MouseMoti
         gbl.setConstraints(panel, gbc);
         add(panel);
 	}
-    
-    public void createChangePanel(){
-        getContentPane().removeAll();
-        JPanel newPanel = new JPanel();
-        getContentPane().add(newPanel);
-        System.out.println("new panel created");//for debugging purposes
-        validate();
-        setVisible(true);
-    }
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
@@ -110,6 +101,9 @@ public class ClockMainWindow extends JWindow implements MouseListener, MouseMoti
 	
 	@Override
 	public void update(Observable event, Object arg) {
+		if (arg == null)
+			return;
+		
 		String str = (String) arg;
 		if (str.equals("analog")) {
 			getContentPane().removeAll();
