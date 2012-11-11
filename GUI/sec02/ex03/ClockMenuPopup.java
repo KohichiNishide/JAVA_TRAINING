@@ -17,11 +17,13 @@ public class ClockMenuPopup extends JPopupMenu{
 	private String colors[] = {"Black", "Red", "Blue", "Cyan", "DarkGray", "Gray", "Green", "LightGray", "Magenta", "Orange", "Pink", "White", "Yellow"};
 	private int sizes[] = {80, 100, 150, 200, 250};
 	
-	private JMenu menuFont, menuFontSize, menuCharColor, menuBackgroundColor, menuAnalogClock;
+	private JMenu menuFont, menuFontSize, menuCharColor, menuBackgroundColor, menuClockMode;
 	private List<JMenuItem> fontMenuItems = new ArrayList<JMenuItem>();
 	private List<JMenuItem> fontSizeMenuItems = new ArrayList<JMenuItem>();
 	private List<JMenuItem> charColorMenuItems = new ArrayList<JMenuItem>();
 	private List<JMenuItem> backgroundColorMenuItems = new ArrayList<JMenuItem>();
+	private JMenuItem analogModeMenuItem = new JMenuItem("Analog");
+	private JMenuItem digitalModeMenuItem = new JMenuItem("Digital");
 	
 	//-------------------------------------------------------------------
 	//   Public methods
@@ -42,7 +44,7 @@ public class ClockMenuPopup extends JPopupMenu{
         menuFontSize = new JMenu("Font Size");
         menuCharColor = new JMenu("Color");
         menuBackgroundColor = new JMenu("Background Color");
-        menuAnalogClock = new JMenu("Analog clock");
+        menuClockMode = new JMenu("Clock Mode");
 	}
 	
 	private void createMenuItem() {
@@ -83,6 +85,22 @@ public class ClockMenuPopup extends JPopupMenu{
             });
         	backgroundColorMenuItems.add(item);
         }
+        
+        analogModeMenuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	//TODO
+            	System.out.println("Change to analog mode");
+            }
+        });
+        digitalModeMenuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	//TODO
+            	System.out.println("Change to digital mode");
+            }
+        });
+
+        menuClockMode.add(analogModeMenuItem);
+        menuClockMode.add(digitalModeMenuItem);
 	}
 	
 	private void addMenu() {
@@ -90,6 +108,14 @@ public class ClockMenuPopup extends JPopupMenu{
         this.add(menuFontSize);
         this.add(menuCharColor);
         this.add(menuBackgroundColor);
+        this.add(menuClockMode);
+        
+        menuClockMode.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	//TODO
+            	System.out.println("Change mode");
+            }
+        });
 	}
 	
 	private void addMenuItem() {

@@ -15,8 +15,8 @@ import javax.swing.event.ChangeListener;
 
 public class ClockMainWindow extends JWindow implements MouseListener, MouseMotionListener, Observer, ChangeListener {
 	private static final long serialVersionUID = 1L;
-	private static int height = 200;
-	private static int width = 300;
+	private static int height = 100;
+	private static int width = 200;
 	
 	private GridBagLayout gbl = new GridBagLayout();
 	private ClockPropertyData data = new ClockPropertyData(); //プロパティデータ
@@ -30,6 +30,7 @@ public class ClockMainWindow extends JWindow implements MouseListener, MouseMoti
     public ClockMainWindow() {
         setLayout(gbl);    
         digitalTimePanel.add(pop);
+        analogTimePanel.add(pop);
         addPanel(digitalTimePanel, 0, 0, 1, 1);
         addMouseListener(this);
         addMouseMotionListener(this);
