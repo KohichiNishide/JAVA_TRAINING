@@ -76,8 +76,7 @@ public class ClockMainWindow extends JWindow implements MouseListener, MouseMoti
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		int btn = e.getButton();
-    	if (btn == MouseEvent.BUTTON3) {
+    	if ((e.getModifiers() & java.awt.event.MouseEvent.BUTTON3_MASK) != 0) {
     		//System.out.println("right click");
     		pop.show(this , e.getX() , e.getY());
     	}	
@@ -85,8 +84,7 @@ public class ClockMainWindow extends JWindow implements MouseListener, MouseMoti
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		int btn = e.getButton();
-    	if (btn == MouseEvent.BUTTON1 || btn == MouseEvent.BUTTON3) {
+    	if ((e.getModifiers() & java.awt.event.MouseEvent.BUTTON1_MASK) != 0)  {
     		// System.out.println("drag");
     		Point eventLocationOnScreen = e.getLocationOnScreen();
     	    setLocation(eventLocationOnScreen.x - start.getX(),
