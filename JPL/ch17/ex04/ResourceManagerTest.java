@@ -2,26 +2,28 @@ package ch17.ex04;
 
 import static org.junit.Assert.*;
 
-import java.lang.ref.Reference;
 
 import org.junit.Test;
 
 public class ResourceManagerTest {
-
 	@Test
-	public void successTest() {
+	public void successTest() throws InterruptedException {
 		ResourceManager obj = new ResourceManager();
-		useResource(obj);
+		Key[] keys = new Key[10];
+		for (int i = 0; i < 10; i++) {
+			keys[i] = new Key(i);
+		}
 		
-		System.gc();
+		for (int i = 0; i < 10; i++) {
+			Resource res = obj.getResource(keys[i]);
+			res.use(keys[i], new Integer(i));
+			keys[i] = null;
+			res.release();
+		}
 		
-		//obj.shutdown();
-		
-	}
-	
-	public void useResource(ResourceManager obj) {
-		Key key1 = new Key();
-		Resource res = obj.getResource(key1);
-		res.use(key1, null);
+		Runtime.getRuntime().gc();
+		obj.shutdown();
+		// なぜかサイズが０にならない。。。
+		assertEquals(obj.refs.size(), 0);
 	}
 }
