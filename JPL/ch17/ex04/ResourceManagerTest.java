@@ -19,11 +19,11 @@ public class ResourceManagerTest {
 			res.use(keys[i], new Integer(i));
 			keys[i] = null;
 			res.release();
+			Thread.sleep(100); //Sleepを挿入しないと残ってしまう。。
 		}
 		
 		Runtime.getRuntime().gc();
 		obj.shutdown();
-		// なぜかサイズが０にならない。。。
 		assertEquals(obj.refs.size(), 0);
 	}
 }
