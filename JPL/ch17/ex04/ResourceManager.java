@@ -45,9 +45,8 @@ public final class ResourceManager {
 			while (!shutdown || !refs.isEmpty()) {
 				Reference<?> ref;
 				try {
-					System.out.println("enqueue." + queue.poll());
-					System.out.println("remove");
 					ref = queue.remove();
+					System.out.println("remove");
 					Resource res = null;
 					synchronized(ResourceManager.this) {
 						res = refs.remove(ref);

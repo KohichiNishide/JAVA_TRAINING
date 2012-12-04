@@ -24,6 +24,7 @@ public class ResourceManagerTest {
 		
 		Runtime.getRuntime().gc();
 		obj.shutdown();
-		assertEquals(obj.refs.size(), 0);
+		Thread.sleep(100); //Sleepを挿入しないと残ってしまう。。
+		assertEquals(0, obj.refs.size());
 	}
 }
