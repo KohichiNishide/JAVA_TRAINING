@@ -4,6 +4,7 @@ import java.lang.ref.PhantomReference;
 import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,15 +17,13 @@ public final class ResourceManager {
 	public ResourceManager() {
 		queue = new ReferenceQueue<Object>();
 		refs = new HashMap<Reference<?>, Resource>();
-		
-		// ... リソースの初期化 ...
 	}
 	
 	public void shutdown() {
 		if (!shutdown) {
 			System.out.println("ShutDown...");
 			shutdown = true;
-			checkQueue();
+			checkQueue(); //刈り取りスレッドの代替メソッド
 		}
 	}
 	
@@ -32,7 +31,7 @@ public final class ResourceManager {
 		if (shutdown)
 			throw new IllegalStateException();
 		
-		checkQueue();
+		checkQueue(); //刈り取りスレッドの代替メソッド
 		
 		Resource res = new ResourceImpl(key);
 		Reference<?> ref = new PhantomReference<Object>(key, queue);
@@ -46,7 +45,6 @@ public final class ResourceManager {
 		System.out.println("Start checking queue...");
 		Reference<?> ref;
 		while ((ref = queue.poll()) != null) {
-			// なぜか一度もキューに入りませんでした。
 		    System.out.println("ref is enqueued.");
 		    Resource res = null;
 		    res = refs.get(ref);
@@ -61,29 +59,24 @@ public final class ResourceManager {
 	//            Internal : ResourceImpl
 	////////////////////////////////////////////////////////
 	private static class ResourceImpl implements Resource {
-		int KeyHash;
+		WeakReference<Object> ref;
 		boolean needsRelease = false;
 		
 		ResourceImpl(Object key) {
-			KeyHash = System.identityHashCode(key);
-			
-			// .. 外部リソースの設定
+			ref = new WeakReference<Object>(key);
 			needsRelease = true;
 		}
 		
 		public void use(Object key, Object... args) {
-			if (System.identityHashCode(key) != KeyHash)
-				throw new IllegalArgumentException("wrong key");
-			
-			// ... リソースの使用 ...
+			System.out.println("use.");
 		}
 		
 		public synchronized void release() {
 			if (needsRelease) {
 				needsRelease = false;
-				
-				// ..リソースの解放 ...
-				
+				ref.clear();
+				Runtime.getRuntime().gc();
+				System.out.println("release. key:" + ref.get());
 			}			
 		}
 	}
