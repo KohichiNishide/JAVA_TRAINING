@@ -24,6 +24,7 @@ public class ClockMenuPopup extends JPopupMenu{
 	private List<JMenuItem> backgroundColorMenuItems = new ArrayList<JMenuItem>();
 	private JMenuItem analogModeMenuItem = new JMenuItem("Analog");
 	private JMenuItem digitalModeMenuItem = new JMenuItem("Digital");
+	private JMenuItem exitMenuItem = new JMenuItem("Exit");
 	
 	//-------------------------------------------------------------------
 	//   Public methods
@@ -103,6 +104,12 @@ public class ClockMenuPopup extends JPopupMenu{
 
         menuClockMode.add(analogModeMenuItem);
         menuClockMode.add(digitalModeMenuItem);
+        
+        exitMenuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	 System.exit(0);
+            }
+        });
 	}
 	
 	private void addMenu() {
@@ -111,6 +118,7 @@ public class ClockMenuPopup extends JPopupMenu{
         this.add(menuCharColor);
         this.add(menuBackgroundColor);
         this.add(menuClockMode);
+        this.add(exitMenuItem);
 	}
 	
 	private void addMenuItem() {
