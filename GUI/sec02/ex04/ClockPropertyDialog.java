@@ -3,6 +3,14 @@ package sec02.ex04;
 import java.awt.*;
 import java.awt.event.*;
 
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.ListCellRenderer;
+
 public class ClockPropertyDialog extends Frame implements ActionListener{
 	private static final long serialVersionUID = 1L;
 	private static final int NORMAL_LABEL_FONT_SIZE = 15;
@@ -16,14 +24,18 @@ public class ClockPropertyDialog extends Frame implements ActionListener{
 	
 	private Choice fontChoice;
 	private Choice sizeChoice;
-	private Choice colorChoice;
-	private Choice backgroundColorChoice;
+	private JComboBox colorComboBox;
+	private JComboBox backgroundcolorComboBox;
+	private DefaultComboBoxModel colorComboBoxModel;
+	private DefaultComboBoxModel backgrounColorComboBoxModel;
+	private MyCellRenderer colorRenderer = new MyCellRenderer();
+	private MyCellRenderer backgroundColorRenderer = new MyCellRenderer();
 	
 	private static Label preview;
 
 	public ClockPropertyDialog(final ClockPropertyData data) {
 		setTitle("Property dialog");
-        setSize(560, 200);
+        setSize(800, 300);
         setLocationRelativeTo(null);
         setResizable(false);
         setLayout(gbl);
@@ -50,18 +62,16 @@ public class ClockPropertyDialog extends Frame implements ActionListener{
         // ?½?½?½j?½?½?½[?½{?½b?½N?½X?½Ì”z?½u
         fontChoice = new Choice();
         sizeChoice = new Choice();
-        colorChoice = new Choice();
-        backgroundColorChoice = new Choice();
         
         setFontChoice(fontChoice);
         setSizeChoice(sizeChoice);
-        setColorChoice(colorChoice);
-        setColorChoice(backgroundColorChoice);
+        createColorComboBox();
+        createBackgroundColorComboBox();
         
         addChoice(fontChoice, 1, 0, 3, 1);
         addChoice(sizeChoice, 1, 1, 1, 1);
-        addChoice(colorChoice, 1, 2, 1, 1);
-        addChoice(backgroundColorChoice, 1, 3, 1, 1);
+        addComboBox(colorComboBox, 1, 2, 1, 1);
+        addComboBox(backgroundcolorComboBox, 1, 3, 1, 1);
         
         // ?½{?½^?½?½?½Ì”z?½u
         Button okButton = new Button("OK");
@@ -91,18 +101,16 @@ public class ClockPropertyDialog extends Frame implements ActionListener{
 				ClockPropertyDialog.buFontSize = data.sizes[cho.getSelectedIndex()];
 			}
         });
-        colorChoice.addItemListener(new ItemListener() {
+        colorComboBox.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				Choice cho = (Choice)e.getItemSelectable();
-				ClockPropertyDialog.buColor = data.strColors[cho.getSelectedIndex()];
+				ClockPropertyDialog.buColor = data.strColors[colorComboBox.getSelectedIndex()];
 			}
         });
-        backgroundColorChoice.addItemListener(new ItemListener() {
+        backgroundcolorComboBox.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				Choice cho = (Choice)e.getItemSelectable();
-				ClockPropertyDialog.buBackgroundColor = data.strColors[cho.getSelectedIndex()];
+				ClockPropertyDialog.buBackgroundColor = data.strColors[backgroundcolorComboBox.getSelectedIndex()];
 			}
         });
         
@@ -125,6 +133,23 @@ public class ClockPropertyDialog extends Frame implements ActionListener{
             }
        });
 	}
+	private void createColorComboBox() {
+		colorComboBoxModel = new DefaultComboBoxModel();
+		for (String color : data.strColors) {
+			colorComboBoxModel.addElement(new ComboLabel(color, new ImageIcon(color + ".png")));
+		}
+        colorComboBox = new JComboBox(colorComboBoxModel);
+        colorComboBox.setRenderer(colorRenderer);
+	}
+	
+	private void createBackgroundColorComboBox() {
+		backgrounColorComboBoxModel = new DefaultComboBoxModel();
+		for (String color : data.strColors) {
+			backgrounColorComboBoxModel.addElement(new ComboLabel(color, new ImageIcon(color + ".png")));
+		}
+        backgroundcolorComboBox = new JComboBox(backgrounColorComboBoxModel);
+        backgroundcolorComboBox.setRenderer(backgroundColorRenderer);
+	}
 	
 	public void load() {
 		reloadPropertyData();
@@ -143,22 +168,6 @@ public class ClockPropertyDialog extends Frame implements ActionListener{
 		for(int i = 0; i < sizes.length; i++){
 			ch.addItem(Integer.toString(sizes[i]));
 		}
-	}
-	
-	private void setColorChoice(Choice ch) {
-		ch.addItem("Black");
-        ch.addItem("Red");
-        ch.addItem("Blue");
-        ch.addItem("Cyan");
-        ch.addItem("DarkGray");
-        ch.addItem("Gray");
-        ch.addItem("Green");
-        ch.addItem("LightGray");
-        ch.addItem("Magenta");
-        ch.addItem("Orange");
-        ch.addItem("Pink");
-        ch.addItem("White");
-        ch.addItem("Yellow");
 	}
 	
 	private void addLabel(Label label, int x, int y, int w, int h) {
@@ -207,6 +216,21 @@ public class ClockPropertyDialog extends Frame implements ActionListener{
         add(choice);
     }
 	
+	private void addComboBox(JComboBox box, int x, int y, int w, int h) {
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.weightx = 100.0;
+        gbc.weighty = 100.0;
+        gbc.gridx = x;
+        gbc.gridy = y;
+        gbc.gridwidth = w;
+        gbc.gridheight = h;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbl.setConstraints(box, gbc);
+        add(box);
+    }
+	
 	private void addButton(Button button, int x, int y, int w, int h) {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.NONE;
@@ -249,8 +273,55 @@ public class ClockPropertyDialog extends Frame implements ActionListener{
 		fontChoice.select(data.font);
 		Integer size = data.fontSize;
 		sizeChoice.select(size.toString());
-		colorChoice.select(data.color.toString());
-		backgroundColorChoice.select(data.backgroundColor.toString());
+		//colorComboBox.select(data.color.toString());
+		//backgroundcolorComboBox.select(data.backgroundColor.toString());
 	}
+	
+	class ComboLabel{
+		  String text;
+		  Icon icon;
+
+		  ComboLabel(String text, Icon icon){
+		    this.text = text;
+		    this.icon = icon;
+		  }
+
+		  public String getText(){
+		    return text;
+		  }
+
+		  public Icon getIcon(){
+		    return icon;
+		  }
+		}
+	class MyCellRenderer extends JLabel implements ListCellRenderer{
+
+	    MyCellRenderer(){
+	      setOpaque(true);
+	    }
+
+	    public Component getListCellRendererComponent(
+	            JList list,
+	            Object value,
+	            int index,
+	            boolean isSelected,
+	            boolean cellHasFocus){
+
+	      ComboLabel data = (ComboLabel)value;
+	      setText(data.getText());
+	      setIcon(data.getIcon());
+
+	      if (isSelected){
+	        setForeground(Color.white);
+	        setBackground(Color.black);
+	      }else{
+	        setForeground(Color.black);
+	        setBackground(Color.white);
+	      }
+
+	      return this;
+	    }
+	  }
+
 }
 
