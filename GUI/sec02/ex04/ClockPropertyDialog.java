@@ -136,7 +136,7 @@ public class ClockPropertyDialog extends Frame implements ActionListener{
 	private void createColorComboBox() {
 		colorComboBoxModel = new DefaultComboBoxModel();
 		for (String color : data.strColors) {
-			colorComboBoxModel.addElement(new ComboLabel(color, new ImageIcon(color + ".png")));
+			colorComboBoxModel.addElement(new ComboLabel(color, new ImageIcon("GUI/sec02/ex04/resource/" + color + ".png")));
 		}
         colorComboBox = new JComboBox(colorComboBoxModel);
         colorComboBox.setRenderer(colorRenderer);
@@ -145,7 +145,7 @@ public class ClockPropertyDialog extends Frame implements ActionListener{
 	private void createBackgroundColorComboBox() {
 		backgrounColorComboBoxModel = new DefaultComboBoxModel();
 		for (String color : data.strColors) {
-			backgrounColorComboBoxModel.addElement(new ComboLabel(color, new ImageIcon(color + ".png")));
+			backgrounColorComboBoxModel.addElement(new ComboLabel(color, new ImageIcon("GUI/sec02/ex04/resource/" + color + ".png")));
 		}
         backgroundcolorComboBox = new JComboBox(backgrounColorComboBoxModel);
         backgroundcolorComboBox.setRenderer(backgroundColorRenderer);
