@@ -152,8 +152,8 @@ public class ClockPropertyDialog extends Frame implements ActionListener{
 	}
 	
 	public void load() {
-		reloadPropertyData();
 		this.setVisible(true);
+		reloadPropertyData();
 	}
 	
 	private void setFontChoice(Choice ch) {
@@ -273,8 +273,17 @@ public class ClockPropertyDialog extends Frame implements ActionListener{
 		fontChoice.select(data.font);
 		Integer size = data.fontSize;
 		sizeChoice.select(size.toString());
-		//colorComboBox.select(data.color.toString());
-		//backgroundcolorComboBox.select(data.backgroundColor.toString());
+		colorComboBox.setSelectedIndex(this.getColorIndex(data.color));
+		backgroundcolorComboBox.setSelectedIndex(this.getColorIndex(data.backgroundColor));
+	}
+	
+	private int getColorIndex(String color) {
+		for (int i = 0; i < data.strColors.length; i++) {
+			String str = data.strColors[i];
+			if (str.equals(color))
+				return i;
+		}
+		return 0;
 	}
 	
 	class ComboLabel{
