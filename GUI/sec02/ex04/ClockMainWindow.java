@@ -17,12 +17,12 @@ public class ClockMainWindow extends JFrame implements MouseListener, MouseMotio
 	private static int width = 200;
 	
 	private GridBagLayout gbl = new GridBagLayout();
-	private ClockPropertyData data = new ClockPropertyData(); //ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãƒ??ã‚¿
+	private ClockPropertyData data = new ClockPropertyData(); //ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ï¿½??ã‚¿
 	private ClockPropertyDialog dialog = new ClockPropertyDialog(data);
-	private JPopupMenu pop = new ClockMenuPopup(data); //ãƒãƒƒãƒ—ã‚¢ãƒ??ãƒ¡ãƒ‹ãƒ¥ãƒ¼
+	private JPopupMenu pop = new ClockMenuPopup(data); //ãƒãƒƒãƒ—ã‚¢ï¿½??ãƒ¡ãƒ‹ãƒ¥ãƒ¼
 	private JPanel digitalTimePanel = new ClockDigitalTimePanel(data);
 	private JPanel analogTimePanel = new ClockAnalogTimePanel(data);
-	//ƒƒjƒ…[ƒo[‚Ì¶¬
+	//ï¿½ï¿½ï¿½jï¿½ï¿½ï¿½[ï¿½oï¿½[ï¿½Ìï¿½ï¿½ï¿½
     MenuBar menuBar = new MenuBar();
     
     private MenuItem propertyItem;
@@ -32,8 +32,8 @@ public class ClockMainWindow extends JFrame implements MouseListener, MouseMotio
      */
     public ClockMainWindow() {
         setLayout(gbl);    
-        digitalTimePanel.add(pop);
-        analogTimePanel.add(pop);
+        //digitalTimePanel.add(pop);
+        //analogTimePanel.add(pop);
         addPanel(digitalTimePanel, 0, 0, 1, 1);
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -42,30 +42,30 @@ public class ClockMainWindow extends JFrame implements MouseListener, MouseMotio
         setSize(width, height);
         this.setResizable(false);
         
-        //ƒƒjƒ…[ƒo[‚Ì¶¬
+        //ï¿½ï¿½ï¿½jï¿½ï¿½ï¿½[ï¿½oï¿½[ï¿½Ìï¿½ï¿½ï¿½
         MenuBar menuBar = new MenuBar();
     	
-    	//ƒƒjƒ…[ƒAƒCƒeƒ€‚Ì¶¬
+    	//ï¿½ï¿½ï¿½jï¿½ï¿½ï¿½[ï¿½Aï¿½Cï¿½eï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½
         Menu menuProperty = new Menu("Property");
         propertyItem = new MenuItem("Open");
         menuProperty.add(propertyItem);
         menuBar.add(menuProperty);
         
-        //ƒvƒƒpƒeƒB‚ğ‰Ÿ‚³‚ê‚½‚Ìˆ—
+        //ï¿½vï¿½ï¿½ï¿½pï¿½eï¿½Bï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½
         propertyItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	dialog.load();
             }
         });
         
-        //~‚ğ‰Ÿ‚³‚ê‚½‚Æ‚«‚Ìˆ—
+        //ï¿½~ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½Æ‚ï¿½ï¿½Ìï¿½ï¿½ï¿½
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e)  {
             	data.setData(e.getWindow().getX(), e.getWindow().getY());
             	System.exit(0);
             }
         });
-        //ƒƒjƒ…[ƒo[‚ğƒtƒŒ[ƒ€‚Ö’Ç‰Á
+        //ï¿½ï¿½ï¿½jï¿½ï¿½ï¿½[ï¿½oï¿½[ï¿½ï¿½ï¿½tï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½Ö’Ç‰ï¿½
         setMenuBar(menuBar);
         setBounds(data.x, data.y, width, height);
         this.setVisible(true);
@@ -113,7 +113,7 @@ public class ClockMainWindow extends JFrame implements MouseListener, MouseMotio
 	public void mouseClicked(MouseEvent e) {
     	if ((e.getModifiers() & java.awt.event.MouseEvent.BUTTON3_MASK) != 0) {
     		//System.out.println("right click");
-    		pop.show(this , e.getX() , e.getY());
+    		//pop.show(this , e.getX() , e.getY());
     	}	
 	}
 
