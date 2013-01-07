@@ -26,6 +26,8 @@ public class ClockMainWindow extends JFrame implements MouseListener, MouseMotio
     MenuBar menuBar = new MenuBar();
     
     private MenuItem propertyItem;
+    private MenuItem degitalModeItem;
+    private MenuItem analogModeItem;
 	
     /*
      * コンストラクタ
@@ -47,14 +49,30 @@ public class ClockMainWindow extends JFrame implements MouseListener, MouseMotio
     	
     	//���j���[�A�C�e���̐���
         Menu menuProperty = new Menu("Property");
-        propertyItem = new MenuItem("Open");
+        propertyItem = new MenuItem("Open Dialog");
+        degitalModeItem = new MenuItem("Digital Mode");
+        analogModeItem = new MenuItem("Analog Mode");
         menuProperty.add(propertyItem);
+        menuProperty.add(degitalModeItem);
+        menuProperty.add(analogModeItem);
         menuBar.add(menuProperty);
         
         //�v���p�e�B�������ꂽ���̏���
         propertyItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	dialog.load();
+            }
+        });
+        
+        degitalModeItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	data.setDigitalClockMode();
+            }
+        });
+        
+        analogModeItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	data.setAnalogClockMode();
             }
         });
         
@@ -141,12 +159,12 @@ public class ClockMainWindow extends JFrame implements MouseListener, MouseMotio
 		if (str.equals("analog")) {
 			getContentPane().removeAll();
 			setSize(400, 400);
-			//addPanel(analogTimePanel, 0, 0, 1, 1);
-			//analogTimePanel.setVisible(true);
+			addPanel(analogTimePanel, 0, 0, 1, 1);
+			analogTimePanel.setVisible(true);
 		} else if (str.equals("digital")) {
 			getContentPane().removeAll();
-			//addPanel(digitalTimePanel, 0, 0, 1, 1);
-			//digitalTimePanel.setVisible(true);
+			addPanel(digitalTimePanel, 0, 0, 1, 1);
+			digitalTimePanel.setVisible(true);
 		} else {
 			System.out.println("Fatal error!");
 		}
