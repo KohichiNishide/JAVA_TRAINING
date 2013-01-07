@@ -99,7 +99,7 @@ public class ClockAnalogTimePanel extends JPanel implements Runnable
 	public void run() {
 		while (thread != null) {
 			try {
-				Thread.sleep(100);
+				Thread.sleep(200);
 			} catch (InterruptedException e) {
 			}
 			repaint();
