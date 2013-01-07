@@ -90,8 +90,8 @@ public class ClockPropertyDialog extends Frame implements ActionListener{
 				Choice cho = (Choice)e.getItemSelectable();
 				ClockPropertyDialog.buFont = data.fonts[cho.getSelectedIndex()];
 				Font f = new Font(buFont, Font.PLAIN, 35);
-				ClockPropertyDialog.preview.setFont(f);
-				ClockPropertyDialog.preview.setText("Preview");
+//				ClockPropertyDialog.preview.setFont(f);
+//				ClockPropertyDialog.preview.setText("Preview");
 			}
         });
         sizeChoice.addItemListener(new ItemListener() {
