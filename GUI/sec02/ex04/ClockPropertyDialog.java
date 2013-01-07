@@ -35,7 +35,7 @@ public class ClockPropertyDialog extends Frame implements ActionListener{
 
 	public ClockPropertyDialog(final ClockPropertyData data) {
 		setTitle("Property dialog");
-        setSize(800, 300);
+        setSize(500, 250);
         setLocationRelativeTo(null);
         setResizable(false);
         setLayout(gbl);
@@ -43,7 +43,7 @@ public class ClockPropertyDialog extends Frame implements ActionListener{
         
         data.load();
         
-        // ?Ω?Ω?Ωx?Ω?Ω?ΩÃîz?Ωu
+        // ?ÔøΩ?ÔøΩ?ÔøΩx?ÔøΩ?ÔøΩ?ÔøΩÃîz?ÔøΩu
         Label fontLabel = new Label("Font");
         Label sizeLabel = new Label("Font size");
         Label colorLabel = new Label("Color");
@@ -59,7 +59,7 @@ public class ClockPropertyDialog extends Frame implements ActionListener{
         addLabel(colorLabel, 0, 2, 1, 1);
         addLabel(backgroundColorLabel, 0, 3, 1, 1);
         
-        // ?Ω?Ω?Ωj?Ω?Ω?Ω[?Ω{?Ωb?ΩN?ΩX?ΩÃîz?Ωu
+        // ?ÔøΩ?ÔøΩ?ÔøΩj?ÔøΩ?ÔøΩ?ÔøΩ[?ÔøΩ{?ÔøΩb?ÔøΩN?ÔøΩX?ÔøΩÃîz?ÔøΩu
         fontChoice = new Choice();
         sizeChoice = new Choice();
         
@@ -73,7 +73,7 @@ public class ClockPropertyDialog extends Frame implements ActionListener{
         addComboBox(colorComboBox, 1, 2, 1, 1);
         addComboBox(backgroundcolorComboBox, 1, 3, 1, 1);
         
-        // ?Ω{?Ω^?Ω?Ω?ΩÃîz?Ωu
+        // ?ÔøΩ{?ÔøΩ^?ÔøΩ?ÔøΩ?ÔøΩÃîz?ÔøΩu
         Button okButton = new Button("OK");
         Button cancelButton = new Button("Cancel");
         
@@ -83,7 +83,7 @@ public class ClockPropertyDialog extends Frame implements ActionListener{
         addButton(okButton, 3, 4, 1, 1);
         addButton(cancelButton, 4, 4, 1, 1);
         
-        // ?Ω?Ω?ΩX?Ωi?Ω[?ΩÃí«âÔøΩ
+        // ?ÔøΩ?ÔøΩ?ÔøΩX?ÔøΩi?ÔøΩ[?ÔøΩÃí«âÔøΩ
         fontChoice.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -114,19 +114,19 @@ public class ClockPropertyDialog extends Frame implements ActionListener{
 			}
         });
         
-        preview = new Label("Preview", Label.CENTER);
-        Font f = new Font(buFont, Font.PLAIN, 35);
-        preview.setFont(f);
-        preview.setBackground(Color.LIGHT_GRAY);
-        preview.setForeground(Color.DARK_GRAY);
-        addPreviewLabel(preview, 2, 2, 2, 2);
+//        preview = new Label("Preview", Label.CENTER);
+//        Font f = new Font(buFont, Font.PLAIN, 35);
+//        preview.setFont(f);
+//        preview.setBackground(Color.LIGHT_GRAY);
+//        preview.setForeground(Color.DARK_GRAY);
+//        addPreviewLabel(preview, 2, 2, 2, 2);
+//        
+//        Label memo = new Label("Font", Label.CENTER);
+//        Font memoFont = new Font("Serif", Font.BOLD, 20);
+//        memo.setFont(memoFont);
+//        addLabel(memo, 2, 1, 1, 1);
         
-        Label memo = new Label("Font", Label.CENTER);
-        Font memoFont = new Font("Serif", Font.BOLD, 20);
-        memo.setFont(memoFont);
-        addLabel(memo, 2, 1, 1, 1);
-        
-        //?Ω~?Ω?Ω?Ω?Ω?Ω?Ω?ΩÍÇΩ?Ω∆ÇÔøΩ?ΩÃèÔøΩ?Ω?Ω
+        //?ÔøΩ~?ÔøΩ?ÔøΩ?ÔøΩ?ÔøΩ?ÔøΩ?ÔøΩ?ÔøΩÍÇΩ?ÔøΩ∆ÇÔøΩ?ÔøΩÃèÔøΩ?ÔøΩ?ÔøΩ
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e)  {
                 e.getWindow().setVisible(false);
