@@ -24,7 +24,7 @@ public class ClockAnalogTimePanel extends JPanel implements Runnable
 		BevelBorder border = new BevelBorder(BevelBorder.LOWERED);
     	this.setBorder(border);
 		this.start();
-		this.setSize(300, 400);
+		this.setSize(400, 400);
 		this.setVisible(true);
 	}
 	
@@ -47,18 +47,18 @@ public class ClockAnalogTimePanel extends JPanel implements Runnable
 		minute = Integer.parseInt(formatter.format(currentDate));
 		formatter.applyPattern("h");
 		hour = Integer.parseInt(formatter.format(currentDate));
-		xsecond = (int) (Math.cos(second * 3.14f / 30 - 3.14f / 2) * 120 + xcenter);
-		ysecond = (int) (Math.sin(second * 3.14f / 30 - 3.14f / 2) * 120 + ycenter);
+		//xsecond = (int) (Math.cos(second * 3.14f / 30 - 3.14f / 2) * 120 + xcenter);
+		//ysecond = (int) (Math.sin(second * 3.14f / 30 - 3.14f / 2) * 120 + ycenter);
 		xminute = (int) (Math.cos(minute * 3.14f / 30 - 3.14f / 2) * 100 + xcenter);
 		yminute = (int) (Math.sin(minute * 3.14f / 30 - 3.14f / 2) * 100 + ycenter);
 		xhour = (int) (Math.cos((hour * 30 + minute / 2) * 3.14f / 180 - 3.14f / 2) * 80 + xcenter);
 		yhour = (int) (Math.sin((hour * 30 + minute / 2) * 3.14f / 180 - 3.14f / 2) * 80 + ycenter);
 		// Erase if necessary, and redraw
 		g.setColor(data.getColor());
-		if (xsecond != lastxs || ysecond != lastys)
-		{
-			g.drawLine(xcenter, ycenter, lastxs, lastys);
-		}
+//		if (xsecond != lastxs || ysecond != lastys)
+//		{
+//			g.drawLine(xcenter, ycenter, lastxs, lastys);
+//		}
 		if (xminute != lastxm || yminute != lastym)
 		{
 			g.drawLine(xcenter, ycenter - 1, lastxm, lastym);
@@ -70,15 +70,15 @@ public class ClockAnalogTimePanel extends JPanel implements Runnable
 			g.drawLine(xcenter - 1, ycenter, lastxh, lastyh);
 		}
 		g.setColor(data.getColor());
-		g.drawLine(xcenter, ycenter, xsecond, ysecond);
+		//g.drawLine(xcenter, ycenter, xsecond, ysecond);
 		g.setColor(data.getColor());
 		g.drawLine(xcenter, ycenter - 1, xminute, yminute);
 		g.drawLine(xcenter - 1, ycenter, xminute, yminute);
 		g.setColor(data.getColor());
 		g.drawLine(xcenter, ycenter - 1, xhour, yhour);
 		g.drawLine(xcenter - 1, ycenter, xhour, yhour);
-		lastxs = xsecond;
-		lastys = ysecond;
+//		lastxs = xsecond;
+//		lastys = ysecond;
 		lastxm = xminute;
 		lastym = yminute;
 		lastxh = xhour;

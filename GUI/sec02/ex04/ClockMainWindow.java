@@ -5,7 +5,9 @@ import java.awt.event.*;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
@@ -22,6 +24,7 @@ public class ClockMainWindow extends JFrame implements MouseListener, MouseMotio
 	private JPopupMenu pop = new ClockMenuPopup(data); //ポップア�??メニュー
 	private JPanel digitalTimePanel = new ClockDigitalTimePanel(data);
 	private JPanel analogTimePanel = new ClockAnalogTimePanel(data);
+	private JPanel smallAnalogTimePanel = new ClockPanel();
 	//���j���[�o�[�̐���
     MenuBar menuBar = new MenuBar();
     
@@ -87,6 +90,7 @@ public class ClockMainWindow extends JFrame implements MouseListener, MouseMotio
         setMenuBar(menuBar);
         setBounds(data.x, data.y, width, height);
         this.setVisible(true);
+        this.setBackground(Color.WHITE);
     }
     
     private void addPanel(JPanel panel, int x, int y, int w, int h) {
@@ -158,9 +162,22 @@ public class ClockMainWindow extends JFrame implements MouseListener, MouseMotio
 		String str = (String) arg;
 		if (str.equals("analog")) {
 			getContentPane().removeAll();
-			setSize(400, 400);
+			setSize(500, 400);
+			
+			JLabel label = new JLabel();
+
+			ImageIcon icon = new ImageIcon("GUI/sec02/ex04/resource/clock.png");
+			label.setIcon(icon);
+			
 			addPanel(analogTimePanel, 0, 0, 1, 1);
+			this.add(smallAnalogTimePanel);
+			this.add(label);
+			this.setLayout(null);
+			smallAnalogTimePanel.setBounds(370, 40, 100, 100);
+			label.setBounds(350, 190, 150, 150);
 			analogTimePanel.setVisible(true);
+			smallAnalogTimePanel.setVisible(true);
+			
 		} else if (str.equals("digital")) {
 			getContentPane().removeAll();
 			addPanel(digitalTimePanel, 0, 0, 1, 1);
