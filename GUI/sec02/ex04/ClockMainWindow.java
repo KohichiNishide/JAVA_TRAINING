@@ -164,17 +164,17 @@ public class ClockMainWindow extends JFrame implements MouseListener, MouseMotio
 			getContentPane().removeAll();
 			setSize(500, 400);
 			
-			JLabel label = new JLabel();
-
-			ImageIcon icon = new ImageIcon("GUI/sec02/ex04/resource/clock.png");
-			label.setIcon(icon);
+//			JLabel label = new JLabel();
+//
+//			ImageIcon icon = new ImageIcon("GUI/sec02/ex04/resource/clock.png");
+//			label.setIcon(icon);
 			
 			addPanel(analogTimePanel, 0, 0, 1, 1);
 			this.add(smallAnalogTimePanel);
-			this.add(label);
+			//this.add(label);
 			this.setLayout(null);
 			smallAnalogTimePanel.setBounds(370, 40, 100, 100);
-			label.setBounds(350, 190, 150, 150);
+			//label.setBounds(350, 190, 150, 150);
 			analogTimePanel.setVisible(true);
 			smallAnalogTimePanel.setVisible(true);
 			
